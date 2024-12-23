@@ -1,14 +1,13 @@
 <script lang="ts">
+    import Navbar from '../Components/Navbar.svelte';
     export let name: String = 'World';
 </script>
 
-<h1>Hello, {name}!</h1>
+<Navbar></Navbar>
+<p>Hello, {name}!</p>
 
 <style lang="scss">
     @use "../../scss/colors" as *;
-    h1 {
-        background-color: $primary-color;
-    }
     p {
         color: $text-color;
     }

@@ -6,7 +6,7 @@
     <title>Laravel + Inertia + Svelte</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body>
-@inertia
-</body>
+    <body style="margin: 0;padding: 0">
+        @inertia
+    </body>
 </html>

@@ -11,7 +11,9 @@ export default defineConfig({
         }),
         svelte({
             preprocess: sveltePreprocess({
-                scss: {},
+                scss: {
+                    includePaths: ['resources/sccs'],
+                },
             }),
         }),
     ],
