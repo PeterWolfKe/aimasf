@@ -12,9 +12,14 @@ export default defineConfig({
         svelte({
             preprocess: sveltePreprocess({
                 scss: {
-                    includePaths: ['resources/sccs'],
+                    includePaths: ["resources/scss"],
                 },
             }),
         }),
     ],
+    resolve: {
+        alias: {
+            '@assets': '/resources/assets',
+        },
+    },
 });

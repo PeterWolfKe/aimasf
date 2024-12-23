@@ -1,5 +1,15 @@
-$primary-color: #3498db;
-$secondary-color: #2ecc71;
-$accent-color: #e74c3c;
-$text-color: #333;
-$background-color: #f5f5f5;
+$primary-blue: #89CFF0;
+$primary-mint: #B8EAE7;
+
+$secondary-purple: #D6BBE8;
+$secondary-dark-blue: #20303a;
+
+$secondary-deep-blue: #365B6D;
+
+$neutral-white: #ffffff;
+$gray-white: #D3D3D3FF;
+
+$background-color: $primary-mint;
+$text-color: $secondary-dark-blue;
+$button-background: $primary-blue;
+$button-hover: $secondary-purple;
