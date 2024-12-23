@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "noEmitOnError": true, // Prevent emitting output if there are type errors
+        "strict": true, // Enable strict type checking
+        "module": "esnext", // Use ES Modules
+        "moduleResolution": "node", // Use Node's module resolution algorithm
+        "target": "esnext", // Target the latest ECMAScript features
+        "esModuleInterop": true, // Enable compatibility with CommonJS
+        "skipLibCheck": true, // Skip type checking for declaration files (optional)
+        "resolveJsonModule": true, // Allow importing .json files
+        "types": ["vite/client"], // Vite client types
+        "verbatimModuleSyntax": true, // Required for Svelte with TypeScript
+        "allowJs": false // Enforce only TypeScript files
+    },
+    "include": [
+        "src/**/*",
+        "resources/js/**/*"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}
