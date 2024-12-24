@@ -1,6 +1,7 @@
 <script lang="ts">
     import Navbar from '../Components/Navbar.svelte';
     import Footer from "../Components/Footer.svelte";
+    import ColoringText from "../Components/ColoringText.svelte";
 </script>
 
 <style>
@@ -10,15 +11,15 @@
         height: 2000px;
         display: flex;
         flex-direction: column;
+        scroll-behavior: smooth;
     }
     :global(#app) {
-        height: 100%; /* Ensure #app takes up full height */
+        height: 100%;
         display: flex;
-        flex-direction: column; /* Flex column for app layout */
+        flex-direction: column;
     }
 
     .app-container {
-        height: 100vh;
         display: flex;
         flex-direction: column;
     }
@@ -26,7 +27,36 @@
 
 <Navbar></Navbar>
 <main class="app-container">
-    <h1>Welcome to Svelte</h1>
-    <p>This is a Svelte app with full height.</p>
+    <h1></h1>
+    <h1></h1>
+    <h1></h1>
+    <h1></h1>
+    <h1></h1>
+    <h1></h1>
+    <h1></h1>
+    <h1></h1>
+    <h1></h1>
+    <h1></h1>
+    <h1></h1>
+    <h1></h1>
+    <h1></h1>
+
+
+
+    <p>This is a Aima app with full height.</p>
+    <ColoringText></ColoringText>
+
+    <h1></h1>
+    <h1></h1>
+    <h1></h1>
+    <h1></h1>
+    <h1></h1>
+    <h1></h1>
+    <h1></h1>
+    <h1></h1>
+    <h1></h1>
+    <h1></h1>
+    <h1></h1>
+    <h1></h1>
 </main>
 <Footer></Footer>

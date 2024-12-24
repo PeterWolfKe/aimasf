@@ -2,20 +2,30 @@
     import logo from '/resources/assets/logo.png';
     let isMenuOpen = false;
     let navbarHeight = 85;
-    let scrollY = 0;
 
     function toggleMenu() {
         isMenuOpen = !isMenuOpen;
     }
 
     window.addEventListener('scroll', () => {
-        scrollY = window.scrollY;
-        navbarHeight = scrollY > 80 ? 70 : 85;
+        navbarHeight = window.scrollY > 80 ? 70 : 85;
     });
 </script>
 
 <style lang="scss">
     @use '../../scss/colors.scss' as *;
+
+    .navbar-container {
+        width: 100%;
+        height: var(--navbar-height);
+        background-color: #333;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 20px;
+        box-sizing: border-box;
+    }
 
     nav {
         position: fixed;
@@ -30,69 +40,39 @@
         padding: 0.5rem 8rem;
         box-sizing: border-box;
         background-color: $primary-blue;
-        transition: height 0.5s ease, padding 0.5s ease;
         color: $neutral-white;
         box-shadow: 0 4px 2px -2px gray;
-    }
-
-    @media (max-width: 1024px) {
-        nav {
-            padding: 0.5rem 8vw;
-        }
-    }
-
-    @media (max-width: 768px) {
-        nav {
-            padding: 0.5rem 5vw;
-        }
-
-        .links {
-            display: none;
-            flex-direction: column;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            width: 100%;
-            background-color: $primary-blue;
-            padding: 1rem;
-        }
-
-        .links.open {
-            display: flex;
-        }
-
-        .links a {
-            margin: 0.5rem 0;
-        }
+        transition: height 0.5s ease, padding 0.5s ease;
     }
 
     .brand {
         display: flex;
         align-items: center;
-        gap: 0.3rem;
     }
 
     .brand img {
         height: 60px;
-        width: auto;
     }
 
     .logo {
         font-size: 2rem;
         font-weight: bold;
         color: $text-color;
-        margin-left: 20px;
+        margin-left: 10px;
     }
 
-    #logo-img {
-        max-width: 50px;
-        height: auto;
+    .menu-toggle {
+        display: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: $neutral-white;
     }
 
     .links {
+        display: flex;
         gap: 3rem;
         margin-right: 3vw;
-        display: flex;
+        transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
     }
 
     @media (max-width: 1024px) {
@@ -101,7 +81,6 @@
             margin-right: 2vw;
         }
     }
-
     @media (max-width: 768px) {
         .links {
             gap: 1.5vw;
@@ -144,46 +123,74 @@
         width: calc(100% - 16px);
     }
 
-    .menu-toggle {
-        display: none;
-        font-size: 1.5rem;
-        cursor: pointer;
-        color: $neutral-white;
-    }
-
     @media (max-width: 768px) {
+        nav {
+            padding: 0.5rem 5vw;
+            box-sizing: border-box;
+        }
+
         .menu-toggle {
             display: block;
         }
 
+        .links {
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            box-sizing: border-box;
+            background-color: $primary-blue;
+            padding: 0.5rem 2rem;
+            gap: 0;
+            transform: translateY(-10px);
+            opacity: 0;
+        }
+
         .links.open {
             display: flex;
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .links a {
+            padding: 0.5rem 1rem;
+            text-align: left;
+            width: 100%;
+            border-radius: 0;
+            box-sizing: border-box;
+
+            &:not(:first-child) {
+                border-top: 1px solid $neutral-white;
+            }
+        }
+
+        .links a:last-child {
+            border-bottom: none;
         }
     }
 </style>
 
-<nav style="--navbar-height: {navbarHeight}px;">
-    <div class="brand">
-        <img id="logo-img" src={logo} alt="Aima Logo" />
-        <div class="logo">Aima</div>
-    </div>
-    <div
-        class="menu-toggle"
-        on:click={toggleMenu}
-        role="button"
-        tabindex="0"
-        aria-label="Toggle menu"
-        on:keydown={(event) => {
-            if (event.key === 'Enter' || event.key === ' ') {
-                toggleMenu();
-            }
-        }}
-    >
-        ☰
-    </div>
-    <div class={`links ${isMenuOpen ? 'open' : ''}`}>
-        <a href="#recensions" on:click={() => (isMenuOpen = false)}>Recensions</a>
-        <a href="#contact" on:click={() => (isMenuOpen = false)}>Contact</a>
-        <a href="#eshop" on:click={() => (isMenuOpen = false)}>E-shop</a>
-    </div>
-</nav>
+<div class="navbar-container" style="--navbar-height: {navbarHeight}px;">
+    <nav style="--navbar-height: {navbarHeight}px;">
+        <div class="brand">
+            <img src={logo} alt="Logo" />
+            <div class="logo">Aima</div>
+        </div>
+        <div
+            class="menu-toggle"
+            on:click={toggleMenu}
+            role="button"
+            tabindex="0"
+            aria-label="Toggle menu"
+        >
+            ☰
+        </div>
+        <div class={`links ${isMenuOpen ? 'open' : ''}`}>
+            <a href="#recensions" on:click={() => (isMenuOpen = false)}>Recensions</a>
+            <a href="#footer" on:click={() => (isMenuOpen = false)}>Contact</a>
+            <a href="#eshop" on:click={() => (isMenuOpen = false)}>E-shop</a>
+        </div>
+    </nav>
+</div>

@@ -4,28 +4,13 @@
 <style lang="scss">
     @use '../../scss/colors.scss' as *;
 
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    body, html {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-    }
-
-    main {
-        flex: 1;
-    }
-
     footer {
         background-color: $secondary-deep-blue;
         color: $gray-white;
         padding: 2rem 1rem;
         text-align: center;
-        margin-top: auto;
+        font-family: 'Roboto', sans-serif;
+        box-sizing: border-box;
     }
 
     .footer-container {
@@ -35,12 +20,26 @@
         align-items: flex-start;
         max-width: 1200px;
         margin: 0 auto;
+
+        @media (max-width: 768px) {
+            flex-direction: column;
+            align-items: center;
+        }
     }
 
     .column {
         flex: 1;
         min-width: 200px;
         margin: 1rem;
+
+        @media (max-width: 768px) {
+            text-align: center;
+            margin: 0.5rem 0;
+        }
+
+        p {
+            margin-bottom: 0.5rem;
+        }
     }
 
     h3 {
@@ -54,10 +53,10 @@
         margin-bottom: 0.5rem;
         color: $gray-white;
         text-decoration: none;
-    }
 
-    .links a:hover {
-        text-decoration: underline;
+        &:hover {
+            text-decoration: underline;
+        }
     }
 
     .newsletter-container {
@@ -96,11 +95,7 @@
                 color: $neutral-white;
             }
 
-            &:focus {
-                outline: none;
-                box-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
-            }
-
+            &:focus,
             &:hover {
                 outline: none;
                 box-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
@@ -115,7 +110,6 @@
                 transition: background-color 5000s ease-in-out 0s;
                 box-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
                 caret-color: $neutral-white;
-
             }
         }
 
@@ -136,7 +130,6 @@
             transition: text-shadow 0.2s ease;
 
             &:hover {
-                outline: none;
                 text-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
             }
         }
@@ -155,6 +148,10 @@
         align-items: center;
         justify-content: center;
         gap: 0.6rem;
+
+        @media (max-width: 768px) {
+            justify-content: center;
+        }
     }
 
     .social-icons a {
@@ -179,7 +176,7 @@
     }
 </style>
 
-<footer>
+<footer id="footer">
     <div class="footer-container">
         <div class="column">
             <h3>Aima</h3>
