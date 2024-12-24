@@ -1,14 +1,15 @@
 <script>
     import { onMount } from 'svelte';
+    import background from '/resources/assets/blood-test.jpg';
 
     let words = [
-        "Menstruation", "is", "painful,", "frustrating,", "and",
-        "often", "exhausting.", "The", "blood", "is", "a", "reminder",
-        "of", "endless", "cycles,", "that", "feel", "never-ending."
-    ];
-    const startingFraction = 0.6;
-    const endingFraction = 3.17
-    const one_point = (endingFraction - startingFraction) / words.length;
+        "Váš", "čas", "je", "cenný,", "naša", "misia", "jasná.",
+        "Čistenie", "krvi", "bez", "nutnosti", "prania.",
+        "Akoby", "sa", "nič", "nestalo."
+    ]
+    let startingFraction = 0.6;
+    let endingFraction = 3;
+    $:  one_point = (endingFraction - startingFraction) / words.join('').length;
 
     let scrollValues = [];
     let scrollFraction = 0;
@@ -22,21 +23,47 @@
         scrollValues = [];
 
         for (let index = 0; index < words.length; index++) {
-            let scroll = scrollFraction - startingFraction - one_point * index;
+            let characterCount = 0;
 
-            if (scroll > one_point) {
+            for (let i = 0; i < index; i++) {
+                characterCount += words[i].length;
+            }
+            let scroll = scrollFraction - startingFraction - one_point * characterCount;
+
+            if (scroll > one_point*words[index].length) {
                 scroll = 0;
             } else if (scroll < 0) {
                 scroll = 100;
             } else {
-                scroll = 100-scroll/one_point*100;
+                scroll = 100-scroll/(one_point*words[index].length)*100;
             }
             scrollValues.push(scroll);
-            console.log(scroll);
         }
+    };
+    const calculateFractions = () => {
+        const section = document.querySelector('.textblock');
+        const windowHeight = window.innerHeight;
+
+        // Get the position and size of the element relative to the document
+        let sectionTop = section.offsetTop;  // Distance from the top of the document
+        let sectionHeight = section.offsetHeight;
+
+        // The middle of the element
+        let sectionMiddle = sectionTop + sectionHeight*2.5;
+
+        // Calculate the starting fraction (when the top of the element enters the viewport)
+        startingFraction = Math.max(0, sectionTop / windowHeight);
+
+        // Calculate the ending fraction (when the middle of the element reaches the middle of the viewport)
+        endingFraction = Math.max(0, sectionMiddle / windowHeight);
+
+        // Debugging output
+        console.log("Starting Fraction:", startingFraction);
+        console.log("Ending Fraction:", endingFraction);
     };
 
     onMount(() => {
+        calculateFractions();
         window.addEventListener('scroll', handleScroll);
 
         return () => {
@@ -64,7 +91,7 @@
         z-index: -1;
     }
 
-    video {
+    img {
         width: 100%;
         height: 100%;
         object-fit: cover;
@@ -82,7 +109,7 @@
         color: $neutral-white;
         text-align: center;
         z-index: 1;
-        background: rgba($secondary-purple, 0.6);
+        background: rgba($secondary-purple, 0.5);
         padding: 0 12rem;
         box-sizing: border-box;
     }
@@ -110,7 +137,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        color: $neutral-white;
+        color: $text-color;
         clip-path: inset(0% 100% 0% 0%);
     }
 
@@ -121,9 +148,7 @@
 </style>
 <section class="textblock">
     <div class="video-container">
-        <video id="textBlockVideo" autoplay muted loop playsinline>
-            <source src="https://view.vzaar.com/14b701c3-86ec-4735-9601-202149d2eac2/video" />
-        </video>
+        <img src={background} />
     </div>
 
     <div class="text-content">

@@ -2,6 +2,7 @@
     import Navbar from '../Components/Navbar.svelte';
     import Footer from "../Components/Footer.svelte";
     import ColoringText from "../Components/ColoringText.svelte";
+    import SplashScreen from "../Components/SplashScreen.svelte";
 </script>
 
 <style>
@@ -25,6 +26,7 @@
     }
 </style>
 
+<SplashScreen></SplashScreen>
 <Navbar></Navbar>
 <main class="app-container">
     <h1></h1>
@@ -40,7 +42,6 @@
     <h1></h1>
     <h1></h1>
     <h1></h1>
-
 
 
     <p>This is a Aima app with full height.</p>
