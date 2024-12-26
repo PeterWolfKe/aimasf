@@ -1,6 +1,5 @@
-<script lang="ts">
-    // Import the colors from the SCSS file
-    import '../../scss/colors.scss';
+<script>
+
 </script>
 
 <style lang="scss">
@@ -9,16 +8,15 @@
     .about-us {
         background-color: $background-color;
         color: $text-color;
-        padding: 3rem 2rem;
+        padding: 6rem 2rem;
         border-radius: 0.5rem;
         width: 100%;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         box-sizing: border-box;
-        text-align: center; // Centers the text
+        text-align: center;
         display: flex;
         flex-direction: column;
         align-items: center;
-
         h2 {
             color: $secondary-dark-blue;
             font-size: 2.5rem;
@@ -28,7 +26,7 @@
         p {
             font-size: 1.5rem;
             line-height: 1.6;
-            max-width: 1500px; // Keeps text content visually balanced
+            max-width: 1500px;
             margin-bottom: 1rem;
         }
 
@@ -38,7 +36,6 @@
         }
     }
 
-    // Responsive styles for smaller devices
     @media (max-width: 768px) {
         .about-us {
             padding: 2rem 1rem;
@@ -49,7 +46,7 @@
 
             p {
                 font-size: 0.9rem;
-                max-width: 100%; // Removes width limitation on smaller screens
+                max-width: 100%;
             }
         }
     }

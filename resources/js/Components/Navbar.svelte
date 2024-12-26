@@ -14,7 +14,8 @@
 </script>
 
 <style lang="scss">
-    @use '../../scss/colors.scss' as *;     
+    @use '../../scss/colors.scss' as *;
+
     .navbar-container {
         width: 100%;
         height: var(--navbar-height);
@@ -23,12 +24,15 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 0 20px;
         box-sizing: border-box;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        transition: height 0.5s ease, padding 0.5s ease;
     }
 
     nav {
-        position: fixed;
+        position: relative;
         top: 0;
         left: 0;
         width: 100%;
@@ -48,10 +52,12 @@
     .brand {
         display: flex;
         align-items: center;
+        transition: transform 0.3s ease;
     }
 
     .brand img {
         height: 60px;
+        transition: height 0.3s ease;
     }
 
     .logo {
@@ -59,6 +65,7 @@
         font-weight: bold;
         color: $text-color;
         margin-left: 10px;
+        transition: font-size 0.3s ease;
     }
 
     .menu-toggle {
@@ -82,6 +89,7 @@
             margin-right: 2vw;
         }
     }
+
     @media (max-width: 768px) {
         .links {
             gap: 1.5vw;

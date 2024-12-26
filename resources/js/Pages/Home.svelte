@@ -30,36 +30,9 @@
 <SplashScreen></SplashScreen>
 <Navbar></Navbar>
 <main class="app-container">
-    <h1></h1>
-    <h1></h1>
-    <h1></h1>
-    <h1></h1>
-    <h1></h1>
-    <h1></h1>
-    <h1></h1>
-    <h1></h1>
-    <h1></h1>
-    <h1></h1>
-    <h1></h1>
-    <h1></h1>
-    <h1></h1>
 
-
-    <p>This is a Aima app with full height.</p>
+    <p>This is a Aima</p>
     <ColoringText></ColoringText>
-
-    <h1></h1>
-    <h1></h1>
-    <h1></h1>
-    <h1></h1>
-    <h1></h1>
-    <h1></h1>
-    <h1></h1>
-    <h1></h1>
-    <h1></h1>
-    <h1></h1>
-    <h1></h1>
-    <h1></h1>
     <AboutUs></AboutUs>
 </main>
 <Footer></Footer>
