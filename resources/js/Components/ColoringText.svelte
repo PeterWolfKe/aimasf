@@ -7,7 +7,7 @@
         "Akoby", "sa", "nič", "nestalo."
     ]
     let startingFraction = 0.6;
-    let endingFraction = 3;
+    let endingFraction = 2;
     $: one_point = (endingFraction - startingFraction) / words.join('').length;
 
     let scrollValues = [];
@@ -46,7 +46,7 @@
         let sectionTop = section.offsetTop;
         let sectionHeight = section.offsetHeight;
 
-        let sectionMiddle = sectionTop + sectionHeight * 2.5;
+        let sectionMiddle = sectionTop + sectionHeight * 1.5;
 
         startingFraction = Math.max(0, sectionTop / windowHeight);
         endingFraction = Math.max(0, sectionMiddle / windowHeight);
@@ -72,7 +72,7 @@
         position: relative;
         box-sizing: border-box;
         font-family: 'Roboto', sans-serif;
-        min-height: 80vh;
+        min-height: 60vh;
         overflow: hidden;
     }
 
@@ -81,7 +81,7 @@
         top: 0;
         left: 0;
         width: 100%;
-        height: 80vh;
+        height: 60vh;
         z-index: -1;
     }
 
@@ -97,7 +97,7 @@
         top: 0;
         left: 0;
         width: 100%;
-        height: 80vh;
+        height: 60vh;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -107,6 +107,7 @@
         background: rgba($secondary-deep-blue, 0.5);
         padding: 0 3rem;
         box-sizing: border-box;
+        background: $button-background;
     }
 
     .text {
@@ -172,7 +173,7 @@
 
 <section class="textblock">
     <div class="video-container">
-        <img src="https://picsum.photos/id/25/2000/3000"/>
+        <!-- <img src="https://picsum.photos/id/25/2000/3000"/> -->
     </div>
 
     <div class="text-content">

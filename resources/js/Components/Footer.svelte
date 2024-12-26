@@ -207,7 +207,7 @@
         <div class="column">
             <h3>Kontakt</h3>
             <p>tel.: +421 915 184 224</p>
-            <p>Email: info@aimasf.sk</p>
+            <p>Email: aima@aimasf.sk</p>
         </div>
     </div>
 

@@ -2,6 +2,7 @@
     import logo from '/resources/assets/logo.png';
     let isMenuOpen = false;
     let navbarHeight = 85;
+    let navbarPadding = "0.5rem 8rem";
 
     function toggleMenu() {
         isMenuOpen = !isMenuOpen;
@@ -9,7 +10,7 @@
 
     window.addEventListener('scroll', () => {
         navbarHeight = window.scrollY > 80 ? 70 : 85;
-        document.documentElement.style.setProperty('--navbar-padding', window.scrollY > 80 ? '0.4rem 6rem' : '0.5rem 8rem');
+        navbarPadding = window.scrollY > 80 ? '0.4rem 7.5rem' : '0.5rem 8rem';
     });
 </script>
 
@@ -184,10 +185,10 @@
     }
 </style>
 
-<div class="navbar-container" style="--navbar-height: {navbarHeight}px;">
-    <nav style="--navbar-height: {navbarHeight}px;">
+<div class="navbar-container" style="--navbar-height: {navbarHeight}px">
+    <nav style="--navbar-height: {navbarHeight}px; --navbar-padding: {navbarPadding};">
         <div class="brand">
-            <img src={logo} alt="Logo" />
+            <img src={logo} alt="Logo"/>
             <div class="logo">Aima</div>
         </div>
         <div
