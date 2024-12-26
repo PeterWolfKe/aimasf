@@ -95,6 +95,7 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
+        box-sizing: border-box;
     }
 
     .text-content {
@@ -109,7 +110,7 @@
         color: $neutral-white;
         text-align: center;
         z-index: 1;
-        background: rgba($secondary-purple, 0.5);
+        background: rgba($secondary-deep-blue, 0.5);
         padding: 0 12rem;
         box-sizing: border-box;
     }
@@ -122,7 +123,7 @@
     }
 
     .word {
-        font-size: 2rem;
+        font-size: 3.5rem;
         font-weight: bold;
         position: relative;
         display: inline-block;
@@ -137,7 +138,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        color: $text-color;
+        color: $neutral-white;
         clip-path: inset(0% 100% 0% 0%);
     }
 
@@ -148,7 +149,8 @@
 </style>
 <section class="textblock">
     <div class="video-container">
-        <img src={background} />
+        <!--<img src={background} /> -->
+        <img src="https://picsum.photos/id/25/2000/3000"/>
     </div>
 
     <div class="text-content">

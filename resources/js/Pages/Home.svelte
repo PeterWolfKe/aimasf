@@ -3,6 +3,7 @@
     import Footer from "../Components/Footer.svelte";
     import ColoringText from "../Components/ColoringText.svelte";
     import SplashScreen from "../Components/SplashScreen.svelte";
+    import AboutUs from "../Components/AboutUs.svelte";
 </script>
 
 <style>
@@ -59,5 +60,6 @@
     <h1></h1>
     <h1></h1>
     <h1></h1>
+    <AboutUs></AboutUs>
 </main>
 <Footer></Footer>

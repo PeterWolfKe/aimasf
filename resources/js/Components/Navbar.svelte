@@ -9,12 +9,12 @@
 
     window.addEventListener('scroll', () => {
         navbarHeight = window.scrollY > 80 ? 70 : 85;
+        document.documentElement.style.setProperty('--navbar-padding', window.scrollY > 80 ? '0.4rem 6rem' : '0.5rem 8rem');
     });
 </script>
 
 <style lang="scss">
-    @use '../../scss/colors.scss' as *;
-
+    @use '../../scss/colors.scss' as *;     
     .navbar-container {
         width: 100%;
         height: var(--navbar-height);
@@ -37,7 +37,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 0.5rem 8rem;
+        padding: var(--navbar-padding);
         box-sizing: border-box;
         background-color: $primary-blue;
         color: $neutral-white;
@@ -73,6 +73,7 @@
         gap: 3rem;
         margin-right: 3vw;
         transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        box-sizing: border-box;
     }
 
     @media (max-width: 1024px) {
@@ -95,6 +96,7 @@
         font-family: 'Roboto', sans-serif;
         font-weight: 500;
         padding: 10px 15px;
+        box-sizing: border-box;
         border-radius: 8px;
         overflow: hidden;
         transition: background 0.3s ease, transform 0.3s ease, border-radius 0.3s ease;
@@ -131,6 +133,7 @@
 
         .menu-toggle {
             display: block;
+            box-sizing: border-box;
         }
 
         .links {
@@ -151,6 +154,7 @@
         .links.open {
             display: flex;
             transform: translateY(0);
+            box-sizing: border-box;
             opacity: 1;
         }
 
