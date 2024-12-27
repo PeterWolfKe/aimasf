@@ -19,7 +19,7 @@
                 window.scrollTo({ top: Number(storedScrollPosition), left: 0, behavior: 'instant' });
             });
         }
-        
+
         window.addEventListener("beforeunload", () => {
             localStorage.setItem("pageScroll", window.scrollY.toString());
         });
