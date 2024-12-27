@@ -4,9 +4,10 @@
     import ColoringText from "../Components/ColoringText.svelte";
     import SplashScreen from "../Components/SplashScreen.svelte";
     import MovingPhotos from "../Components/MovingPhotos.svelte";
-    import Problematika from "../Components/Problematika.svelte";
+    import Problem from "../Components/Problem.svelte";
 
     import { onMount } from 'svelte';
+    import AboutUs from "../Components/AboutUs.svelte";
 
     if ('scrollRestoration' in history) {
         history.scrollRestoration = 'manual';
@@ -40,10 +41,10 @@
             });
         });
 
-        const animatedElementsBig = document.querySelectorAll('.footer-container a, .footer-container p, .footer-container span, .footer-container h3, .about-us p');
+        const animatedElementsBig = document.querySelectorAll('.footer-container a, .footer-container p, .footer-container span, .footer-container h3, .problem p');
         animatedElementsBig.forEach((element) => observerBigAnimate.observe(element));
 
-        const animatedElementsSmall = document.querySelectorAll('.newsletter-container h3, .newsletter-container form, .footer-bottom p, .about-us h2');
+        const animatedElementsSmall = document.querySelectorAll('.newsletter-container h3, .newsletter-container form, .footer-bottom p, .problem h2');
         animatedElementsSmall.forEach((element) => observerSmallAnimate.observe(element));
     });
 </script>
@@ -100,6 +101,7 @@
     <p class="animated-text">This is a Aima</p>
     <MovingPhotos></MovingPhotos>
     <ColoringText></ColoringText>
-    <Problematika></Problematika>
+    <Problem></Problem>
+    <AboutUs></AboutUs>
 </main>
 <Footer></Footer>

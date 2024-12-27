@@ -4,7 +4,7 @@
 <style lang="scss">
     @use '../../scss/colors.scss' as *;
 
-    .about-us {
+    .problem {
         background-color: $neutral-white;
         color: $text-color;
         padding: 6rem 2rem;
@@ -20,7 +20,7 @@
         flex-wrap: wrap; /* Allows items to wrap on smaller screens */
     }
 
-    .about-us .section {
+    .problem .section {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -46,13 +46,13 @@
     }
 
     @media (max-width: 768px) {
-        .about-us {
+        .problem {
             padding: 2rem 1rem;
             flex-direction: column; /* Stack the sections vertically on small screens */
             align-items: center;
         }
 
-        .about-us .section {
+        .problem .section {
             max-width: 100%;
         }
 
@@ -66,7 +66,7 @@
     }
 </style>
 
-<div class="about-us">
+<div class="problem">
     <div class="section">
         <h2>Problém:</h2>
         <p>
