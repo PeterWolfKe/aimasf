@@ -59,24 +59,41 @@
 
     .container {
         width: 100%;
-        height: 400px;
+        min-height: 300px;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         background-color: #d6bbe8;
         color: #20303a;
+        padding: 20px;
+        box-sizing: border-box;
     }
 
     .text {
-        font-size: 2rem;
+        font-size: 1rem;
         margin-bottom: 20px;
+        text-align: center;
     }
 
     .number {
-        font-size: 6rem;
+        font-size: 4rem;
         font-weight: bold;
         color: #365b6d;
+    }
+
+    @media (min-width: 768px) {
+        .container {
+            height: 400px;
+        }
+
+        .text {
+            font-size: 2rem;
+        }
+
+        .number {
+            font-size: 6rem;
+        }
     }
 </style>
 
