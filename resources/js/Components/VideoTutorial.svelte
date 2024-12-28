@@ -86,7 +86,7 @@
     }
 </style>
 
-<section>
+<section id="VideoTutorial">
     <h2 class="title">Videotutoriál na použitie produktu</h2>
     <div class="image-container">
         <img class="image" src="https://testaima.my.canva.site/media/a1536b55f6bfa3582cd44bd9e41fe4c2.jpg" alt="">

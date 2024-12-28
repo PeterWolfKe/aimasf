@@ -4,7 +4,7 @@
 <style lang="scss">
     @use '../../scss/colors.scss' as *;
 
-    .about-us-section {
+    #about-us {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -73,7 +73,7 @@
     }
 </style>
 
-<section id="about-us" class="about-us-section">
+<section id="about-us" >
     <div class="content">
         <div class="text-content">
             <h2>O nás</h2>

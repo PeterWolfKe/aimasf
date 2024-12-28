@@ -43,10 +43,19 @@
             });
         });
 
-        const animatedElementsBig = document.querySelectorAll('.footer-container a, .footer-container p, .footer-container span, .footer-container h3, .problem p');
+        const animatedElementsBig = document.querySelectorAll(
+            '.footer-container .column,' +
+            '.problem p, ' +
+            '#about-us p'
+        );
         animatedElementsBig.forEach((element) => observerBigAnimate.observe(element));
 
-        const animatedElementsSmall = document.querySelectorAll('.newsletter-container h3, .newsletter-container form, .footer-bottom p, .problem h2');
+        const animatedElementsSmall = document.querySelectorAll(
+            '.newsletter-container,' +
+            '.footer-bottom p, ' +
+            '.problem h2,' +
+            '#about-us h2,'
+        );
         animatedElementsSmall.forEach((element) => observerSmallAnimate.observe(element));
     });
 </script>
