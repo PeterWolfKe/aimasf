@@ -5,9 +5,10 @@
     import SplashScreen from "../Components/SplashScreen.svelte";
     import MovingPhotos from "../Components/MovingPhotos.svelte";
     import Problem from "../Components/Problem.svelte";
+    import AboutUs from "../Components/AboutUs.svelte";
+    import WomanCounter from "../Components/WomanCounter.svelte";
 
     import { onMount } from 'svelte';
-    import AboutUs from "../Components/AboutUs.svelte";
 
     if ('scrollRestoration' in history) {
         history.scrollRestoration = 'manual';
@@ -101,6 +102,7 @@
     <p class="animated-text">This is a Aima</p>
     <MovingPhotos></MovingPhotos>
     <ColoringText></ColoringText>
+    <WomanCounter></WomanCounter>
     <Problem></Problem>
     <AboutUs></AboutUs>
 </main>

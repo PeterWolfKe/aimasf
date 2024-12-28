@@ -1,0 +1,88 @@
+<script>
+    import { onMount } from "svelte";
+
+    let count = 0;
+    const targetCount = 475000000;
+    const duration = 2000;
+    let observed = false;
+    let container;
+
+    function easeOut(t) {
+        return t * (2 - t);
+    }
+
+    function startCount() {
+        const startTime = performance.now();
+
+        function animate(time) {
+            const elapsed = time - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const easedProgress = easeOut(progress);
+            count = Math.floor(easedProgress * targetCount);
+
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            } else {
+                count = targetCount;
+            }
+        }
+
+        requestAnimationFrame(animate);
+    }
+
+    onMount(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting && !observed) {
+                        observed = true;
+                        startCount();
+                    }
+                });
+            },
+            { threshold: 0.1 }
+        );
+
+        if (container) observer.observe(container);
+
+        return () => {
+            if (container) observer.unobserve(container);
+        };
+    });
+</script>
+
+<style>
+    :global(body) {
+        margin: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    .container {
+        width: 100%;
+        height: 400px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: #d6bbe8;
+        color: #20303a;
+    }
+
+    .text {
+        font-size: 2rem;
+        margin-bottom: 20px;
+    }
+
+    .number {
+        font-size: 6rem;
+        font-weight: bold;
+        color: #365b6d;
+    }
+</style>
+
+<div class="container" bind:this={container}>
+    <div class="text">
+        POČET ŽIEN, KTORÉ DENNE TRÁPI STRACH Z KRVAVÉHO OBLEČENIA
+    </div>
+    <div class="number">{count.toLocaleString()}</div>
+</div>
