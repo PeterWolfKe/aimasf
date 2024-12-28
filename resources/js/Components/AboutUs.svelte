@@ -4,35 +4,93 @@
 <style lang="scss">
     @use '../../scss/colors.scss' as *;
 
-    .about-us {
-        font-family: Arial, sans-serif;
-        line-height: 1.6;
-        background-color: $primary-mint;
-        padding: 40px;
-        border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        max-width: 100%;
-        width: 80%;
-        margin: 40px auto;
-        color: $text-color;
+    .about-us-section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        background-color: $neutral-white;
+    }
+
+    .content {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        text-align: left;
+    }
+
+    .text-content {
+        margin-right: 20px;
+        max-width: 600px;
     }
 
     h2 {
-        color: $secondary-dark-blue;
-        text-align: center;
-        margin-bottom: 20px;
-        font-size: 32px;
+        font-size: 48px;
+        color: $text-color;
+        font-weight: 700;
     }
 
     p {
-        font-size: 18px;
-        color: $secondary-deep-blue;
+        font-size: 22px;
+        color: $text-color;
+        line-height: 1.6;
+    }
+
+    .image-container {
+        max-width: 600px;
+    }
+
+    .about-image {
+        width: 100%;
+        height: auto;
+        border-radius: 30px;
+    }
+
+    @media (max-width: 768px) {
+        .content {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .text-content {
+            margin-right: 0;
+            margin-bottom: 20px;
+            max-width: 100%;
+        }
+
+        h2 {
+            font-size: 32px;
+        }
+
+        p {
+            font-size: 18px;
+        }
+
+        .image-container {
+            max-width: 100%;
+        }
     }
 </style>
 
-<div class="about-us">
-    <h2>O nás</h2>
-    <p>
-        Sme Aima! Kolektív mladých a ambicióznych ľudí z Gymnázia Poštová 9, ktorý prišiel s víziou pomáhať ľuďom riešiť bežné problémy inovatívnym a funkčným spôsobom. V Aime nás spája tímový duch, kreativita a túžba naučiť sa niečo nové.
-    </p>
-</div>
+<section id="about-us" class="about-us-section">
+    <div class="content">
+        <div class="text-content">
+            <h2>O nás</h2>
+            <p>
+                Sme Aima! Kolektív mladých a
+                ambicióznych ľudí z Gymnázia
+                Poštová 9, ktorý prišiel s víziou
+                pomáhať ľuďom riešiť bežné
+                problémy inovatívnym a
+                funkčným spôsobom. V Aime
+                nás spája tímový duch,
+                kreativita a túžba naučiť sa
+                niečo nové.
+            </p>
+        </div>
+        <div class="image-container">
+            <img src="https://testaima.my.canva.site/media/4f2e18099688604bd85b812a0c2435aa.jpg" alt="About Us" class="about-image" />
+        </div>
+    </div>
+</section>

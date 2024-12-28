@@ -97,9 +97,9 @@
     }
 </style>
 
-<div class="container" bind:this={container}>
+<section class="container" bind:this={container}>
     <div class="text">
         POČET ŽIEN, KTORÉ DENNE TRÁPI STRACH Z KRVAVÉHO OBLEČENIA
     </div>
     <div class="number">{count.toLocaleString()}</div>
-</div>
+</section>

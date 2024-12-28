@@ -7,6 +7,7 @@
     import Problem from "../Components/Problem.svelte";
     import AboutUs from "../Components/AboutUs.svelte";
     import WomanCounter from "../Components/WomanCounter.svelte";
+    import VideoTutorial from "../Components/VideoTutorial.svelte";
 
     import { onMount } from 'svelte';
 
@@ -104,6 +105,7 @@
     <ColoringText></ColoringText>
     <WomanCounter></WomanCounter>
     <Problem></Problem>
+    <VideoTutorial></VideoTutorial>
     <AboutUs></AboutUs>
 </main>
 <Footer></Footer>

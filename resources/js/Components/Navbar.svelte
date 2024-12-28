@@ -1,5 +1,6 @@
 <script>
     import logo from '/resources/assets/logo.png';
+
     let isMenuOpen = false;
     let navbarHeight = 85;
     let navbarPadding = "0.5rem 8rem";
@@ -16,6 +17,12 @@
 
 <style lang="scss">
     @use '../../scss/colors.scss' as *;
+    :root {
+        --navbar-height: 85px;
+    }
+    :global(main) {
+        margin-top: var(--navbar-height);
+    }
 
     .navbar-container {
         width: 100%;
@@ -26,8 +33,10 @@
         align-items: center;
         justify-content: space-between;
         box-sizing: border-box;
-        position: sticky;
+        position: fixed;
         top: 0;
+        left: 0;
+        right: 0;
         z-index: 1000;
         transition: height 0.5s ease, padding 0.5s ease;
     }
