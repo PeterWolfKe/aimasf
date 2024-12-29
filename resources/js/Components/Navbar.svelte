@@ -212,7 +212,7 @@
         <div class={`links ${isMenuOpen ? 'open' : ''}`}>
             <a href="#recensions" on:click={() => (isMenuOpen = false)}>Recensions</a>
             <a href="#footer" on:click={() => (isMenuOpen = false)}>Contact</a>
-            <a href="#eshop" on:click={() => (isMenuOpen = false)}>E-shop</a>
+            <a href="" on:click={() => (isMenuOpen = false)}>Kúpiť</a>
         </div>
     </nav>
 </div>

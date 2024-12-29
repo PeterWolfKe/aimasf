@@ -8,6 +8,7 @@
     import AboutUs from "../Components/AboutUs.svelte";
     import WomanCounter from "../Components/WomanCounter.svelte";
     import VideoTutorial from "../Components/VideoTutorial.svelte";
+    import BackgroundStart from "../Components/BackgroundStart.svelte";
 
     import { onMount } from 'svelte';
 
@@ -109,8 +110,7 @@
 <SplashScreen></SplashScreen>
 <Navbar></Navbar>
 <main class="app-container">
-    <p class="animated-text">This is a Aima</p>
-    <MovingPhotos></MovingPhotos>
+    <BackgroundStart></BackgroundStart>
     <ColoringText></ColoringText>
     <WomanCounter></WomanCounter>
     <Problem></Problem>
