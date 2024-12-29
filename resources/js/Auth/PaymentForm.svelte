@@ -6,8 +6,9 @@
 
     let stripe;
     let elements;
-    let cardNumber = '';
-    let cardElement;
+    let cardNumberElement;
+    let cardExpiryElement;
+    let cardCvcElement;
     let cardError = '';
     let isProcessing = false;
 
@@ -29,14 +30,60 @@
             image: 'https://via.placeholder.com/150',
             title: 'Product 1',
             description: 'This is a great product.',
-            price: 50
+            price: 6.49
         }
     ];
     onMount(async () => {
-        stripe = await loadStripe(stripePublicKey);
-        const elementsInstance = stripe.elements();
-        cardElement = elementsInstance.create('card');
-        cardElement.mount('#card-element');
+        stripe = await loadStripe(stripePublicKey); // Replace with your actual public key
+        elements = stripe.elements();
+
+        // Create and mount individual elements
+        cardNumberElement = elements.create('cardNumber', {
+            style: {
+                base: {
+                    fontSize: '16px',
+                    color: '#32325d',
+                    '::placeholder': {
+                        color: '#a0aec0',
+                    },
+                },
+            },
+        });
+        cardNumberElement.mount('#card-number-element');
+
+        cardExpiryElement = elements.create('cardExpiry', {
+            style: {
+                base: {
+                    fontSize: '16px',
+                    color: '#32325d',
+                    '::placeholder': {
+                        color: '#a0aec0',
+                    },
+                },
+            },
+        });
+        cardExpiryElement.mount('#card-expiry-element');
+
+        cardCvcElement = elements.create('cardCvc', {
+            style: {
+                base: {
+                    fontSize: '16px',
+                    color: '#32325d',
+                    '::placeholder': {
+                        color: '#a0aec0',
+                    },
+                },
+            },
+        });
+        cardCvcElement.mount('#card-cvc-element');
+
+        const handleCardErrors = (event) => {
+            cardError = event.error ? event.error.message : '';
+        };
+
+        cardNumberElement.on('change', handleCardErrors);
+        cardExpiryElement.on('change', handleCardErrors);
+        cardCvcElement.on('change', handleCardErrors);
     });
 
     let totalPrice = products.reduce((total, product) => total + product.price, 0);
@@ -45,15 +92,17 @@
         cardError = '';
         isProcessing = true;
 
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
         try {
-            // Step 1: Call your server to create a PaymentIntent
             const response = await fetch('/payment/process', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
                 },
                 body: JSON.stringify({
-                    amount: totalPrice,
+                    amount: totalPrice * 100,
                     userDetails,
                 }),
             });
@@ -65,22 +114,29 @@
                 return;
             }
 
-            // Step 2: Confirm the payment on the client
-            const { error: stripeError } = await stripe.confirmCardPayment(clientSecret, {
-                payment_method: {
-                    card: cardElement,
-                    billing_details: {
-                        name: `${userDetails.firstName} ${userDetails.lastName}`,
-                        email: userDetails.email,
-                        phone: userDetails.phone,
-                        address: {
-                            line1: userDetails.address,
-                            city: userDetails.city,
-                            postal_code: userDetails.postalCode,
-                            country: 'SK',
-                        },
+            const { paymentMethod, error: createError } = await stripe.createPaymentMethod({
+                type: 'card',
+                card: cardNumberElement,
+                billing_details: {
+                    name: `${userDetails.firstName} ${userDetails.lastName}`,
+                    email: userDetails.email,
+                    phone: userDetails.phone,
+                    address: {
+                        line1: userDetails.address,
+                        city: userDetails.city,
+                        postal_code: userDetails.postalCode,
+                        country: 'SK',
                     },
                 },
+            });
+
+            if (createError) {
+                cardError = createError.message;
+                return;
+            }
+
+            const { error: stripeError } = await stripe.confirmCardPayment(clientSecret, {
+                payment_method: paymentMethod.id,
             });
 
             if (stripeError) {
@@ -93,14 +149,6 @@
         } finally {
             isProcessing = false;
         }
-    };
-    const formatCardNumber = (value) => {
-        return value.replace(/\D/g, '')
-            .replace(/(.{4})(?=.)/g, '$1 ');
-    };
-
-    const handleCardNumberInput = (event) => {
-        cardNumber = formatCardNumber(event.target.value);
     };
 </script>
 
@@ -117,7 +165,7 @@
 
     .form-container {
         background-color: $background-color;
-        padding: 2rem 2rem 2rem 25rem;
+        padding: 2rem 2rem 2rem 10vw;
         box-sizing: border-box;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         width: 50%;
@@ -126,7 +174,7 @@
 
     .summary-container {
         background-color: $neutral-white;
-        padding: 2rem 25rem 2rem 2rem;
+        padding: 2rem 10vw 2rem 2rem;
         box-sizing: border-box;
         width: 50%;
         color: $text-color;
@@ -483,41 +531,20 @@
         <div class="payment-order">
             <div class="payment-wrapper">
                 <h2>Payment</h2>
-                <label for="card-number">Číslo karty</label>
-                <input
-                    type="text"
-                    id="card-number"
-                    class="input-field"
-                    placeholder="XXXX XXXX XXXX XXXX"
-                    on:input={handleCardNumberInput}
-                    bind:value={cardNumber}
-                    maxlength="19"
-                    required
-                />
 
-                <div class="input-group">
-                    <div>
-                        <label for="expiry-date">Dátum vypršania platnosti (MM / RR)</label>
-                        <input
-                            type="text"
-                            id="expiry-date"
-                            class="input-field"
-                            placeholder="MM / RR"
-                            required
-                        />
-                    </div>
-                    <div>
-                        <label for="cvc">Bezpečnostný kód</label>
-                        <input
-                            type="text"
-                            id="cvc"
-                            class="input-field"
-                            placeholder="CVC"
-                            required
-                        />
-                    </div>
-                </div>
+                <!-- Card Number -->
+                <label for="card-number-element">Card Number</label>
+                <div id="card-number-element" class="input-field"></div>
 
+                <!-- Expiry Date -->
+                <label for="card-expiry-element">Expiry Date</label>
+                <div id="card-expiry-element" class="input-field"></div>
+
+                <!-- CVC -->
+                <label for="card-cvc-element">CVC</label>
+                <div id="card-cvc-element" class="input-field"></div>
+
+                <!-- Error Display -->
                 {#if cardError}
                     <p class="error">{cardError}</p>
                 {/if}

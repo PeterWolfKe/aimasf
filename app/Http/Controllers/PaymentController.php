@@ -19,11 +19,10 @@ class PaymentController extends Controller
     public function processPayment(Request $request)
     {
         Stripe::setApiKey(config('stripe.secret_key'));
-
         try {
             $paymentIntent = PaymentIntent::create([
                 'amount' => $request->input('amount', 5000),
-                'currency' => 'usd',
+                'currency' => 'eur',
             ]);
 
             return response()->json(['clientSecret' => $paymentIntent->client_secret]);
