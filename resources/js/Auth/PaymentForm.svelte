@@ -22,6 +22,7 @@
         city: '',
         country: 'Slovensko',
         phone: '',
+        deliveryMethod: '',
     };
 
     // PRODUCTS
@@ -95,26 +96,7 @@
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
         try {
-            const response = await fetch('/payment/process', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken,
-                },
-                body: JSON.stringify({
-                    amount: totalPrice * 100,
-                    userDetails,
-                }),
-            });
-
-            const { clientSecret, error } = await response.json();
-
-            if (error) {
-                cardError = error;
-                return;
-            }
-
-            const { paymentMethod, error: createError } = await stripe.createPaymentMethod({
+            const {paymentMethod, error: createError} = await stripe.createPaymentMethod({
                 type: 'card',
                 card: cardNumberElement,
                 billing_details: {
@@ -129,21 +111,46 @@
                     },
                 },
             });
-
+            console.log(`PaymentMethod error: ${createError}`);
             if (createError) {
                 cardError = createError.message;
                 return;
             }
 
-            const { error: stripeError } = await stripe.confirmCardPayment(clientSecret, {
-                payment_method: paymentMethod.id,
+            const response = await fetch('/api/payment/process', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify({
+                    amount: totalPrice * 100,
+                    userDetails,
+                    paymentMethodId: paymentMethod.id,
+                }),
             });
+
+            const {clientSecret, error, success} = await response.json();
+
+            if (success) {
+                alert('Payment successful and data stored!');
+                return;
+            }
+            console.log(`CleintSecret error: ${error}`);
+            if (error) {
+                cardError = error;
+                return;
+            }
+
+            const {error: stripeError} = await stripe.confirmCardPayment(clientSecret);
 
             if (stripeError) {
                 cardError = stripeError.message;
             } else {
-                alert('Payment successful!');
+                alert('Payment successful and data stored!');
             }
+            console.log(`CardPayment error: ${stripe}`);
         } catch (error) {
             cardError = error.message;
         } finally {
@@ -522,7 +529,7 @@
         />
         <h2>Doprava</h2>
         <label for="deliveryMethod">Delivery Method</label>
-        <select id="deliveryMethod">
+        <select id="deliveryMethod" bind:value={userDetails.deliveryMethod}>
             <option value="standard">Standard</option>
             <option value="express">Express</option>
         </select>
