@@ -222,6 +222,6 @@
     </div>
 
     <div class="footer-bottom">
-        <p>© 2024, Aima</p>
+        <p>© 2024, Aima | Pre Aimu vyrobil Julo Klein</p>
     </div>
 </footer>
