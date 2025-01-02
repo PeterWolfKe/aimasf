@@ -11,6 +11,7 @@
     import BackgroundStart from "../Components/BackgroundStart.svelte";
 
     import { onMount } from 'svelte';
+    import ProductCard from "../Components/ProductCard.svelte";
 
     if ('scrollRestoration' in history) {
         history.scrollRestoration = 'manual';
@@ -115,6 +116,7 @@
     <WomanCounter></WomanCounter>
     <Problem></Problem>
     <VideoTutorial></VideoTutorial>
+    <ProductCard></ProductCard>
     <AboutUs></AboutUs>
 </main>
 <Footer></Footer>
