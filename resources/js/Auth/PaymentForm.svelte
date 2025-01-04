@@ -3,6 +3,8 @@
     import { onMount } from 'svelte';
 
     export let stripePublicKey;
+    export let sessionData;
+    console.log(sessionData);
 
     let stripe;
     let cardError = '';
@@ -21,6 +23,8 @@
         deliveryMethod: '',
     };
 
+    $:totalPrice = products.reduce((total, product) => total + product.price, 0);
+
     // PRODUCTS
     let products = [
         {
@@ -30,20 +34,26 @@
             price: 6.49
         }
     ];
+
     onMount(async () => {
         stripe = await loadStripe(stripePublicKey);
     });
 
-    let totalPrice = products.reduce((total, product) => total + product.price, 0);
 
     const handlePayment = async () => {
+        if (!userDetails.deliveryMethod) {
+            cardError = 'Please select a delivery method.';
+            isProcessing = false;
+            return;
+        }
+
         isProcessing = true;
         cardError = '';
 
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
         try {
-            const response = await fetch('/api/payment/process', {
+            const response = await fetch('/payment/process', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

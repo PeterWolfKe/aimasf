@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOrderTable extends Migration
+class CreateOrdersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -24,6 +24,7 @@ class CreateOrderTable extends Migration
             $table->string('city');
             $table->string('phone')->nullable();
             $table->string('delivery_method');
+            $table->json('products')->nullable();
             $table->string('unique_order_id')->unique();
             $table->boolean('verified');
             $table->timestamps();
@@ -37,6 +38,6 @@ class CreateOrderTable extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('contacts');
+        Schema::dropIfExists('orders');
     }
 }

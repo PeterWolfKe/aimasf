@@ -17,6 +17,7 @@ class Order extends Model
         'city',
         'phone',
         'delivery_method',
+        'products',
         'unique_order_id',
         'verified',
     ];

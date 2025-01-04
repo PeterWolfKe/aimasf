@@ -1,5 +1,6 @@
 <script>
-    let selectedSize = "10ml";
+    export let id = "00000001";
+    export let selectedSize = "10ml";
     let quantity = 1;
 
     function increaseQuantity() {
@@ -8,6 +9,29 @@
 
     function decreaseQuantity() {
         if (quantity > 1) quantity--;
+    }
+
+    async function buyNow() {
+        const payload = {
+            "id": id,
+            "selected_size": selectedSize,
+            "quantity": quantity
+        };
+
+        const response = await fetch('/buy', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+            },
+            body: JSON.stringify(payload),
+        });
+
+        if (response.ok) {
+            window.location.href = '/payment';
+        } else {
+            alert('Error processing your order.');
+        }
     }
 </script>
 
@@ -216,8 +240,7 @@
             </div>
         </div>
         <div class="actions">
-            <button>Pridať do košíka</button>
-            <button>Kúpiť</button>
+            <button on:click={buyNow}>Kúpiť</button>
         </div>
     </div>
 </div>
