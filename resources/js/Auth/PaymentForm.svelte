@@ -5,10 +5,6 @@
     export let stripePublicKey;
 
     let stripe;
-    let elements;
-    let cardNumberElement;
-    let cardExpiryElement;
-    let cardCvcElement;
     let cardError = '';
     let isProcessing = false;
 
@@ -35,88 +31,18 @@
         }
     ];
     onMount(async () => {
-        stripe = await loadStripe(stripePublicKey); // Replace with your actual public key
-        elements = stripe.elements();
-
-        // Create and mount individual elements
-        cardNumberElement = elements.create('cardNumber', {
-            style: {
-                base: {
-                    fontSize: '16px',
-                    color: '#32325d',
-                    '::placeholder': {
-                        color: '#a0aec0',
-                    },
-                },
-            },
-        });
-        cardNumberElement.mount('#card-number-element');
-
-        cardExpiryElement = elements.create('cardExpiry', {
-            style: {
-                base: {
-                    fontSize: '16px',
-                    color: '#32325d',
-                    '::placeholder': {
-                        color: '#a0aec0',
-                    },
-                },
-            },
-        });
-        cardExpiryElement.mount('#card-expiry-element');
-
-        cardCvcElement = elements.create('cardCvc', {
-            style: {
-                base: {
-                    fontSize: '16px',
-                    color: '#32325d',
-                    '::placeholder': {
-                        color: '#a0aec0',
-                    },
-                },
-            },
-        });
-        cardCvcElement.mount('#card-cvc-element');
-
-        const handleCardErrors = (event) => {
-            cardError = event.error ? event.error.message : '';
-        };
-
-        cardNumberElement.on('change', handleCardErrors);
-        cardExpiryElement.on('change', handleCardErrors);
-        cardCvcElement.on('change', handleCardErrors);
+        stripe = await loadStripe(stripePublicKey);
     });
 
     let totalPrice = products.reduce((total, product) => total + product.price, 0);
 
     const handlePayment = async () => {
-        cardError = '';
         isProcessing = true;
+        cardError = '';
 
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
         try {
-            const {paymentMethod, error: createError} = await stripe.createPaymentMethod({
-                type: 'card',
-                card: cardNumberElement,
-                billing_details: {
-                    name: `${userDetails.firstName} ${userDetails.lastName}`,
-                    email: userDetails.email,
-                    phone: userDetails.phone,
-                    address: {
-                        line1: userDetails.address,
-                        city: userDetails.city,
-                        postal_code: userDetails.postalCode,
-                        country: 'SK',
-                    },
-                },
-            });
-            console.log(`PaymentMethod error: ${createError}`);
-            if (createError) {
-                cardError = createError.message;
-                return;
-            }
-
             const response = await fetch('/api/payment/process', {
                 method: 'POST',
                 headers: {
@@ -127,30 +53,17 @@
                 body: JSON.stringify({
                     amount: totalPrice * 100,
                     userDetails,
-                    paymentMethodId: paymentMethod.id,
                 }),
             });
 
-            const {clientSecret, error, success} = await response.json();
+            const {checkoutUrl, error, success} = await response.json();
 
-            if (success) {
-                alert('Payment successful and data stored!');
-                return;
-            }
-            console.log(`CleintSecret error: ${error}`);
-            if (error) {
-                cardError = error;
+            if (!success || error) {
+                cardError = error || 'Failed to initiate payment.';
                 return;
             }
 
-            const {error: stripeError} = await stripe.confirmCardPayment(clientSecret);
-
-            if (stripeError) {
-                cardError = stripeError.message;
-            } else {
-                alert('Payment successful and data stored!');
-            }
-            console.log(`CardPayment error: ${stripe}`);
+            window.location.href = checkoutUrl;
         } catch (error) {
             cardError = error.message;
         } finally {
@@ -278,7 +191,6 @@
         font-size: 1rem;
         font-weight: bold;
         cursor: pointer;
-        margin-top: auto;
         transition: background-color 0.3s;
         width: 100%;
     }
@@ -393,14 +305,121 @@
         text-align: left;
     }
 
-    .payment-order{
+    .payment-order {
         display: flex;
         flex-direction: column;
+        margin-bottom: auto;
     }
 
     .payment-wrapper {
         display: flex;
         flex-direction: column;
+    }
+
+    .shipping-methods {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+        margin-top: 1rem;
+        box-sizing: border-box;
+    }
+
+    .shipping-option {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        padding: 0.8rem;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        background-color: #f9f9f9;
+        cursor: pointer;
+        transition: background-color 0.3s, border-color 0.3s;
+        box-sizing: border-box;
+        font-size: 0.9rem;
+    }
+
+    .shipping-option:hover {
+        border-color: #0077ff;
+    }
+
+    .shipping-option input {
+        appearance: none;
+        width: 0.5rem;
+        height: 0.5rem;
+        transform: scale(0.8);
+        margin-right: 0.8rem;
+        border: 2px solid #777;
+        border-radius: 50%;
+        background-color: #fff;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: background-color 0.3s, border-color 0.3s;
+    }
+
+    .shipping-option input:checked {
+        border-color: black;
+        background-color: black;
+    }
+
+    .shipping-option input:checked::before {
+        content: '';
+        width: 0.6rem;
+        height: 0.6rem;
+        background-color: white;
+        border-radius: 50%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: block;
+    }
+
+    .shipping-option label {
+        display: flex;
+        width: 100%;
+    }
+
+    .option-details {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .option-details .title {
+        font-weight: bold;
+        color: #333;
+    }
+
+    .option-details .address {
+        color: #777;
+        font-size: 0.85rem;
+    }
+
+    .price-wrapper{
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .price {
+        font-weight: bold;
+        color: #0077ff;
+        text-align: right;
+    }
+
+    .error-card {
+        background-color: #fce4e4;
+        color: #d8000c;
+        border: 1px solid #d8000c;
+        padding: 1rem;
+        border-radius: 4px;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+
+    .error-card p {
+        margin: 0;
     }
 
     @media (max-width: 768px) {
@@ -434,11 +453,12 @@
             width: 100%;
         }
 
-        .payment-order{
+        .payment-order {
             flex-direction: column-reverse;
+            margin-bottom: 0;
         }
 
-        .order-summary{
+        .order-summary {
             flex-direction: column-reverse;
         }
     }
@@ -528,39 +548,53 @@
             placeholder="Your phone number"
         />
         <h2>Doprava</h2>
-        <label for="deliveryMethod">Delivery Method</label>
-        <select id="deliveryMethod" bind:value={userDetails.deliveryMethod}>
-            <option value="standard">Standard</option>
-            <option value="express">Express</option>
-        </select>
+        <div class="shipping-methods">
+            <div class="shipping-option">
+                <input
+                    type="radio"
+                    id="reprocentrum"
+                    name="deliveryMethod"
+                    value="Odberné miesto - Reprocentrum"
+                    bind:group={userDetails.deliveryMethod}
+                />
+                <label for="reprocentrum">
+                    <div class="option-details">
+                        <div class="price-wrapper">
+                            <span class="title">Odberné miesto - Reprocentrum</span>
+                            <span class="price">ZADARMO</span>
+                        </div>
+                        <span class="address">Vodárenská 2, 040 01 Košice, Slovakia</span>
+                    </div>
+                </label>
+            </div>
+
+            <div class="shipping-option">
+                <input
+                    type="radio"
+                    id="datacomp"
+                    name="deliveryMethod"
+                    value="Odberné miesto - Datacomp showroom"
+                    bind:group={userDetails.deliveryMethod}
+                />
+                <label for="datacomp">
+                    <div class="option-details">
+                        <div class="price-wrapper">
+                            <span class="title">Odberné miesto - Datacomp showroom</span>
+                            <span class="price">ZADARMO</span>
+                        </div>
+                        <span class="address">Moldavská cesta 32, 040 11 Košice</span>
+                    </div>
+                </label>
+            </div>
+        </div>
     </div>
     <div class="summary-container">
         <div class="payment-order">
-            <div class="payment-wrapper">
-                <h2>Payment</h2>
-
-                <!-- Card Number -->
-                <label for="card-number-element">Card Number</label>
-                <div id="card-number-element" class="input-field"></div>
-
-                <!-- Expiry Date -->
-                <label for="card-expiry-element">Expiry Date</label>
-                <div id="card-expiry-element" class="input-field"></div>
-
-                <!-- CVC -->
-                <label for="card-cvc-element">CVC</label>
-                <div id="card-cvc-element" class="input-field"></div>
-
-                <!-- Error Display -->
-                {#if cardError}
-                    <p class="error">{cardError}</p>
-                {/if}
-            </div>
             <div class="order-summary">
                 <h2>Order Summary</h2>
                 {#each products as product}
                     <div class="summary-product">
-                        <img src={product.image} alt={product.title} />
+                        <img src={product.image} alt={product.title}/>
                         <div class="details">
                             <span class="title">{product.title}</span>
                             <span>{product.description}</span>
@@ -572,7 +606,11 @@
                 </div>
             </div>
         </div>
-
+        {#if cardError}
+            <div class="error-card">
+                <p>{cardError}</p>
+            </div>
+        {/if}
         <button class="submit-button" on:click={handlePayment} disabled={isProcessing}>
             {isProcessing ? 'Processing...' : 'Pay Now'}
         </button>

@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Contact;
+use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Stripe\Stripe;
-use Stripe\PaymentIntent;
+use Stripe\Checkout\Session;
+use Stripe\Webhook;
 
 class PaymentController extends Controller
 {
@@ -22,7 +25,6 @@ class PaymentController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'amount' => 'required|integer|min:1',
-            'paymentMethodId' => 'required|string',
             'userDetails' => 'required|array',
             'userDetails.email' => 'required|email',
             'userDetails.firstName' => 'required|string',
@@ -36,53 +38,85 @@ class PaymentController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $missingFields = array_keys($validator->errors()->toArray());
-            $errorSentence = "The following fields are required: " . implode(', ', $missingFields);
-
             return response()->json([
                 'success' => false,
-                'error' => $errorSentence,
-                'clientSecret' => null,
+                'error' => $validator->errors()->toArray(),
             ], 422);
         }
+
         Stripe::setApiKey(config('stripe.secret_key'));
 
         try {
-            // Create PaymentIntent
-            $paymentIntent = PaymentIntent::create([
-                'amount' => $request->input('amount', 5000),
-                'currency' => 'eur',
-                'payment_method' => $request->input('paymentMethodId'),
-                'confirm' => true,
-                'automatic_payment_methods' => [
-                    'enabled' => true,
-                    'allow_redirects' => 'never',
+            $data = $request->input('userDetails');
+
+            $uniqueOrderId = Str::uuid()->toString();
+
+            $order = Order::create([
+                'unique_order_id' => $uniqueOrderId,
+                'email' => $data['email'],
+                'first_name' => $data['firstName'],
+                'last_name' => $data['lastName'],
+                'address' => $data['address'],
+                'apartment_suite' => $data['apartment'],
+                'postal_code' => $data['postalCode'],
+                'city' => $data['city'],
+                'phone' => $data['phone'],
+                'delivery_method' => $data['deliveryMethod'],
+                'verified' => false,
+            ]);
+
+            $session = Session::create([
+                'payment_method_types' => ['card'],
+                'line_items' => [[
+                    'price_data' => [
+                        'currency' => 'eur',
+                        'product_data' => [
+                            'name' => 'Order #' . $uniqueOrderId,
+                        ],
+                        'unit_amount' => $request->input('amount'),
+                    ],
+                    'quantity' => 1,
+                ]],
+                'mode' => 'payment',
+                'success_url' => url('/api/payment/webhook?session_id={CHECKOUT_SESSION_ID}'),
+                'cancel_url' => url('/api/payment/webhook'),
+                'metadata' => [
+                    'unique_order_id' => $uniqueOrderId,
                 ],
             ]);
 
-            if ($paymentIntent->status === 'succeeded') {
-                $data = $request->input('userDetails');
-                Contact::create([
-                    'email' => $data['email'],
-                    'first_name' => $data['firstName'],
-                    'last_name' => $data['lastName'],
-                    'address' => $data['address'],
-                    'apartment_suite' => $data['apartment'],
-                    'postal_code' => $data['postalCode'],
-                    'city' => $data['city'],
-                    'phone' => $data['phone'],
-                    'delivery_method' => $data['deliveryMethod'],
-                    'verified' => true,
-                ]);
+            return response()->json([
+                'success' => true,
+                'checkoutUrl' => $session->url,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+    public function handleWebhook(Request $request)
+    {
+        $payload = @file_get_contents('php://input');
+        $sigHeader = $request->header('Stripe-Signature');
+        $endpointSecret = config('stripe.webhook_key');
+        try {
+            $event = Webhook::constructEvent($payload, $sigHeader, $endpointSecret);
 
-                return response()->json(['success' => 'Payment and data storage successful!']);
-            } elseif ($paymentIntent->status === 'requires_action') {
-                return response()->json(['clientSecret' => $paymentIntent->client_secret]);
+            if ($event->type === 'payment_intent.succeeded') {
+                $intent = $event->data->object;
+                $uniqueOrderId = $intent->metadata->unique_order_id;
+
+                $order = Order::where('unique_order_id', $uniqueOrderId)->first();
+                if ($order) {
+                    $order->update(['verified' => true]);
+                }
             }
 
-            return response()->json(['error' => 'Payment failed.']);
+            return response()->json(['status' => 'success']);
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json(['error' => $e->getMessage()], 400);
         }
     }
 }

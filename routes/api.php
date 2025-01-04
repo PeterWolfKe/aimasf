@@ -18,3 +18,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::post('/payment/process', [PaymentController::class, 'processPayment'])->name('payment.process');
+Route::post('/payment/webhook', [PaymentController::class, 'handleWebhook'])->name('payment.success');

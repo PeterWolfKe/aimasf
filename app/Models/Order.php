@@ -5,10 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Contact extends Model
+class Order extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'email',
         'first_name',
@@ -19,6 +17,7 @@ class Contact extends Model
         'city',
         'phone',
         'delivery_method',
+        'unique_order_id',
         'verified',
     ];
 }
