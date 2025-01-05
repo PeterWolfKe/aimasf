@@ -13,7 +13,6 @@
         image?: string
     }[] = [];
 
-
     let stripe: any;
     let cardError: string = '';
     let isProcessing: boolean = false;
@@ -165,8 +164,6 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         width: 50%;
         color: $text-color;
-        max-height: 80vh;
-        overflow-y: auto;
     }
 
     .summary-container {
@@ -405,6 +402,8 @@
         gap: 0.4rem;
         margin-top: 1rem;
         box-sizing: border-box;
+        max-height: 12vw;
+        overflow-y: auto;
     }
 
     .shipping-option {
