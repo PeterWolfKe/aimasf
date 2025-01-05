@@ -17,9 +17,28 @@ class PaymentController extends Controller
 {
     public function index()
     {
+        $sessionProducts = session('products', []);
+
+        $productsWithDetails = array_map(function ($sessionProduct) {
+            $product = Product::find($sessionProduct['id']);
+
+            if ($product) {
+                return [
+                    'id' => $product->id,
+                    'name' => $product->name,
+                    'description' => $product->description,
+                    'price' => $product->price,
+                    'size' => $sessionProduct['selected_size'],
+                    'quantity' => $sessionProduct['quantity'],
+                ];
+            }
+
+            return null;
+        }, $sessionProducts);
+        $productsWithDetails = array_filter($productsWithDetails);
         return Inertia::render('Payment', [
             'stripePublicKey' => config('stripe.public_key'),
-            'sessionData' => session('products', []),
+            'productsData' => $productsWithDetails,
         ]);
     }
     public function store(Request $request)
@@ -138,8 +157,8 @@ class PaymentController extends Controller
                 'payment_method_types' => ['card'],
                 'line_items' => $stripeLineItems,
                 'mode' => 'payment',
-                'success_url' => url('/api/payment/webhook?session_id={CHECKOUT_SESSION_ID}'),
-                'cancel_url' => url('/api/payment/webhook'),
+                'success_url' => url('{CHECKOUT_SESSION_ID}'),
+                'cancel_url' => url('{CHECKOUT_SESSION_ID}'),
                 'metadata' => [
                     'unique_order_id' => $uniqueOrderId,
                 ],
@@ -171,6 +190,7 @@ class PaymentController extends Controller
                 $order = Order::where('unique_order_id', $uniqueOrderId)->first();
                 if ($order) {
                     $order->update(['verified' => true]);
+                    session()->forget('products');
                 }
             }
 

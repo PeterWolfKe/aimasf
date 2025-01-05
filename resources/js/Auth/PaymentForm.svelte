@@ -1,16 +1,47 @@
-<script>
+<script lang="ts">
     import { loadStripe } from '@stripe/stripe-js';
     import { onMount } from 'svelte';
 
-    export let stripePublicKey;
-    export let sessionData;
-    console.log(sessionData);
+    export let stripePublicKey: string;
+    export let productsData: {
+        id: number,
+        name: string,
+        description: string,
+        price: number,
+        size: string,
+        quantity: number,
+        image?: string
+    }[] = [];
 
-    let stripe;
-    let cardError = '';
-    let isProcessing = false;
 
-    let userDetails = {
+    let stripe: any;
+    let cardError: string = '';
+    let isProcessing: boolean = false;
+    let totalPrice: number = 0;
+
+    $: {
+        totalPrice = (productsData || []).reduce((total, product) => total + product.price * product.quantity, 0);
+
+        const selectedShippingOption = shippingOptions.find(option => option.title === userDetails.deliveryMethod);
+        if (selectedShippingOption && selectedShippingOption.price !== 'ZADARMO') {
+            totalPrice += parseFloat(selectedShippingOption.price);
+        }
+    }
+
+    interface UserDetails {
+        [key: string]: string | undefined;
+        email: string;
+        firstName: string;
+        lastName: string;
+        address: string;
+        apartment?: string;
+        postalCode: string;
+        city: string;
+        phone?: string;
+        deliveryMethod: string;
+    }
+
+    const userDetails: UserDetails = {
         email: '',
         firstName: '',
         lastName: '',
@@ -18,31 +49,65 @@
         apartment: '',
         postalCode: '',
         city: '',
-        country: 'Slovensko',
         phone: '',
-        deliveryMethod: '',
+        deliveryMethod: ''
     };
 
-    $:totalPrice = products.reduce((total, product) => total + product.price, 0);
-
-    // PRODUCTS
-    let products = [
+    const shippingOptions = [
         {
-            image: 'https://via.placeholder.com/150',
-            title: 'Product 1',
-            description: 'This is a great product.',
-            price: 6.49
+            id: 'reprocentrum',
+            title: 'Odberné miesto - Reprocentrum',
+            price: 'ZADARMO',
+            address: 'Vodárenská 2, 040 01 Košice',
+        },
+        {
+            id: 'datacomp',
+            title: 'Odberné miesto - Datacomp showroom',
+            price: 'ZADARMO',
+            address: 'Moldavská cesta 32, 040 11 Košice',
+        },
+        {
+            id: 'rezke',
+            title: 'Odberné miesto - Rezke',
+            price: 'ZADARMO',
+            address: 'Mäsiarska 26, 040 01 Košice',
+        },
+        {
+            id: 'vlny',
+            title: 'Odberné miesto - Vlny',
+            price: 'ZADARMO',
+            address: 'Mäsiarska 13, 040 01 Košice',
+        },
+        {
+            id: 'interesante',
+            title: 'Odberné miesto - Interesante kvetinarstvo',
+            price: 'ZADARMO',
+            address: 'Hlavná 26, 040 01 Košice',
         }
     ];
+
+    const errorMessages: { [key: string]: string } = {
+        'email': 'Prosím, zadajte svoj e-mail.',
+        'firstName': 'Prosím, zadajte svoje meno.',
+        'lastName': 'Prosím, zadajte svoje priezvisko.',
+        'address': 'Prosím, zadajte svoju adresu.',
+        'postalCode': 'Prosím, zadajte svoje PSČ.',
+        'city': 'Prosím, zadajte svoje mesto.',
+        'deliveryMethod': 'Prosím, vyberte spôsob doručenia.'
+    };
 
     onMount(async () => {
         stripe = await loadStripe(stripePublicKey);
     });
 
-
     const handlePayment = async () => {
-        if (!userDetails.deliveryMethod) {
-            cardError = 'Please select a delivery method.';
+        let missingField = Object.keys(userDetails).find(field => {
+            return field !== 'apartment' && field !== 'phone' && !userDetails[field];
+        });
+
+        if (missingField) {
+            console.log(missingField);
+            cardError = errorMessages[missingField] || 'Chyba pri vyplňovaní formulára.';
             isProcessing = false;
             return;
         }
@@ -50,7 +115,7 @@
         isProcessing = true;
         cardError = '';
 
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        const csrfToken = (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement).content;
 
         try {
             const response = await fetch('/payment/process', {
@@ -66,7 +131,7 @@
                 }),
             });
 
-            const {checkoutUrl, error, success} = await response.json();
+            const { checkoutUrl, error, success } = await response.json();
 
             if (!success || error) {
                 cardError = error || 'Failed to initiate payment.';
@@ -74,7 +139,7 @@
             }
 
             window.location.href = checkoutUrl;
-        } catch (error) {
+        } catch (error: any) {
             cardError = error.message;
         } finally {
             isProcessing = false;
@@ -100,6 +165,8 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         width: 50%;
         color: $text-color;
+        max-height: 80vh;
+        overflow-y: auto;
     }
 
     .summary-container {
@@ -160,6 +227,12 @@
         border-radius: 4px;
         margin-bottom: 1rem;
         background-color: $neutral-white;
+    }
+
+    .form-contact-wrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
 
     .form-segment {
@@ -432,6 +505,30 @@
         margin: 0;
     }
 
+    .summary-product {
+        position: relative;
+    }
+
+    .image-container {
+        position: relative;
+    }
+
+    .image-container img {
+        display: block;
+        width: 100%;
+    }
+
+    .quantity {
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        padding: 3px 3px;
+        border-radius: 9999px;
+        font-size: 12px;
+    }
+
     @media (max-width: 768px) {
         .container {
             flex-direction: column;
@@ -451,12 +548,12 @@
         }
 
         .summary-product {
-            flex-direction: column;
             align-items: flex-start;
         }
 
         .summary-price {
             font-size: 1.2rem;
+            margin-bottom: 0.5rem;
         }
 
         .submit-button {
@@ -482,55 +579,55 @@
             type="email"
             id="email"
             bind:value={userDetails.email}
-            placeholder="Your email"
+            placeholder="Váš e-mail"
             required
         />
         <div style="display: flex; gap: 1rem;">
-            <div style="flex: 1;">
-                <label for="firstName">First Name</label>
+            <div class="form-contact-wrapper" style="flex: 1;">
+                <label for="firstName">Meno</label>
                 <input
                     type="text"
                     id="firstName"
                     bind:value={userDetails.firstName}
-                    placeholder="John"
+                    placeholder="Karol"
                     required
                 />
             </div>
-            <div style="flex: 1;">
-                <label for="lastName">Last Name</label>
+            <div class="form-contact-wrapper" style="flex: 1;">
+                <label for="lastName">Priezvisko</label>
                 <input
                     type="text"
                     id="lastName"
                     bind:value={userDetails.lastName}
-                    placeholder="Doe"
+                    placeholder="Dubovský"
                     required
                 />
             </div>
         </div>
         <div style="display: flex; gap: 1rem;">
-            <div style="flex: 1;">
-                <label for="address">Address</label>
+            <div class="form-contact-wrapper" style="flex: 1;">
+                <label for="address">Adresa</label>
                 <input
                     type="text"
                     id="address"
                     bind:value={userDetails.address}
-                    placeholder="123 Street Name"
+                    placeholder="Karpatská 14"
                     required
                 />
             </div>
-            <div style="flex: 1;">
-                <label for="apartment">Apartment, Suite, etc. (Optional)</label>
+            <div class="form-contact-wrapper" style="flex: 1;">
+                <label for="apartment">Byt, Apartmán, atď. (Voliteľné)</label>
                 <input
                     type="text"
                     id="apartment"
                     bind:value={userDetails.apartment}
-                    placeholder="Apartment or Suite"
+                    placeholder="Byt alebo Apartmán"
                 />
             </div>
         </div>
         <div style="display: flex; gap: 1rem;">
-            <div style="flex: 1;">
-                <label for="postalCode">Postal Code</label>
+            <div class="form-contact-wrapper" style="flex: 1;">
+                <label for="postalCode">PSČ</label>
                 <input
                     type="text"
                     id="postalCode"
@@ -539,81 +636,79 @@
                     required
                 />
             </div>
-            <div style="flex: 1;">
-                <label for="city">City</label>
+            <div class="form-contact-wrapper" style="flex: 1;">
+                <label for="city">Mesto</label>
                 <input
                     type="text"
                     id="city"
                     bind:value={userDetails.city}
-                    placeholder="City"
+                    placeholder="Prešov"
                     required
                 />
             </div>
         </div>
-        <label for="phone">Phone (Optional)</label>
+        <label for="phone">Telefón (Voliteľné)</label>
         <input
             type="text"
             id="phone"
             bind:value={userDetails.phone}
-            placeholder="Your phone number"
+            placeholder="Vaše telefónne číslo"
         />
         <h2>Doprava</h2>
         <div class="shipping-methods">
-            <div class="shipping-option">
-                <input
-                    type="radio"
-                    id="reprocentrum"
-                    name="deliveryMethod"
-                    value="Odberné miesto - Reprocentrum"
-                    bind:group={userDetails.deliveryMethod}
-                />
-                <label for="reprocentrum">
-                    <div class="option-details">
-                        <div class="price-wrapper">
-                            <span class="title">Odberné miesto - Reprocentrum</span>
-                            <span class="price">ZADARMO</span>
+            {#each shippingOptions as option}
+                <div class="shipping-option">
+                    <input
+                        type="radio"
+                        id={option.id}
+                        name="deliveryMethod"
+                        value={option.title}
+                        bind:group={userDetails.deliveryMethod}
+                    />
+                    <label for={option.id}>
+                        <div class="option-details">
+                            <div class="price-wrapper">
+                                <span class="title">{option.title}</span>
+                                <span class="price">{option.price}</span>
+                            </div>
+                            <span class="address">{option.address}</span>
                         </div>
-                        <span class="address">Vodárenská 2, 040 01 Košice, Slovakia</span>
-                    </div>
-                </label>
-            </div>
-
-            <div class="shipping-option">
-                <input
-                    type="radio"
-                    id="datacomp"
-                    name="deliveryMethod"
-                    value="Odberné miesto - Datacomp showroom"
-                    bind:group={userDetails.deliveryMethod}
-                />
-                <label for="datacomp">
-                    <div class="option-details">
-                        <div class="price-wrapper">
-                            <span class="title">Odberné miesto - Datacomp showroom</span>
-                            <span class="price">ZADARMO</span>
-                        </div>
-                        <span class="address">Moldavská cesta 32, 040 11 Košice</span>
-                    </div>
-                </label>
-            </div>
+                    </label>
+                </div>
+            {/each}
         </div>
     </div>
     <div class="summary-container">
         <div class="payment-order">
             <div class="order-summary">
-                <h2>Order Summary</h2>
-                {#each products as product}
-                    <div class="summary-product">
-                        <img src={product.image} alt={product.title}/>
-                        <div class="details">
-                            <span class="title">{product.title}</span>
-                            <span>{product.description}</span>
+                <h2>Zhrnutie objednávky</h2>
+                {#if productsData.length === 0}
+                    <p style="font-size: 2rem; font-weight: bold">Nemáte žiadne produkty na platbu.</p>
+                {:else}
+                    {#each productsData as product}
+                        <div class="summary-product">
+                            <div class="image-container">
+                                <img src={product.image || 'https://via.placeholder.com/150'} alt={product.name || 'No Image'} />
+                                <span class="quantity">{product.quantity}</span>
+                            </div>
+                            <div class="details">
+                                <span class="title">{product.name || 'Nemenovaný produkt'}</span>
+                                <span>€{(Number(product.price) || 0).toFixed(2)}</span>
+                            </div>
                         </div>
+                    {/each}
+                <div class="summary-product">
+                    <div class="details">
+                    <span>
+                        Cena dopravy:
+                        <span>{shippingOptions.find(option => option.title === userDetails.deliveryMethod)?.price || 'ZADARMO'}</span>
+                    </span>
                     </div>
-                {/each}
-                <div class="summary-price">
-                    Total: €{totalPrice}
                 </div>
+                <div class="summary-price">
+                    Celkom: {(Number(totalPrice) || 0).toFixed(2)} €
+                </div>
+                {/if}
             </div>
         </div>
         {#if cardError}
@@ -621,8 +716,8 @@
                 <p>{cardError}</p>
             </div>
         {/if}
-        <button class="submit-button" on:click={handlePayment} disabled={isProcessing}>
-            {isProcessing ? 'Processing...' : 'Pay Now'}
+        <button class="submit-button" on:click={handlePayment} disabled={isProcessing || productsData.length === 0}>
+            {isProcessing ? 'Spracuváva sa objednávka' : 'Zaplatiť'}
         </button>
     </div>
 </div>
