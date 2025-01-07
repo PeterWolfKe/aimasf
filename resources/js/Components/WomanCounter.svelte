@@ -51,7 +51,9 @@
     });
 </script>
 
-<style>
+<style lang="scss">
+    @use '../../scss/colors.scss' as *;
+
     :global(body) {
         margin: 0;
         font-family: Arial, sans-serif;
@@ -64,8 +66,8 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        background-color: #d6bbe8;
-        color: #20303a;
+        background-color: $secondary-purple;
+        color: $secondary-deep-blue;
         padding: 20px;
         box-sizing: border-box;
     }

@@ -47,7 +47,7 @@
         display: flex;
         flex-wrap: wrap;
         gap: 2rem;
-        background-color: $primary-mint;
+        background-color: $neutral-white;
         color: $text-color;
         box-sizing: border-box;
 

@@ -54,6 +54,7 @@
         display: flex;
         flex-direction: column;
         scroll-behavior: smooth;
+        background: white;
     }
     :global(#app) {
         height: 100%;
@@ -98,10 +99,10 @@
 <main class="app-container">
     <BackgroundStart></BackgroundStart>
     <ColoringText></ColoringText>
-    <WomanCounter></WomanCounter>
     <Problem></Problem>
-    <VideoTutorial></VideoTutorial>
+    <WomanCounter></WomanCounter>
     <ProductCard></ProductCard>
+    <VideoTutorial></VideoTutorial>
     <AboutUs></AboutUs>
 </main>
 <Footer></Footer>

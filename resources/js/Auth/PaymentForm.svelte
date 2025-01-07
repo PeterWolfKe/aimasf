@@ -567,6 +567,10 @@
         .order-summary {
             flex-direction: column-reverse;
         }
+
+        .shipping-methods {
+            max-height: none;
+        }
     }
 </style>
 

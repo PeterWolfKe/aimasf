@@ -164,6 +164,7 @@ class PaymentController extends Controller
                 ],
             ]);
 
+            session()->forget('products');
             return response()->json([
                 'success' => true,
                 'checkoutUrl' => $session->url,
@@ -190,7 +191,6 @@ class PaymentController extends Controller
                 $order = Order::where('unique_order_id', $uniqueOrderId)->first();
                 if ($order) {
                     $order->update(['verified' => true]);
-                    session()->forget('products');
                 }
             }
 

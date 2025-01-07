@@ -73,7 +73,7 @@
     .logo {
         font-size: 2rem;
         font-weight: bold;
-        color: $text-color;
+        color: $neutral-white;
         margin-left: 10px;
         transition: font-size 0.3s ease;
     }
@@ -110,8 +110,9 @@
     .links a {
         position: relative;
         text-decoration: none;
-        color: $text-color;
+        color: $neutral-white;
         font-family: 'Roboto', sans-serif;
+        font-size: large;
         font-weight: 500;
         padding: 10px 15px;
         box-sizing: border-box;
@@ -121,7 +122,6 @@
     }
 
     .links a:hover {
-        background: $secondary-purple;
         transform: scale(1.05);
         border-radius: 12px;
     }
