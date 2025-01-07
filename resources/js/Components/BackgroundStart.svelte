@@ -10,28 +10,26 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        overflow: hidden;
         background-color: #f0f0f0;
-        height: 800px; // Very large height for a prominent hero section
-        border-radius: 8px;
+        height: 800px;
     }
 
     .image {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        filter: grayscale(100%); // Fully black and white
+        filter: grayscale(100%);
     }
 
     .overlay {
         position: absolute;
         inset: 0;
-        background: rgba(0, 0, 0, 0.5); // Darker overlay for better contrast
+        background: rgba(0, 0, 0, 0.5);
     }
 
     .heading {
         position: absolute;
-        font-size: 6rem; // Huge font size for maximum impact
+        font-size: 6rem;
         font-weight: bold;
         color: $neutral-white;
         text-transform: uppercase;
@@ -41,21 +39,21 @@
 
     @media (max-width: 768px) {
         .heading {
-            font-size: 4rem; // Smaller size for tablets
+            font-size: 4rem;
         }
 
         .container {
-            height: 600px; // Adjusted height for medium screens
+            height: 600px;
         }
     }
 
     @media (max-width: 480px) {
         .heading {
-            font-size: 3rem; // Smaller size for mobile
+            font-size: 3rem;
         }
 
         .container {
-            height: 400px; // Adjusted height for small screens
+            height: 400px;
         }
     }
 </style>

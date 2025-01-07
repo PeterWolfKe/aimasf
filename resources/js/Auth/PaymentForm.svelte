@@ -691,7 +691,7 @@
                                 <span class="quantity">{product.quantity}</span>
                             </div>
                             <div class="details">
-                                <span class="title">{product.name || 'Nemenovaný produkt'}</span>
+                                <span class="title">{product.name || 'Nemenovaný produkt'} <span>{product.size}</span></span>
                                 <span>€{(Number(product.price) || 0).toFixed(2)}</span>
                             </div>
                         </div>

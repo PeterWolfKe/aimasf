@@ -1,4 +1,5 @@
 <script>
+    import product_image from '/resources/assets/product.jpg';
     export let id = "00000001";
     export let selectedSize = "10ml";
     let quantity = 1;
@@ -46,8 +47,9 @@
         display: flex;
         flex-wrap: wrap;
         gap: 2rem;
-        background-color: $neutral-white;
+        background-color: $primary-mint;
         color: $text-color;
+        box-sizing: border-box;
 
         .left {
             flex: 1 1 40%;
@@ -60,6 +62,7 @@
                 max-width: 300px;
                 margin-bottom: 1rem;
                 border-radius: 8px;
+                border: 1px solid red;
             }
 
             .thumbnails {
@@ -194,16 +197,107 @@
             }
         }
     }
+
+    // Add mobile-specific styles
+    @media (max-width: 768px) {
+        .product-card {
+            padding: 1rem;
+            gap: 1rem;
+
+            .left {
+                flex: 1 1 100%;
+
+                .main-image {
+                    max-width: 200px;
+                }
+
+                .thumbnails {
+                    gap: 0.5rem;
+
+                    img {
+                        width: 50px;
+                        height: 50px;
+                    }
+                }
+            }
+
+            .right {
+                flex: 1 1 100%;
+
+                h1 {
+                    font-size: 1.5rem;
+                    margin-bottom: 0.5rem;
+                }
+
+                .description {
+                    font-size: 0.875rem;
+                    margin-bottom: 1rem;
+                }
+
+                .price {
+                    font-size: 1.2rem;
+                    margin-bottom: 0.5rem;
+
+                    small {
+                        font-size: 0.75rem;
+                    }
+                }
+
+                .options {
+                    margin-bottom: 1rem;
+
+                    h3 {
+                        font-size: 1rem;
+                    }
+
+                    .size-buttons {
+                        gap: 0.5rem;
+
+                        button {
+                            padding: 0.25rem 0.5rem;
+                            font-size: 0.875rem;
+                        }
+                    }
+                }
+
+                .quantity {
+                    margin-bottom: 1rem;
+
+                    h3 {
+                        font-size: 1rem;
+                    }
+
+                    .quantity-control {
+                        gap: 0.5rem;
+
+                        button {
+                            font-size: 1rem;
+                            padding: 0.25rem 0.5rem;
+                        }
+
+                        span {
+                            font-size: 1rem;
+                        }
+                    }
+                }
+
+                .actions {
+                    gap: 0.5rem;
+
+                    button {
+                        padding: 0.5rem;
+                        font-size: 0.875rem;
+                    }
+                }
+            }
+        }
+    }
 </style>
+
 
 <div class="product-card">
     <div class="left">
-        <img class="main-image" src="product.jpg" alt="Main Product Image" />
-        <div class="thumbnails">
-            <img src="product-thumbnail1.jpg" alt="Thumbnail 1" />
-            <img src="product-thumbnail2.jpg" alt="Thumbnail 2" />
-            <img src="product-thumbnail3.jpg" alt="Thumbnail 3" />
-        </div>
+        <img class="main-image" src={product_image} alt="Main Product" />
     </div>
     <div class="right">
         <h1>Rýchly a účinný odstraňovač krvi</h1>
