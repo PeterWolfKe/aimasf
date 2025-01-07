@@ -294,7 +294,6 @@
     }
 </style>
 
-
 <div class="product-card">
     <div class="left">
         <img class="main-image" src={product_image} alt="Main Product" />

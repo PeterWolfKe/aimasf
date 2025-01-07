@@ -13,22 +13,7 @@
     import { onMount } from 'svelte';
     import ProductCard from "../Components/ProductCard.svelte";
 
-    if ('scrollRestoration' in history) {
-        history.scrollRestoration = 'manual';
-    }
-
     onMount(() => {
-        const storedScrollPosition = localStorage.getItem("pageScroll");
-        if (storedScrollPosition !== null) {
-            setTimeout(() => {
-                window.scrollTo({ top: Number(storedScrollPosition), left: 0, behavior: 'instant' });
-            });
-        }
-
-        window.addEventListener("beforeunload", () => {
-            localStorage.setItem("pageScroll", window.scrollY.toString());
-        });
-
         const observerBigAnimate = new IntersectionObserver(entries => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
