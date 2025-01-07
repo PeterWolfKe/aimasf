@@ -222,6 +222,6 @@
     </div>
 
     <div class="footer-bottom">
-        <p>© 2024, Aima | Pre Aimu vyrobil <span style="font-size: x-large">Julo Klein</span></p>
+        <p>© 2024, Aima | Pre Aimu vyrobil <span style="font-size: 15px">Julo Klein</span></p>
     </div>
 </footer>
