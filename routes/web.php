@@ -21,6 +21,9 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::post('/buy', [PaymentController::class, 'store'])->name('payment.store');
 Route::get('/payment', [PaymentController::class, 'index'])->name('payment.index');
 Route::post('/payment/process', [PaymentController::class, 'processPayment'])->name('payment.process');
+Route::post('/payment/webhook', [PaymentController::class, 'handleWebhook'])->name('payment.success');
+
+Route::get('/payment-success', [PaymentController::class, 'paymentSuccess']);
 
 Route::get('/login', function () {
     if (auth()->check() && auth()->user()->admin) {

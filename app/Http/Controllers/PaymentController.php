@@ -119,7 +119,37 @@ class PaymentController extends Controller
                 ];
             }, $products);
 
-            $order = Order::create([
+            $stripeLineItems = [];
+            foreach ($products as $index => $product) {
+                $dbProduct = Product::where('id', $product['id'])->first();
+                if ($dbProduct) {
+                    $stripeLineItems[] = [
+                        'price_data' => [
+                            'currency' => 'eur',
+                            'product_data' => [
+                                'name' => $dbProduct->name . ' (' . $product['selected_size'] . ')',
+                            ],
+                            'unit_amount' => 100,
+                        ],
+                        'quantity' => $product['quantity'],
+                    ];
+                } else {
+                    Log::warning('Product not found in database for ID:', ['id' => $product['id']]);
+                }
+            }
+
+            $session = Session::create([
+                'payment_method_types' => ['card'],
+                'line_items' => $stripeLineItems,
+                'mode' => 'payment',
+                'metadata' => [
+                    'unique_order_id' => $uniqueOrderId,
+                ],
+                'success_url' => url('/payment-success?session_id={CHECKOUT_SESSION_ID}'),
+                'cancel_url' => url('/payment-cancel'),
+            ]);
+
+            Order::create([
                 'unique_order_id' => $uniqueOrderId,
                 'email' => $data['email'],
                 'first_name' => $data['firstName'],
@@ -134,36 +164,6 @@ class PaymentController extends Controller
                 'verified' => false,
             ]);
 
-            $stripeLineItems = [];
-            foreach ($products as $index => $product) {
-                $dbProduct = Product::where('id', $product['id'])->first();
-                if ($dbProduct) {
-                    $stripeLineItems[] = [
-                        'price_data' => [
-                            'currency' => 'eur',
-                            'product_data' => [
-                                'name' => $dbProduct->name . ' (' . $product['selected_size'] . ')',
-                            ],
-                            'unit_amount' => $dbProduct->price * 100,
-                        ],
-                        'quantity' => $product['quantity'],
-                    ];
-                } else {
-                    Log::warning('Product not found in database for ID:', ['id' => $product['id']]);
-                }
-            }
-
-            $session = Session::create([
-                'payment_method_types' => ['card'],
-                'line_items' => $stripeLineItems,
-                'mode' => 'payment',
-                'success_url' => url('{CHECKOUT_SESSION_ID}'),
-                'cancel_url' => url('{CHECKOUT_SESSION_ID}'),
-                'metadata' => [
-                    'unique_order_id' => $uniqueOrderId,
-                ],
-            ]);
-
             session()->forget('products');
             return response()->json([
                 'success' => true,
@@ -176,27 +176,26 @@ class PaymentController extends Controller
             ], 500);
         }
     }
-    public function handleWebhook(Request $request)
+    public function paymentSuccess(Request $request)
     {
-        $payload = @file_get_contents('php://input');
-        $sigHeader = $request->header('Stripe-Signature');
-        $endpointSecret = config('stripe.webhook_key');
-        try {
-            $event = Webhook::constructEvent($payload, $sigHeader, $endpointSecret);
+        Stripe::setApiKey(config('stripe.secret_key'));
 
-            if ($event->type === 'payment_intent.succeeded') {
-                $intent = $event->data->object;
-                $uniqueOrderId = $intent->metadata->unique_order_id;
+        $sessionId = $request->query('session_id');
 
-                $order = Order::where('unique_order_id', $uniqueOrderId)->first();
-                if ($order) {
-                    $order->update(['verified' => true]);
-                }
-            }
+        $session = Session::retrieve($sessionId);
 
-            return response()->json(['status' => 'success']);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 400);
+        $uniqueOrderId = $session->metadata->unique_order_id;
+
+        $amount = $session->amount_total / 100;
+
+        $order = Order::where('unique_order_id', $uniqueOrderId)->first();
+        if ($order) {
+            $order->update(['verified' => true]);
         }
+
+        return Inertia::render('PaymentSuccess', [
+            'order' => $order,
+            'amount' => $amount
+        ]);
     }
 }
