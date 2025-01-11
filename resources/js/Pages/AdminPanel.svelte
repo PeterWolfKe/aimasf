@@ -1,22 +1,34 @@
 <script lang="ts">
     export let orders: Array<any> = [];
-    let offset: number = 0;
-    let perPage: number = 25;
+    console.log(orders);
+
+    let page: number = 0; // Default page
+    let perPage: number = 25; // Default items per page
 
     // Read URL parameters
     const urlParams = new URLSearchParams(window.location.search);
-    offset = parseInt(urlParams.get('page') || '0');
+    page = parseInt(urlParams.get('page') || '0');
     perPage = parseInt(urlParams.get('per_page') || String(perPage));
+
+    // Functions for handling pagination
+    const nextPage = () => {
+        window.location.search = `?page=${page + 1}&per_page=${perPage}`;
+    };
+
+    const prevPage = () => {
+        if (page > 0) {
+            window.location.search = `?page=${page - 1}&per_page=${perPage}`;
+        }
+    };
 
     const logout = async (): Promise<void> => {
         const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-
         if (!csrfToken) {
             console.error('CSRF token not found');
             return;
         }
 
-        const response: Response = await fetch('/logout', {
+        const response = await fetch('/logout', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -31,23 +43,17 @@
         }
     };
 
-    const nextPage = () => {
-        window.location.search = `?offset=${offset + perPage}&per_page=${perPage}`;
-    };
-
-    const prevPage = () => {
-        if (offset > 0) {
-            window.location.search = `?offset=${Math.max(0, offset - perPage)}&per_page=${perPage}`;
-        }
+    // Calculate total price for an order
+    const calculateTotalPrice = (products: Array<any>): number => {
+        return products.reduce((sum, product) => {
+            return sum + (product.price * product.quantity);
+        }, 0);
     };
 </script>
 
 <style lang="scss">
-    @use '../../scss/colors.scss' as *;
-
     main {
-        background-color: $background-color;
-        color: $text-color;
+        background-color: #f9f9f9;
         padding: 20px;
         font-family: Arial, sans-serif;
     }
@@ -55,50 +61,41 @@
     table {
         width: 100%;
         border-collapse: collapse;
-        margin-top: 20px;
-        background-color: $neutral-white;
+        margin: 20px 0;
     }
 
     th, td {
-        border: 1px solid $gray-white;
+        border: 1px solid #ddd;
         padding: 8px;
-    }
-
-    th {
-        background-color: $secondary-deep-blue;
-        color: $neutral-white;
         text-align: left;
     }
 
+    th {
+        background-color: #4CAF50;
+        color: white;
+    }
+
     tr:nth-child(even) {
-        background-color: $gray-white;
+        background-color: #f2f2f2;
     }
 
     tr:hover {
-        background-color: $secondary-purple;
-        color: $text-color;
+        background-color: #ddd;
     }
 
     button {
-        margin-bottom: 20px;
-        padding: 10px 20px;
-        background-color: $button-background;
-        color: $neutral-white;
+        margin: 5px;
+        padding: 10px 15px;
+        background-color: #4CAF50;
+        color: white;
         border: none;
-        border-radius: 4px;
         cursor: pointer;
-        font-size: 16px;
+        border-radius: 4px;
     }
 
-    button:hover {
-        background-color: $button-hover;
-        color: $secondary-dark-blue;
-    }
-
-    p {
-        margin-top: 20px;
-        font-size: 18px;
-        font-weight: bold;
+    button:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
     }
 
     .pagination {
@@ -109,7 +106,7 @@
 </style>
 
 <main>
-    <h1>Orders</h1>
+    <h1>Objednávky</h1>
     <button on:click={logout}>Logout</button>
 
     {#if orders.length > 0}
@@ -118,42 +115,60 @@
             <tr>
                 <th>ID</th>
                 <th>Email</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Address</th>
-                <th>Postal Code</th>
-                <th>City</th>
-                <th>Phone</th>
-                <th>Delivery Method</th>
-                <th>Products</th>
-                <th>Order ID</th>
-                <th>Verified</th>
-                <th>Created At</th>
+                <th>Krstné meno</th>
+                <th>Priezvisko</th>
+                <th>Adresa</th>
+                <th>PSČ</th>
+                <th>Mesto</th>
+                <th>Telefónne číslo</th>
+                <th>Metóda doručenia</th>
+                <th>ID produktu</th>
+                <th>Meno produktu</th>
+                <th>Veľkosť produktu</th>
+                <th>Počet produktov</th>
+                <th>Celková suma</th>
+                <th>Zaplatené</th>
+                <th>Objednávka vytvorená</th>
             </tr>
             </thead>
             <tbody>
             {#each orders as order}
-                <tr>
-                    <td>{order.id}</td>
-                    <td>{order.email}</td>
-                    <td>{order.first_name}</td>
-                    <td>{order.last_name}</td>
-                    <td>{order.address}</td>
-                    <td>{order.postal_code}</td>
-                    <td>{order.city}</td>
-                    <td>{order.phone}</td>
-                    <td>{order.delivery_method}</td>
-                    <td>{JSON.stringify(order.products)}</td>
-                    <td>{order.unique_order_id}</td>
-                    <td>{order.verified ? "Yes" : "No"}</td>
-                    <td>{new Date(order.created_at).toLocaleDateString()}</td>
-                </tr>
+                {#each order.products as product, index (index === 0 ? true : null)}
+                    <tr>
+                        {#if index === 0}
+                            <td rowspan={order.products.length}>{order.id}</td>
+                            <td rowspan={order.products.length}>{order.email}</td>
+                            <td rowspan={order.products.length}>{order.first_name}</td>
+                            <td rowspan={order.products.length}>{order.last_name}</td>
+                            <td rowspan={order.products.length}>{order.address}</td>
+                            <td rowspan={order.products.length}>{order.postal_code}</td>
+                            <td rowspan={order.products.length}>{order.city}</td>
+                            <td rowspan={order.products.length}>{order.phone}</td>
+                            <td rowspan={order.products.length}>{order.delivery_method}</td>
+                        {/if}
+                        <td>{product.product_id}</td>
+                        <td>{product.name}</td>
+                        <td>{product.size}</td>
+                        <td>{product.quantity}</td>
+                        {#if index === 0}
+                            <td rowspan={order.products.length}>
+                                {calculateTotalPrice(order.products).toFixed(2)}€
+                            </td>
+                            <td rowspan={order.products.length}>
+                                {order.paid ? "Áno" : "Nie"}
+                            </td>
+                            <td rowspan={order.products.length}>
+                                {new Date(order.created_at).toLocaleDateString()}
+                            </td>
+                        {/if}
+                    </tr>
+                {/each}
             {/each}
             </tbody>
         </table>
 
         <div class="pagination">
-            <button on:click={prevPage} disabled={offset === 0}>Previous</button>
+            <button on:click={prevPage} disabled={page === 0}>Previous</button>
             <button on:click={nextPage}>Next</button>
         </div>
     {:else}

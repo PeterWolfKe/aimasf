@@ -1,5 +1,12 @@
 <script lang="ts">
     import start_button from '/resources/assets/start_button.png';
+
+    let isVideoPlaying = false;
+    const videoUrl = 'https://videos.pexels.com/video-files/6548176/6548176-hd_1920_1080_24fps.mp4';
+
+    const playVideo = () => {
+        isVideoPlaying = true;
+    };
 </script>
 
 <style lang="scss">
@@ -43,6 +50,7 @@
         width: 100%;
         height: auto;
         border-radius: 8px;
+        display: block;
     }
 
     .button {
@@ -67,6 +75,13 @@
         }
     }
 
+    .video {
+        width: 100%;
+        max-width: 1000px;
+        border-radius: 8px;
+        display: block;
+    }
+
     @media (max-width: 768px) {
         .title {
             font-size: 2rem;
@@ -89,9 +104,16 @@
 <section id="VideoTutorial">
     <h2 class="title">Videotutoriál na použitie produktu</h2>
     <div class="image-container">
-        <img class="image" src="https://testaima.my.canva.site/media/a1536b55f6bfa3582cd44bd9e41fe4c2.jpg" alt="">
-        <button class="button">
-            <img src={start_button} alt="Start Button">
-        </button>
+        {#if !isVideoPlaying}
+            <img class="image" src="https://testaima.my.canva.site/media/a1536b55f6bfa3582cd44bd9e41fe4c2.jpg" alt="">
+            <button class="button" on:click={playVideo}>
+                <img src={start_button} alt="Start Button">
+            </button>
+        {:else}
+            <video class="video" controls autoplay>
+                <source src={videoUrl} type="video/mp4" />
+                Your browser does not support the video tag.
+            </video>
+        {/if}
     </div>
 </section>

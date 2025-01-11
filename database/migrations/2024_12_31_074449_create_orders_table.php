@@ -26,7 +26,7 @@ class CreateOrdersTable extends Migration
             $table->string('delivery_method');
             $table->json('products')->nullable();
             $table->string('unique_order_id')->unique();
-            $table->boolean('verified');
+            $table->boolean('paid');
             $table->timestamps();
         });
     }
