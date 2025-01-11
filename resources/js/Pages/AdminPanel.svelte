@@ -1,5 +1,12 @@
 <script lang="ts">
     export let orders: Array<any> = [];
+    let offset: number = 0;
+    let perPage: number = 25;
+
+    // Read URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    offset = parseInt(urlParams.get('page') || '0');
+    perPage = parseInt(urlParams.get('per_page') || String(perPage));
 
     const logout = async (): Promise<void> => {
         const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
@@ -21,6 +28,16 @@
             window.location.href = '/login';
         } else {
             console.error('Logout failed', response);
+        }
+    };
+
+    const nextPage = () => {
+        window.location.search = `?offset=${offset + perPage}&per_page=${perPage}`;
+    };
+
+    const prevPage = () => {
+        if (offset > 0) {
+            window.location.search = `?offset=${Math.max(0, offset - perPage)}&per_page=${perPage}`;
         }
     };
 </script>
@@ -83,6 +100,12 @@
         font-size: 18px;
         font-weight: bold;
     }
+
+    .pagination {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
 </style>
 
 <main>
@@ -128,6 +151,11 @@
             {/each}
             </tbody>
         </table>
+
+        <div class="pagination">
+            <button on:click={prevPage} disabled={offset === 0}>Previous</button>
+            <button on:click={nextPage}>Next</button>
+        </div>
     {:else}
         <p>No orders found.</p>
     {/if}

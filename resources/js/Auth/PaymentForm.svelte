@@ -158,7 +158,7 @@
     }
 
     .form-container {
-        background-color: $background-color;
+        background-color: $secondary-purple;
         padding: 2rem 2rem 2rem 10vw;
         box-sizing: border-box;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

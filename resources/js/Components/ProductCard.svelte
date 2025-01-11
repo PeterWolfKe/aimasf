@@ -97,7 +97,7 @@
             }
 
             .description {
-                font-size: 1rem;
+                font-size: 1.5rem;
                 color: $dark-gray;
                 margin-bottom: 2rem;
             }
@@ -183,7 +183,7 @@
                     flex: 1;
                     padding: 1rem;
                     font-size: 1rem;
-                    background-color: $secondary-purple;
+                    background-color: $primary-blue;
                     color: $neutral-white;
                     border: none;
                     border-radius: 4px;
@@ -307,7 +307,7 @@
             Cena Od 3,50€
             <small>Vrátane dane.</small>
         </div>
-        <div class="options">
+        <!--<div class="options">
             <h3>Vyberte si veľkosť</h3>
             <div class="size-buttons">
                 <button
@@ -323,7 +323,7 @@
                     3ml
                 </button>
             </div>
-        </div>
+        </div>-->
         <div class="quantity">
             <h3>Množstvo</h3>
             <div class="quantity-control">
