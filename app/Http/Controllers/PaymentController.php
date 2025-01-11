@@ -161,7 +161,7 @@ class PaymentController extends Controller
                 'phone' => $data['phone'],
                 'delivery_method' => $data['deliveryMethod'],
                 'products' => json_encode($transformedProducts),
-                'verified' => false,
+                'paid' => false,
             ]);
 
             session()->forget('products');
@@ -190,7 +190,7 @@ class PaymentController extends Controller
 
         $order = Order::where('unique_order_id', $uniqueOrderId)->first();
         if ($order) {
-            $order->update(['verified' => true]);
+            $order->update(['paid' => true]);
         }
 
         return Inertia::render('PaymentSuccess', [

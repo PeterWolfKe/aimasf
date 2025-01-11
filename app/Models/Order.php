@@ -20,6 +20,6 @@ class Order extends Model
         'delivery_method',
         'products',
         'unique_order_id',
-        'verified',
+        'paid',
     ];
 }

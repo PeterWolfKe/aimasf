@@ -24,7 +24,7 @@ class OrderFactory extends Factory
                 ['product_id' => "00000001", 'quantity' => $this->faker->numberBetween(1, 5)],
             ]),
             'unique_order_id' => Str::uuid(),
-            'verified' => $this->faker->boolean(),
+            'paid' => $this->faker->boolean(),
         ];
     }
 }

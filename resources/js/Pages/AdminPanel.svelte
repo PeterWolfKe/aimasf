@@ -145,7 +145,7 @@
                     <td>{order.delivery_method}</td>
                     <td>{JSON.stringify(order.products)}</td>
                     <td>{order.unique_order_id}</td>
-                    <td>{order.verified ? "Yes" : "No"}</td>
+                    <td>{order.paid ? "Yes" : "No"}</td>
                     <td>{new Date(order.created_at).toLocaleDateString()}</td>
                 </tr>
             {/each}
