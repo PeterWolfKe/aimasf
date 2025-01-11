@@ -14,7 +14,7 @@ class CreateProductsTable extends Migration
     public function up()
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->string('id', 8)->unique();
+            $table->string('id', 8)->primary();
             $table->string('name');
             $table->text('description')->nullable();
             $table->decimal('price', 10, 2); // Price with 2 decimal points (e.g., 12345.67)

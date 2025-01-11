@@ -129,7 +129,7 @@ class PaymentController extends Controller
                             'product_data' => [
                                 'name' => $dbProduct->name . ' (' . $product['selected_size'] . ')',
                             ],
-                            'unit_amount' => 100,
+                            'unit_amount' => $dbProduct->price * 100,
                         ],
                         'quantity' => $product['quantity'],
                     ];

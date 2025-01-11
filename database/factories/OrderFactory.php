@@ -21,7 +21,6 @@ class OrderFactory extends Factory
             'delivery_method' => $this->faker->randomElement(['standard', 'express']),
             'products' => json_encode([
                 ['product_id' => "00000001", 'quantity' => $this->faker->numberBetween(1, 5)],
-                ['product_id' => "00000001", 'quantity' => $this->faker->numberBetween(1, 5)],
             ]),
             'unique_order_id' => Str::uuid(),
             'paid' => $this->faker->boolean(),
