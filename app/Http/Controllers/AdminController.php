@@ -21,9 +21,9 @@ class AdminController extends Controller
             $orderProducts = json_decode($order->products, true);
 
             $productsWithDetails = collect($orderProducts)->map(function ($item) {
-                $product = Product::find($item['product_id']);
+                $product = Product::find($item['id']);
                 return [
-                    'product_id' => $item['product_id'],
+                    'product_id' => $item['id'],
                     'quantity' => $item['quantity'],
                     'name' => $product->name ?? 'Unknown Product',
                     'size' => $product->size ?? null,
