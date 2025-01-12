@@ -26,7 +26,9 @@ class CreateOrdersTable extends Migration
             $table->string('delivery_method');
             $table->json('products')->nullable();
             $table->string('unique_order_id')->unique();
-            $table->boolean('paid');
+            $table->boolean('paid')->default(false);
+            $table->boolean('mail_sended')->default(false);
+            $table->boolean('sended')->default(false);
             $table->timestamps();
         });
     }

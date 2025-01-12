@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\OrderSuccessMail;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
@@ -191,6 +193,29 @@ class PaymentController extends Controller
         $order = Order::where('unique_order_id', $uniqueOrderId)->first();
         if ($order) {
             $order->update(['paid' => true]);
+            if (!$order->mail_sended) {
+                $order->mail_sended = true;
+                $order->save();
+
+                $products = array_map(function ($item) {
+                    $product = Product::find($item['id']);
+                    return [
+                        'name' => $product->name,
+                        'quantity' => $item['quantity'],
+                        'size' => $product->size
+                    ];
+                }, json_decode($order->products, true));
+
+                $details = [
+                    'first_name' => $order->first_name,
+                    'last_name' => $order->last_name,
+                    'delivery_method' => $order->delivery_method,
+                    'unique_order_id' => $order->unique_order_id,
+                    'products' => $products,
+                ];
+
+                Mail::to($order->email)->send(new OrderSuccessMail($details));
+            }
         }
 
         return Inertia::render('PaymentSuccess', [
