@@ -202,9 +202,14 @@ class PaymentController extends Controller
                     return [
                         'name' => $product->name,
                         'quantity' => $item['quantity'],
-                        'size' => $product->size
+                        'size' => $product->size,
+                        'price' => $product->price
                     ];
                 }, json_decode($order->products, true));
+
+                $totalPrice = array_reduce($products, function ($carry, $product) {
+                    return $carry + ($product['price'] * $product['quantity']);
+                }, 0);
 
                 $details = [
                     'first_name' => $order->first_name,
@@ -212,6 +217,7 @@ class PaymentController extends Controller
                     'delivery_method' => $order->delivery_method,
                     'unique_order_id' => $order->unique_order_id,
                     'products' => $products,
+                    'total_price' => $totalPrice, // Add total price
                 ];
 
                 Mail::to($order->email)->send(new OrderSuccessMail($details));

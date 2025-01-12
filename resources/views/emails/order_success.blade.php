@@ -74,6 +74,10 @@
                     <th>Spôsob doručenia:</th>
                     <td>{{ ucfirst($details['delivery_method']) }}</td>
                 </tr>
+                <tr>
+                    <th>Celková cena:</th>
+                    <td>{{ number_format($details['total_price'], 2) }} EUR</td>
+                </tr>
             </table>
         </div>
 
