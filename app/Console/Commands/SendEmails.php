@@ -36,9 +36,15 @@ class SendEmails extends Command
             return [
                 'name' => $product->name,
                 'quantity' => $item['quantity'],
-                'size' => $product->size
+                'size' => $product->size,
+                'price' => $product->price
             ];
-        }, $order['products']);
+        }, $order['products']); // Corrected to access $order as an array
+
+        // Calculate the total price of all products
+        $totalPrice = array_reduce($products, function ($carry, $product) {
+            return $carry + ($product['price'] * $product['quantity']);
+        }, 0);
 
         $details = [
             'first_name' => $order['first_name'],
@@ -46,9 +52,11 @@ class SendEmails extends Command
             'delivery_method' => $order['delivery_method'],
             'unique_order_id' => $order['unique_order_id'],
             'products' => $products,
+            'total_price' => $totalPrice,
         ];
 
-        Mail::to('julkoklein@gmail.com')->send(new OrderSuccessMail($details));
+        // Send the email to the specified address
+        Mail::to('info@12volt.sk')->send(new OrderSuccessMail($details));
 
         $this->info('Email sent successfully!');
     }

@@ -98,9 +98,7 @@
 <Navbar></Navbar>
 <main class="app-container">
     <BackgroundStart></BackgroundStart>
-    <ColoringText></ColoringText>
     <Problem></Problem>
-    <WomanCounter></WomanCounter>
     <ProductCard></ProductCard>
     <VideoTutorial></VideoTutorial>
     <AboutUs></AboutUs>

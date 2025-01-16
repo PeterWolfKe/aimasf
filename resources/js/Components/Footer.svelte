@@ -198,7 +198,6 @@
         <div class="column">
             <h3>Dodatočné info</h3>
             <div class="links">
-                <a href="#">Kontaktujte nás</a>
                 <a href="#">Obchodné podmienky</a>
                 <a href="#">Ochrana osobných údajov</a>
             </div>

@@ -60,7 +60,7 @@
             address: 'Vodárenská 2, 040 01 Košice',
         },
         {
-            id: 'datacomp',
+            id: 'datacomp-ke',
             title: 'Odberné miesto - Datacomp showroom',
             price: 'ZADARMO',
             address: 'Moldavská cesta 32, 040 11 Košice',
@@ -82,6 +82,18 @@
             title: 'Odberné miesto - Interesante kvetinarstvo',
             price: 'ZADARMO',
             address: 'Hlavná 26, 040 01 Košice',
+        },
+        {
+            id: 'datacomp-ba',
+            title: 'Odberné miesto - Datacomp showroom',
+            price: 'ZADARMO',
+            address: 'Jarabinková 8G, 821 09 Bratislava'
+        },
+        {
+            id: 'datacomp-po',
+            title: 'Odberné miesto - Datacomp OC MAX',
+            price: 'ZADARMO',
+            address: 'Vihorlatská 2A, 080 01 Prešov'
         }
     ];
 
