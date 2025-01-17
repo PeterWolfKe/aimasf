@@ -6,6 +6,7 @@
     // Props
     export let stripePublicKey;
     export let productsData;
+    export let shippingOptions;
 </script>
 
 <style>
@@ -56,6 +57,6 @@
 
 <Navbar></Navbar>
 <main class="app-container">
-    <PaymentForm stripePublicKey={stripePublicKey} productsData={productsData}/>
+    <PaymentForm stripePublicKey={stripePublicKey} productsData={productsData} shippingOptions={shippingOptions}/>
 </main>
 <Footer></Footer>

@@ -19,7 +19,6 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::post('/subscribe', [EmailSubscriptionController::class, 'subscribe'])
     ->middleware('throttle:5,1')
@@ -27,6 +26,11 @@ Route::post('/subscribe', [EmailSubscriptionController::class, 'subscribe'])
 Route::get('/subscribe/confirm/{token}', [EmailSubscriptionController::class, 'confirm'])
     ->middleware('throttle:10,1')
     ->name('email.confirm');
+
+Route::middleware(['no-cache'])->group(function () {
+    Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::get('/payment', [PaymentController::class, 'index']);
+});
 
 
 Route::get('/terms-and-conditions', function () {
@@ -37,7 +41,6 @@ Route::get('/protection-of-personal-information', function () {
 });
 
 Route::post('/buy', [PaymentController::class, 'store'])->name('payment.store');
-Route::get('/payment', [PaymentController::class, 'index'])->name('payment.index');
 Route::post('/payment/process', [PaymentController::class, 'processPayment'])->name('payment.process');
 Route::post('/payment/webhook', [PaymentController::class, 'handleWebhook'])->name('payment.success');
 

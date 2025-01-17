@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\OrderSuccessMail;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\ShippingOptions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -17,8 +18,9 @@ use Stripe\Webhook;
 
 class PaymentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $shippingOptions = ShippingOptions::all();
         $sessionProducts = session('products', []);
 
         $productsWithDetails = array_map(function ($sessionProduct) {
@@ -38,9 +40,17 @@ class PaymentController extends Controller
             return null;
         }, $sessionProducts);
         $productsWithDetails = array_filter($productsWithDetails);
+
         return Inertia::render('Payment', [
             'stripePublicKey' => config('stripe.public_key'),
             'productsData' => $productsWithDetails,
+            'shippingOptions' => $shippingOptions,
+        ])
+        ->toResponse($request)
+        ->withHeaders([
+            'Cache-Control' => 'no-cache, no-store, must-revalidate',
+            'Pragma' => 'no-cache',
+            'Expires' => '0',
         ]);
     }
     public function store(Request $request)
@@ -95,7 +105,7 @@ class PaymentController extends Controller
             'userDetails.postalCode' => 'required|string',
             'userDetails.city' => 'required|string',
             'userDetails.phone' => 'nullable|string',
-            'userDetails.deliveryMethod' => 'required|string',
+            'userDetails.deliveryMethod' => 'required|string|exists:shipping_options,id',
         ]);
 
         if ($validator->fails()) {
@@ -108,6 +118,8 @@ class PaymentController extends Controller
         Stripe::setApiKey(config('stripe.secret_key'));
 
         try {
+            $shippingOption = ShippingOptions::where('id', $request->input('userDetails.deliveryMethod'))->first();
+
             $data = $request->input('userDetails');
             $products = session('products', []);
 
@@ -139,6 +151,16 @@ class PaymentController extends Controller
                     Log::warning('Product not found in database for ID:', ['id' => $product['id']]);
                 }
             }
+            $stripeLineItems[] = [
+                'price_data' => [
+                    'currency' => 'eur',
+                    'product_data' => [
+                        'name' => 'Doprava: ' . $shippingOption->title,
+                    ],
+                    'unit_amount' => $shippingOption->price * 100,
+                ],
+                'quantity' => 1,
+            ];
 
             $session = Session::create([
                 'payment_method_types' => ['card'],

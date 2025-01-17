@@ -17,16 +17,28 @@
     let cardError: string = '';
     let isProcessing: boolean = false;
     let totalPrice: number = 0;
+    let shippingPrice: string;
+    let shippingPriceDisplay: string;
+
+    interface ShippingOption {
+        id: string;
+        title: string;
+        price: string;
+        address: string;
+    }
+    export let shippingOptions: ShippingOption[];
 
     $: {
         totalPrice = (productsData || []).reduce((total, product) => total + product.price * product.quantity, 0);
-
-        const selectedShippingOption = shippingOptions.find(option => option.title === userDetails.deliveryMethod);
-        if (selectedShippingOption && selectedShippingOption.price !== 'ZADARMO') {
+        const selectedShippingOption = shippingOptions.find(option => option.id === userDetails.deliveryMethod);
+        if (selectedShippingOption && selectedShippingOption.price !== '0') {
             totalPrice += parseFloat(selectedShippingOption.price);
         }
     }
-
+    $: {
+        shippingPrice = shippingOptions.find(option => option.id === userDetails.deliveryMethod)?.price ?? '0';
+        shippingPriceDisplay = shippingPrice === '0' ? 'ZADARMO' : `${shippingPrice}€`;
+    }
     interface UserDetails {
         [key: string]: string | undefined;
         email: string;
@@ -51,52 +63,6 @@
         phone: '',
         deliveryMethod: ''
     };
-
-    const shippingOptions = [
-        {
-            id: 'reprocentrum',
-            title: 'Odberné miesto - Reprocentrum',
-            price: 'ZADARMO',
-            address: 'Vodárenská 2, 040 01 Košice',
-        },
-        {
-            id: 'datacomp-ke',
-            title: 'Odberné miesto - Datacomp showroom',
-            price: 'ZADARMO',
-            address: 'Moldavská cesta 32, 040 11 Košice',
-        },
-        {
-            id: 'rezke',
-            title: 'Odberné miesto - Rezke',
-            price: 'ZADARMO',
-            address: 'Mäsiarska 26, 040 01 Košice',
-        },
-        {
-            id: 'vlny',
-            title: 'Odberné miesto - Vlny',
-            price: 'ZADARMO',
-            address: 'Mäsiarska 13, 040 01 Košice',
-        },
-        {
-            id: 'interesante',
-            title: 'Odberné miesto - Interesante kvetinarstvo',
-            price: 'ZADARMO',
-            address: 'Hlavná 26, 040 01 Košice',
-        },
-        {
-            id: 'datacomp-ba',
-            title: 'Odberné miesto - Datacomp showroom',
-            price: 'ZADARMO',
-            address: 'Jarabinková 8G, 821 09 Bratislava'
-        },
-        {
-            id: 'datacomp-po',
-            title: 'Odberné miesto - Datacomp OC MAX',
-            price: 'ZADARMO',
-            address: 'Vihorlatská 2A, 080 01 Prešov'
-        }
-    ];
-
     const errorMessages: { [key: string]: string } = {
         'email': 'Prosím, zadajte svoj e-mail.',
         'firstName': 'Prosím, zadajte svoje meno.',
@@ -106,6 +72,7 @@
         'city': 'Prosím, zadajte svoje mesto.',
         'deliveryMethod': 'Prosím, vyberte spôsob doručenia.'
     };
+
 
     onMount(async () => {
         stripe = await loadStripe(stripePublicKey);
@@ -426,10 +393,17 @@
         border: 1px solid #ddd;
         border-radius: 6px;
         background-color: #f9f9f9;
-        cursor: pointer;
         transition: background-color 0.3s, border-color 0.3s;
         box-sizing: border-box;
         font-size: 0.9rem;
+    }
+
+    .shipping-option * {
+        cursor: pointer;
+    }
+
+    .shipping-methods > label {
+        margin: 0;
     }
 
     .shipping-option:hover {
@@ -672,24 +646,32 @@
         <h2>Doprava</h2>
         <div class="shipping-methods">
             {#each shippingOptions as option}
-                <div class="shipping-option">
-                    <input
-                        type="radio"
-                        id={option.id}
-                        name="deliveryMethod"
-                        value={option.title}
-                        bind:group={userDetails.deliveryMethod}
-                    />
-                    <label for={option.id}>
-                        <div class="option-details">
-                            <div class="price-wrapper">
-                                <span class="title">{option.title}</span>
-                                <span class="price">{option.price}</span>
+                <label for={option.id}>
+                    <div class="shipping-option">
+                        <input
+                            type="radio"
+                            id={option.id}
+                            name="deliveryMethodID"
+                            value={option.id}
+                            bind:group={userDetails.deliveryMethod}
+                        />
+                        <label for={option.id}>
+                            <div class="option-details">
+                                <div class="price-wrapper">
+                                    <span class="title">{option.title}</span>
+                                    <span class="price">
+                                        {#if option.price === '0'}
+                                            ZADARMO
+                                        {:else}
+                                            {option.price}€
+                                        {/if}
+                                    </span>
+                                </div>
+                                <span class="address">{option.address}</span>
                             </div>
-                            <span class="address">{option.address}</span>
-                        </div>
-                    </label>
-                </div>
+                        </label>
+                    </div>
+                </label>
             {/each}
         </div>
     </div>
@@ -716,7 +698,7 @@
                     <div class="details">
                     <span>
                         Cena dopravy:
-                        <span>{shippingOptions.find(option => option.title === userDetails.deliveryMethod)?.price || 'ZADARMO'}</span>
+                        <span>{shippingPriceDisplay}</span>
                     </span>
                     </div>
                 </div>
