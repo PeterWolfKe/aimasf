@@ -78,15 +78,10 @@
         <div class="text-content">
             <h2>O nás</h2>
             <p>
-                Sme Aima! Kolektív mladých a
-                ambicióznych ľudí z Gymnázia
-                Poštová 9, ktorý prišiel s víziou
-                pomáhať ľuďom riešiť bežné
-                problémy inovatívnym a
-                funkčným spôsobom. V Aime
-                nás spája tímový duch,
-                kreativita a túžba naučiť sa
-                niečo nové.
+                Sme študentská firma Aima z Gymnázia Poštová 9, Košice. Náš kolektív tvorí 23 mladých ľudí, ktorí chcú
+                získať praktické skúsenosti a zručnosti v oblasti podnikania. Umožňuje nám to nezisková organizácia
+                JA Slovensko, ktorá zastrešuje študentské firmy. Našou víziou je pomôcť ľuďom zbaviť sa strachu a poskytnúť
+                im pocit istoty a bezpečia v tých najnepríjemnejších situáciách.
             </p>
         </div>
         <div class="image-container">
