@@ -19,6 +19,14 @@ use Inertia\Inertia;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+Route::get('/terms-and-conditions', function () {
+    return Inertia::render('TermsAndConditions');
+});
+Route::get('/protection-of-personal-information', function () {
+    return Inertia::render('ProtectionOfPersonalInformation');
+});
+
 Route::post('/buy', [PaymentController::class, 'store'])->name('payment.store');
 Route::get('/payment', [PaymentController::class, 'index'])->name('payment.index');
 Route::post('/payment/process', [PaymentController::class, 'processPayment'])->name('payment.process');

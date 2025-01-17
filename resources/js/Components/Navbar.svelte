@@ -196,10 +196,12 @@
 
 <div class="navbar-container" style="--navbar-height: {navbarHeight}px">
     <nav style="--navbar-height: {navbarHeight}px; --navbar-padding: {navbarPadding};">
-        <div class="brand">
-            <img src={logo} alt="Logo"/>
-            <div class="logo">Aima</div>
-        </div>
+        <a href="/" style="text-decoration: none">
+            <div class="brand">
+                <img src={logo} alt="Logo"/>
+                <div class="logo">Aima</div>
+            </div>
+        </a>
         <div
             class="menu-toggle"
             on:click={toggleMenu}
@@ -210,9 +212,9 @@
             ☰
         </div>
         <div class={`links ${isMenuOpen ? 'open' : ''}`}>
-            <a href="/#recensions" on:click={() => (isMenuOpen = false)}>Recensions</a>
-            <a href="/#footer" on:click={() => (isMenuOpen = false)}>Contact</a>
-            <a href="/payment" on:click={() => (isMenuOpen = false)}>Kúpiť</a>
+            <a href="/#product" on:click={() => (isMenuOpen = false)}>Produkt</a>
+            <a href="/#about-us" on:click={() => (isMenuOpen = false)}>O nás</a>
+            <a href="/#footer" on:click={() => (isMenuOpen = false)}>Kontact</a>
         </div>
     </nav>
 </div>

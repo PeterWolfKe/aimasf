@@ -38,7 +38,9 @@
 
 <style lang="scss">
     @use '../../scss/colors.scss' as *;
-
+    :global html{
+        scroll-padding-top: 120px;
+    }
     .product-card {
         width: 100%;
         max-width: 1200px;
@@ -97,7 +99,8 @@
             }
 
             .description {
-                font-size: 1.5rem;
+                font-size: 1.1rem;
+                font-family: 'Roboto', sans-serif;
                 color: $dark-gray;
                 margin-bottom: 2rem;
             }
@@ -198,7 +201,6 @@
         }
     }
 
-    // Add mobile-specific styles
     @media (max-width: 768px) {
         .product-card {
             padding: 1rem;
@@ -294,14 +296,17 @@
     }
 </style>
 
-<div class="product-card">
+<div class="product-card" id="product">
     <div class="left">
         <img class="main-image" src={product_image} alt="Main Product" />
     </div>
     <div class="right">
         <h1>Rýchly a účinný odstraňovač krvi</h1>
         <div class="description">
-            ng instrument. Size like body some one had. Are conduct viewing boy minutes warrant expense.
+            Aima, pohotovostný odstraňovač krvi, je praktický produkt navrhnutý na rýchle a efektívne odstránenie škvŕn krvi z
+            oblečenia už za pár sekúnd. Vďaka svojej kompaktnej veľkosti sa pohodlne zmestí do každej kabelky či tašky. Prináša istotu
+            a sebadôveru, aby ste si mohli užívať deň bez starostí. Už vás nikdy nemusí trápiť nepríjemná krvavá škvrna v nevhodnom
+            momente.
         </div>
         <div class="price">
             Cena Od 3,50€
