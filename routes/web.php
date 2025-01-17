@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EmailSubscriptionController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
@@ -19,6 +20,14 @@ use Inertia\Inertia;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+Route::post('/subscribe', [EmailSubscriptionController::class, 'subscribe'])
+    ->middleware('throttle:5,1')
+    ->name('email.subscribe');
+Route::get('/subscribe/confirm/{token}', [EmailSubscriptionController::class, 'confirm'])
+    ->middleware('throttle:10,1')
+    ->name('email.confirm');
+
 
 Route::get('/terms-and-conditions', function () {
     return Inertia::render('TermsAndConditions');

@@ -1,4 +1,42 @@
-<script>
+<script lang="ts">
+    let email = '';
+    let message = '';
+    let messageType = '';
+
+    async function submitForm() {
+        if (!email) {
+            showMessage('Please enter a valid email.', 'error');
+            return;
+        }
+        const csrfToken = (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement).content;
+        try {
+            const response = await fetch('/subscribe', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify({ email }),
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                showMessage(result.message, 'success');
+                email = '';
+            } else {
+                showMessage(result.errors.email[0], 'error');
+            }
+        } catch (error) {
+            showMessage('An error occurred, please try again later.', 'error');
+        }
+    }
+
+    function showMessage(msg: string, type: 'success' | 'error') {
+        message = msg;
+        messageType = type;
+    }
 </script>
 
 <style lang="scss">
@@ -66,7 +104,29 @@
         margin-top: 1rem;
     }
 
+    .message {
+        margin-top: 1rem;
+        font-size: 1rem;
+        padding: 0.5rem;
+        border-radius: 5px;
+        max-width: 90%;
+    }
+
+    .message.success {
+        background-color: $primary-mint;
+        color: $primary-blue;
+    }
+
+    .message.error {
+        background-color: $dark-red;
+        color: $neutral-white;
+    }
+
     .newsletter {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
         text-align: center;
 
         h3 {
@@ -229,10 +289,21 @@
     <div class="newsletter-container">
         <div class="newsletter">
             <h3>Prihlás sa na odber noviniek</h3>
-            <form>
-                <input type="email" placeholder="Email" autocomplete="email" required />
+            <form on:submit|preventDefault={submitForm}>
+                <input
+                    type="email"
+                    bind:value={email}
+                    placeholder="Email"
+                    autocomplete="email"
+                    required
+                />
                 <button type="submit">→</button>
             </form>
+            {#if message}
+                <div class="message {messageType}">
+                    {message}
+                </div>
+            {/if}
         </div>
     </div>
 

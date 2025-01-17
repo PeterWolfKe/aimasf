@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EmailSubscription;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 
 class HomeController extends Controller
