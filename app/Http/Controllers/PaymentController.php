@@ -236,10 +236,10 @@ class PaymentController extends Controller
                 $details = [
                     'first_name' => $order->first_name,
                     'last_name' => $order->last_name,
-                    'delivery_method' => $order->delivery_method,
+                    'delivery_method' => $order->shippingOption->title,
                     'unique_order_id' => $order->unique_order_id,
                     'products' => $products,
-                    'total_price' => $totalPrice, // Add total price
+                    'total_price' => $totalPrice,
                 ];
 
                 Mail::to($order->email)->send(new OrderSuccessMail($details));

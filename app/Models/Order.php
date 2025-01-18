@@ -22,4 +22,8 @@ class Order extends Model
         'unique_order_id',
         'paid',
     ];
+    public function shippingOption(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(ShippingOptions::class, 'delivery_method', 'id');
+    }
 }
