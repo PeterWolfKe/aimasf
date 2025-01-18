@@ -26,19 +26,19 @@ class EmailSubscriptionController extends Controller
 
         Mail::to($request->input('email'))->send(new EmailSubscriptionConfirmation($token));
 
-        return response()->json(['message' => 'Please check your email to confirm your subscription.']);
+        return response()->json(['message' => 'Skontrolujte si prosím svoj e-mail a potvrďte svoju registráciu na odber']);
     }
     public function confirm($token)
     {
         $subscription = EmailSubscription::where('token', $token)->first();
 
         if (!$subscription) {
-            return response()->json(['error' => 'Invalid token.'], 400);
+            return response()->json(['error' => 'Neplatný token'], 400);
         }
 
         $subscription->is_confirmed = true;
         $subscription->save();
 
-        return response()->json(['message' => 'Your email has been confirmed.']);
+        return response()->json(['message' => 'Váš e-mail bol úspešne potvrdený']);
     }
 }

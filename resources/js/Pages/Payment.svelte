@@ -7,9 +7,12 @@
     export let stripePublicKey;
     export let productsData;
     export let shippingOptions;
+    let isSticky = false;
 </script>
 
-<style>
+<style lang="scss">
+    @use '../../scss/colors.scss' as *;
+
     :global(body, html) {
         margin: 0;
         padding: 0;
@@ -26,6 +29,8 @@
     .app-container {
         display: flex;
         flex-direction: column;
+        font-family: Arial, sans-serif;
+        background-color: $neutral-white;
     }
     :global(.animate-big) {
         animation: fadeInUpBig 1s ease;
@@ -55,8 +60,8 @@
     }
 </style>
 
-<Navbar></Navbar>
-<main class="app-container">
+<Navbar isSticky={false}></Navbar>
+<main class="app-container class:sticky={isSticky}">
     <PaymentForm stripePublicKey={stripePublicKey} productsData={productsData} shippingOptions={shippingOptions}/>
 </main>
 <Footer></Footer>

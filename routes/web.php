@@ -21,10 +21,10 @@ use Inertia\Inertia;
 
 
 Route::post('/subscribe', [EmailSubscriptionController::class, 'subscribe'])
-    ->middleware('throttle:5,1')
+    ->middleware('throttle:100,1')
     ->name('email.subscribe');
 Route::get('/subscribe/confirm/{token}', [EmailSubscriptionController::class, 'confirm'])
-    ->middleware('throttle:10,1')
+    ->middleware('throttle:100,1')
     ->name('email.confirm');
 
 Route::middleware(['no-cache'])->group(function () {
@@ -44,7 +44,8 @@ Route::post('/buy', [PaymentController::class, 'store'])->name('payment.store');
 Route::post('/payment/process', [PaymentController::class, 'processPayment'])->name('payment.process');
 Route::post('/payment/webhook', [PaymentController::class, 'handleWebhook'])->name('payment.success');
 
-Route::get('/payment-success', [PaymentController::class, 'paymentSuccess']);
+Route::get('/payment-success', [PaymentController::class, 'paymentSuccess'])
+    ->middleware('throttle:100,1');
 
 Route::get('/login', function () {
     if (auth()->check() && auth()->user()->admin) {

@@ -19,6 +19,7 @@ class CreateProductsTable extends Migration
             $table->text('description')->nullable();
             $table->decimal('price', 10, 2); // Price with 2 decimal points (e.g., 12345.67)
             $table->string('size'); // Product size (e.g., "10ml")
+            $table->json('product_images')->nullable();
             $table->timestamps();
         });
     }

@@ -21,6 +21,7 @@ class ProductsSeeder extends Seeder
 
         while (($row = fgetcsv($fileHandle, 1000, ',')) !== false) {
             $productData = array_combine($header, $row);
+            $productImages = $productData['images'] ? explode(',', $productData['images']) : [];
 
             try {
                 DB::table('products')->insert([
@@ -29,6 +30,7 @@ class ProductsSeeder extends Seeder
                     'description' => $productData['description'],
                     'price' => $productData['price'],
                     'size' => $productData['size'],
+                    'product_images' => json_encode($productImages),
                     'created_at' => $productData['created_at'] ?? now(),
                     'updated_at' => $productData['updated_at'] ?? now(),
                 ]);

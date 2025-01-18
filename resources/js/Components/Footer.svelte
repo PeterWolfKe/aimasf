@@ -5,7 +5,7 @@
 
     async function submitForm() {
         if (!email) {
-            showMessage('Please enter a valid email.', 'error');
+            showMessage('Please enter a valid email', 'error');
             return;
         }
         const csrfToken = (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement).content;
@@ -29,7 +29,7 @@
                 showMessage(result.errors.email[0], 'error');
             }
         } catch (error) {
-            showMessage('An error occurred, please try again later.', 'error');
+            showMessage('Nastala chyba, skúste znova neskôr', 'error');
         }
     }
 

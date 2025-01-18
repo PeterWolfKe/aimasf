@@ -30,7 +30,7 @@
 <style lang="scss">
     @use '../../scss/colors.scss' as *;
 
-    :global(body) {
+    body {
         background-color: $background-color;
         color: $text-color;
         font-family: Arial, sans-serif;

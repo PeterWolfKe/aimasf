@@ -1,2 +1,2 @@
-id,name,description,price,size
-00000001,Rýchly a účinný odstraňovač krvi,Popis produktu: Rýchly a účinný odstraňovač krvi. Ideálny na rýchle odstránenie škvŕn.,6.490,10ml
+id,name,description,price,size,images
+00000001,Rýchly a účinný odstraňovač krvi,Rýchly a účinný odstraňovač krvi. Ideálny na rýchle odstránenie škvŕn.,6.490,10ml,"1.webp,2.webp,3.webp"

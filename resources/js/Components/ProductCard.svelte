@@ -1,21 +1,38 @@
-<script>
-    import product_image from '/resources/assets/product.jpg';
-    export let id = "00000001";
-    export let selectedSize = "10ml";
-    let quantity = 1;
+<script lang="ts">
+    type Product = {
+        id: string;
+        name: string;
+        description: string;
+        price: string;
+        image_url: string;
+        size: string;
+    };
 
-    function increaseQuantity() {
+    export let product: Product;
+    export let productImages: string[] = [];
+
+    let quantity: number = 1;
+    let selectedImage: string = productImages[0];
+
+    function increaseQuantity(): void {
         quantity++;
     }
 
-    function decreaseQuantity() {
+    function decreaseQuantity(): void {
         if (quantity > 1) quantity--;
     }
 
-    async function buyNow() {
+    async function buyNow(): Promise<void> {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+        if (!csrfToken) {
+            alert('CSRF token not found');
+            return;
+        }
+
         const payload = {
-            "id": id,
-            "selected_size": selectedSize,
+            "id": product.id,
+            "selected_size": product.size,
             "quantity": quantity
         };
 
@@ -23,7 +40,7 @@
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'X-CSRF-TOKEN': csrfToken,
             },
             body: JSON.stringify(payload),
         });
@@ -34,311 +51,248 @@
             alert('Error processing your order.');
         }
     }
+
+    function selectImage(image: string): void {
+        selectedImage = image;
+    }
 </script>
 
 <style lang="scss">
     @use '../../scss/colors.scss' as *;
-    :global html{
-        scroll-padding-top: 120px;
+
+    .oddiel {
+        font-family: "Montserrat", sans-serif;
+        margin: 0;
+        background-color: #a9c6db;
+        padding: 50px;
     }
-    .product-card {
-        width: 100%;
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 2rem;
+
+    .hlavicka {
+        text-align: center;
+        padding: 10px 0;
+
+        h1 {
+            font-weight: bold;
+            color: white;
+            font-size: 50px;
+            margin: 0;
+        }
+    }
+
+    .produkt-kontajner {
+        font-weight: 100;
+        background-color: #ffffff;
+        border-radius: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 20px;
+        margin: 15px 1cm;
+        justify-content: start;
+        color: #365a6e;
+    }
+
+    .galeria-obrazkov {
+        margin-top: 1cm;
         display: flex;
-        flex-wrap: wrap;
-        gap: 2rem;
-        background-color: $neutral-white;
-        color: $text-color;
-        box-sizing: border-box;
+        flex-direction: column;
+        align-items: center;
+    }
 
-        .left {
-            flex: 1 1 40%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+    .hlavny-obrazok {
+        width: 100%;
+        max-width: 400px; /* Adjusted max width */
+        height: auto;
+        border-radius: 10px;
+        margin-top: 1cm;
+        object-fit: contain; /* Maintain aspect ratio */
+        transition: transform 0.3s ease; /* Smooth zoom effect */
+    }
 
-            .main-image {
-                width: 100%;
-                max-width: 300px;
-                margin-bottom: 1rem;
-                border-radius: 8px;
-                border: 1px solid red;
-            }
+    .hlavny-obrazok:hover {
+        transform: scale(1.1); /* Slight zoom effect */
+    }
 
-            .thumbnails {
-                display: flex;
-                gap: 1rem;
-                justify-content: center;
+    .galeria-nahladov {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 10px;
+        flex-wrap: wrap; /* Allow wrapping for smaller screens */
+    }
 
-                img {
-                    width: 60px;
-                    height: 60px;
-                    object-fit: cover;
-                    border: 2px solid $gray-white;
-                    border-radius: 4px;
-                    cursor: pointer;
+    .nahlad {
+        width: 60px;
+        height: 60px;
+        border-radius: 5px;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: border 0.2s ease-in-out;
+    }
 
-                    &:hover {
-                        border-color: $secondary-deep-blue;
-                    }
-                }
-            }
-        }
+    .nahlad:hover {
+        border: 2px solid $primary-blue;
+    }
 
-        .right {
-            flex: 1 1 50%;
-            display: flex;
-            flex-direction: column;
+    .nahlad img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Crop image to fit */
+        border-radius: 5px;
+    }
 
-            h1 {
-                font-size: 2rem;
-                color: $secondary-dark-blue;
-                margin-bottom: 1rem;
-            }
+    .detaily-produktu {
+        margin-top: 1cm;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin-right: 2cm;
+    }
 
-            .description {
-                font-size: 1.1rem;
-                font-family: 'Roboto', sans-serif;
-                color: $dark-gray;
-                margin-bottom: 2rem;
-            }
+    .nazov-produktu {
+        font-size: 35px;
+        font-weight: bold;
+    }
 
-            .price {
-                font-size: 1.5rem;
-                font-weight: bold;
-                margin-bottom: 1rem;
+    .popis-produktu-velke {
+        font-size: 25px;
+        margin: 15px 0;
+    }
 
-                small {
-                    display: block;
-                    font-size: 0.875rem;
-                    color: $dark-gray;
-                }
-            }
+    .popis-produktu {
+        font-size: 14px;
+    }
 
-            .options {
-                margin-bottom: 2rem;
+    .cena-produktu {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        margin-top: 20px;
+    }
 
-                h3 {
-                    font-size: 1.2rem;
-                    margin-bottom: 0.5rem;
-                }
+    .cena {
+        background-color: #dbb4e7;
+        padding: 6px 14px;
+        font-weight: bold;
+        border-radius: 15px;
+        font-size: 30px;
+        text-align: center;
+        display: inline-block;
+    }
 
-                .size-buttons {
-                    display: flex;
-                    gap: 1rem;
+    .vratane-dph {
+        font-size: 12px;
+    }
 
-                    button {
-                        background-color: $button-background;
-                        color: $neutral-white;
-                        padding: 0.5rem 1rem;
-                        font-size: 1rem;
-                        border: none;
-                        border-radius: 4px;
-                        cursor: pointer;
+    .vyber-mnozstva {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
 
-                        &.selected {
-                            background-color: $button-hover;
-                        }
-                    }
-                }
-            }
+    .vyber-mnozstva button {
+        padding: 5px 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: #85b2d2;
+        color: white;
+        cursor: pointer;
+        font-size: 16px;
+    }
 
-            .quantity {
-                margin-bottom: 2rem;
+    .vyber-mnozstva input {
+        width: 50px;
+        text-align: center;
+        font-size: 16px;
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
 
-                h3 {
-                    font-size: 1.2rem;
-                    margin-bottom: 0.5rem;
-                }
+    .tlacidlo {
+        margin: 0;
+    }
 
-                .quantity-control {
-                    display: flex;
-                    align-items: center;
-                    gap: 1rem;
-
-                    button {
-                        background-color: $primary-blue;
-                        color: $neutral-white;
-                        font-size: 1.5rem;
-                        padding: 0.5rem 1rem;
-                        border: none;
-                        border-radius: 4px;
-                        cursor: pointer;
-
-                        &:hover {
-                            background-color: $button-hover;
-                        }
-                    }
-
-                    span {
-                        font-size: 1.2rem;
-                    }
-                }
-            }
-
-            .actions {
-                display: flex;
-                gap: 1rem;
-
-                button {
-                    flex: 1;
-                    padding: 1rem;
-                    font-size: 1rem;
-                    background-color: $primary-blue;
-                    color: $neutral-white;
-                    border: none;
-                    border-radius: 4px;
-                    cursor: pointer;
-                    text-align: center;
-
-                    &:hover {
-                        background-color: $secondary-dark-blue;
-                    }
-                }
-            }
-        }
+    .tlacidlo button {
+        font-family: "Montserrat";
+        font-weight: bold;
+        width: 250px;
+        height: 50px;
+        margin-left: 4cm;
+        border: none;
+        cursor: pointer;
+        font-size: 25px;
+        background-color: #dbb4e7;
+        color: #365a6e;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 25px;
     }
 
     @media (max-width: 768px) {
-        .product-card {
-            padding: 1rem;
-            gap: 1rem;
+        .produkt-kontajner {
+            grid-template-columns: 1fr;
+        }
 
-            .left {
-                flex: 1 1 100%;
+        .hlavny-obrazok {
+            max-width: 100%;
+        }
 
-                .main-image {
-                    max-width: 200px;
-                }
+        .galeria-nahladov {
+            gap: 5px;
+        }
 
-                .thumbnails {
-                    gap: 0.5rem;
-
-                    img {
-                        width: 50px;
-                        height: 50px;
-                    }
-                }
-            }
-
-            .right {
-                flex: 1 1 100%;
-
-                h1 {
-                    font-size: 1.5rem;
-                    margin-bottom: 0.5rem;
-                }
-
-                .description {
-                    font-size: 0.875rem;
-                    margin-bottom: 1rem;
-                }
-
-                .price {
-                    font-size: 1.2rem;
-                    margin-bottom: 0.5rem;
-
-                    small {
-                        font-size: 0.75rem;
-                    }
-                }
-
-                .options {
-                    margin-bottom: 1rem;
-
-                    h3 {
-                        font-size: 1rem;
-                    }
-
-                    .size-buttons {
-                        gap: 0.5rem;
-
-                        button {
-                            padding: 0.25rem 0.5rem;
-                            font-size: 0.875rem;
-                        }
-                    }
-                }
-
-                .quantity {
-                    margin-bottom: 1rem;
-
-                    h3 {
-                        font-size: 1rem;
-                    }
-
-                    .quantity-control {
-                        gap: 0.5rem;
-
-                        button {
-                            font-size: 1rem;
-                            padding: 0.25rem 0.5rem;
-                        }
-
-                        span {
-                            font-size: 1rem;
-                        }
-                    }
-                }
-
-                .actions {
-                    gap: 0.5rem;
-
-                    button {
-                        padding: 0.5rem;
-                        font-size: 0.875rem;
-                    }
-                }
-            }
+        .nahlad {
+            width: 50px;
+            height: 50px;
         }
     }
 </style>
 
-<div class="product-card" id="product">
-    <div class="left">
-        <img class="main-image" src={product_image} alt="Main Product" />
+<div class="oddiel">
+    <div class="hlavicka">
+        <h1>Zaujal vás náš produkt?</h1>
     </div>
-    <div class="right">
-        <h1>Rýchly a účinný odstraňovač krvi</h1>
-        <div class="description">
-            Aima, pohotovostný odstraňovač krvi, je praktický produkt navrhnutý na rýchle a efektívne odstránenie škvŕn krvi z
-            oblečenia už za pár sekúnd. Vďaka svojej kompaktnej veľkosti sa pohodlne zmestí do každej kabelky či tašky. Prináša istotu
-            a sebadôveru, aby ste si mohli užívať deň bez starostí. Už vás nikdy nemusí trápiť nepríjemná krvavá škvrna v nevhodnom
-            momente.
-        </div>
-        <div class="price">
-            Cena Od 6.49
-            <small>Vrátane dane.</small>
-        </div>
-        <!--<div class="options">
-            <h3>Vyberte si veľkosť</h3>
-            <div class="size-buttons">
-                <button
-                    class:selected={selectedSize === "10ml"}
-                    on:click={() => (selectedSize = "10ml")}
-                >
-                    10ml
-                </button>
-                <button
-                    class:selected={selectedSize === "3ml"}
-                    on:click={() => (selectedSize = "3ml")}
-                >
-                    3ml
-                </button>
-            </div>
-        </div>-->
-        <div class="quantity">
-            <h3>Množstvo</h3>
-            <div class="quantity-control">
-                <button on:click={decreaseQuantity}>-</button>
-                <span>{quantity}</span>
-                <button on:click={increaseQuantity}>+</button>
+
+    <div class="produkt-kontajner">
+        <div class="galeria-obrazkov">
+            <img class="hlavny-obrazok" src="/storage/products/{product.id}/{selectedImage}" alt="Hlavný obrázok produktu"/>
+            <div class="galeria-nahladov">
+                {#each productImages as image}
+                    <button
+                        type="button"
+                        class="nahlad"
+                        on:click={() => selectImage(image)}
+                        aria-label="Select image {image}">
+                        <img src="/storage/products/{product.id}/{image}" alt="Náhľad produktu" />
+                    </button>
+                {/each}
             </div>
         </div>
-        <div class="actions">
-            <button on:click={buyNow}>Kúpiť</button>
+
+        <div class="detaily-produktu">
+            <span class="nazov-produktu">{product.name}</span>
+            <span class="popis-produktu-velke">{product.description}</span>
+
+            <div class="cena-produktu">
+                <div>
+                    <span class="cena">{product.price}€</span>
+                    <br />
+                    <span class="vratane-dph">Vrátane DPH</span>
+                </div>
+
+                <div class="vyber-mnozstva">
+                    <button on:click={decreaseQuantity}>&minus;</button>
+                    <input type="number" value={quantity} min="1" max="10" />
+                    <button on:click={increaseQuantity}>+</button>
+                </div>
+
+                <div class="tlacidlo">
+                    <button on:click={buyNow}>Kúpiť</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>

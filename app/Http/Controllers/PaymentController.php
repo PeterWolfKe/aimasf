@@ -27,6 +27,9 @@ class PaymentController extends Controller
             $product = Product::find($sessionProduct['id']);
 
             if ($product) {
+                $productImages = json_decode($product->product_images, true);
+                $image = $productImages[0] ?? null;
+
                 return [
                     'id' => $product->id,
                     'name' => $product->name,
@@ -34,6 +37,7 @@ class PaymentController extends Controller
                     'price' => $product->price,
                     'size' => $sessionProduct['selected_size'],
                     'quantity' => $sessionProduct['quantity'],
+                    'image' => $image
                 ];
             }
 
@@ -124,7 +128,7 @@ class PaymentController extends Controller
             $products = session('products', []);
 
 
-            $uniqueOrderId = Str::random(16);
+            $uniqueOrderId = collect(str_split(Str::random(16, '1234567890'), 4))->join('-');
 
             $transformedProducts = array_map(function ($product) {
                 return [
@@ -188,7 +192,6 @@ class PaymentController extends Controller
                 'paid' => false,
             ]);
 
-            session()->forget('products');
             return response()->json([
                 'success' => true,
                 'checkoutUrl' => $session->url,
@@ -246,6 +249,7 @@ class PaymentController extends Controller
             }
         }
 
+        session()->forget('products');
         return Inertia::render('PaymentSuccess', [
             'order' => $order,
             'amount' => $amount

@@ -19,6 +19,8 @@
     let totalPrice: number = 0;
     let shippingPrice: string;
     let shippingPriceDisplay: string;
+    let summaryContainer: HTMLElement;
+    let scrollPosition: number = 0;
 
     interface ShippingOption {
         id: string;
@@ -27,18 +29,6 @@
         address: string;
     }
     export let shippingOptions: ShippingOption[];
-
-    $: {
-        totalPrice = (productsData || []).reduce((total, product) => total + product.price * product.quantity, 0);
-        const selectedShippingOption = shippingOptions.find(option => option.id === userDetails.deliveryMethod);
-        if (selectedShippingOption && selectedShippingOption.price !== '0') {
-            totalPrice += parseFloat(selectedShippingOption.price);
-        }
-    }
-    $: {
-        shippingPrice = shippingOptions.find(option => option.id === userDetails.deliveryMethod)?.price ?? '0';
-        shippingPriceDisplay = shippingPrice === '0' ? 'ZADARMO' : `${shippingPrice}€`;
-    }
     interface UserDetails {
         [key: string]: string | undefined;
         email: string;
@@ -73,10 +63,23 @@
         'deliveryMethod': 'Prosím, vyberte spôsob doručenia.'
     };
 
-
-    onMount(async () => {
-        stripe = await loadStripe(stripePublicKey);
+    onMount(() => {
+        loadStripe(stripePublicKey).then((loadedStripe) => {
+            stripe = loadedStripe;
+        });
     });
+
+    $: {
+        totalPrice = (productsData || []).reduce((total, product) => total + product.price * product.quantity, 0);
+        const selectedShippingOption = shippingOptions.find(option => option.id === userDetails.deliveryMethod);
+        if (selectedShippingOption && selectedShippingOption.price !== '0') {
+            totalPrice += parseFloat(selectedShippingOption.price);
+        }
+    }
+    $: {
+        shippingPrice = shippingOptions.find(option => option.id === userDetails.deliveryMethod)?.price ?? '0';
+        shippingPriceDisplay = shippingPrice === '0' ? 'ZADARMO' : `${shippingPrice}€`;
+    }
 
     const handlePayment = async () => {
         let missingField = Object.keys(userDetails).find(field => {
@@ -133,7 +136,6 @@
         justify-content: space-between;
         width: 100%;
         box-sizing: border-box;
-        flex-wrap: wrap;
     }
 
     .form-container {
@@ -146,13 +148,37 @@
     }
 
     .summary-container {
+        position: sticky;
+        top: 0;
         background-color: $neutral-white;
-        padding: 2rem 10vw 2rem 2rem;
         box-sizing: border-box;
-        width: 50%;
+        width: 100%;
         color: $text-color;
         display: flex;
         flex-direction: column;
+        margin-bottom: 35vw;
+    }
+
+    .submit-button-container {
+        position: sticky;
+        bottom: 0;
+        width: 100%;
+        background-color: $neutral-white;
+        box-sizing: border-box;
+        z-index: 10;
+        padding: 1rem 0;
+        margin-top: auto;
+    }
+
+    .summary-buy {
+        position: sticky;
+        top: 0;
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+        padding: 2rem 10vw 2rem 2rem;
+        box-sizing: border-box;
+        justify-content: space-between;
     }
 
     .summary-product {
@@ -381,7 +407,7 @@
         gap: 0.4rem;
         margin-top: 1rem;
         box-sizing: border-box;
-        max-height: 12vw;
+        max-height: 50vw;
         overflow-y: auto;
     }
 
@@ -509,9 +535,14 @@
         right: 2px;
         background-color: rgba(0, 0, 0, 0.5);
         color: white;
-        padding: 3px 3px;
+        width: 15px;
+        height: 15px;
         border-radius: 9999px;
         font-size: 12px;
+        display: flex;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
     }
 
     @media (max-width: 768px) {
@@ -519,7 +550,12 @@
             flex-direction: column;
         }
 
-        .form-container, .summary-container {
+        .summary-container, .submit-button-container {
+            position: static;
+            margin-bottom: 0;
+        }
+
+        .form-container, .summary-container, .summary-buy, .submit-button-container {
             width: 100%;
             padding: 1rem;
         }
@@ -675,46 +711,50 @@
             {/each}
         </div>
     </div>
-    <div class="summary-container">
-        <div class="payment-order">
-            <div class="order-summary">
-                <h2>Zhrnutie objednávky</h2>
-                {#if productsData.length === 0}
-                    <p style="font-size: 2rem; font-weight: bold">Nemáte žiadne produkty na platbu.</p>
-                {:else}
-                    {#each productsData as product}
-                        <div class="summary-product">
-                            <div class="image-container">
-                                <img src={product.image || 'https://via.placeholder.com/150'} alt={product.name || 'No Image'} />
-                                <span class="quantity">{product.quantity}</span>
+    <div class="summary-buy">
+        <div class="summary-container" bind:this={summaryContainer}>
+            <div class="payment-order">
+                <div class="order-summary">
+                    <h2>Zhrnutie objednávky</h2>
+                    {#if productsData.length === 0}
+                        <p style="font-size: 2rem; font-weight: bold">Nemáte žiadne produkty na platbu.</p>
+                    {:else}
+                        {#each productsData as product}
+                            <div class="summary-product">
+                                <div class="image-container">
+                                    <img src="{product.image ? '/storage/products/' + product.id + '/' + product.image : 'https://via.placeholder.com/150'}" alt="{product.name}">
+                                    <span class="quantity">{product.quantity}</span>
+                                </div>
+                                <div class="details">
+                                    <span class="title">{product.name || 'Nemenovaný produkt'} <span>{product.size}</span></span>
+                                    <span>€{(Number(product.price) || 0).toFixed(2)}</span>
+                                </div>
                             </div>
-                            <div class="details">
-                                <span class="title">{product.name || 'Nemenovaný produkt'} <span>{product.size}</span></span>
-                                <span>€{(Number(product.price) || 0).toFixed(2)}</span>
-                            </div>
+                        {/each}
+                    <div class="summary-product">
+                        <div class="details">
+                        <span>
+                            Cena dopravy:
+                            <span>{shippingPriceDisplay}</span>
+                        </span>
                         </div>
-                    {/each}
-                <div class="summary-product">
-                    <div class="details">
-                    <span>
-                        Cena dopravy:
-                        <span>{shippingPriceDisplay}</span>
-                    </span>
                     </div>
+                    <div class="summary-price">
+                        Celkom: {(Number(totalPrice) || 0).toFixed(2)} €
+                    </div>
+                    {/if}
                 </div>
-                <div class="summary-price">
-                    Celkom: {(Number(totalPrice) || 0).toFixed(2)} €
-                </div>
-                {/if}
             </div>
         </div>
-        {#if cardError}
-            <div class="error-card">
-                <p>{cardError}</p>
-            </div>
-        {/if}
-        <button class="submit-button" on:click={handlePayment} disabled={isProcessing || productsData.length === 0}>
-            {isProcessing ? 'Spracuváva sa objednávka' : 'Zaplatiť'}
-        </button>
+        <div class="submit-button-container">
+            {#if cardError}
+                <div class="error-card">
+                    <p>{cardError}</p>
+                </div>
+            {/if}
+            <button class="submit-button" on:click={handlePayment} disabled={isProcessing || productsData.length === 0}>
+                {isProcessing ? 'Spracuváva sa objednávka' : 'Zaplatiť'}
+            </button>
+        </div>
     </div>
 </div>

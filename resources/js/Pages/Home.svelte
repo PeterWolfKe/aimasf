@@ -13,6 +13,9 @@
     import { onMount } from 'svelte';
     import ProductCard from "../Components/ProductCard.svelte";
 
+    export let product;
+    export let productImages: string[] = [];
+
     onMount(() => {
         const observerBigAnimate = new IntersectionObserver(entries => {
             entries.forEach(entry => {
@@ -47,7 +50,9 @@
     });
 </script>
 
-<style>
+<style lang="scss">
+    @use '../../scss/colors.scss' as *;
+
     :global(body, html) {
         margin: 0;
         padding: 0;
@@ -60,6 +65,7 @@
         height: 100%;
         display: flex;
         flex-direction: column;
+        background-color: $primary-blue;
     }
 
     .app-container {
@@ -99,7 +105,7 @@
 <main class="app-container">
     <BackgroundStart></BackgroundStart>
     <Problem></Problem>
-    <ProductCard></ProductCard>
+    <ProductCard product={product} productImages={productImages}></ProductCard>
     <VideoTutorial></VideoTutorial>
     <AboutUs></AboutUs>
 </main>

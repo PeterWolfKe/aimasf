@@ -2,6 +2,7 @@
     import logo from '/resources/assets/logo.png';
 
     let isMenuOpen = false;
+    export let isSticky = true;
     let navbarHeight = 85;
     let navbarPadding = "0.5rem 8rem";
 
@@ -13,15 +14,25 @@
         navbarHeight = window.scrollY > 80 ? 70 : 85;
         navbarPadding = window.scrollY > 80 ? '0.4rem 7.5rem' : '0.5rem 8rem';
     });
+
+    $: {
+        if (!isSticky) {
+            document.documentElement.style.removeProperty('--navbar-height');
+            document.querySelector('.app-container')?.style.removeProperty('margin-top');
+        }
+    }
 </script>
 
 <style lang="scss">
     @use '../../scss/colors.scss' as *;
+
     :root {
         --navbar-height: 85px;
     }
-    :global(main) {
+
+    :global(.sticky-main){
         margin-top: var(--navbar-height);
+        transition: margin-top 0.5s ease;
     }
 
     .navbar-container {
@@ -33,12 +44,19 @@
         align-items: center;
         justify-content: space-between;
         box-sizing: border-box;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
         z-index: 1000;
         transition: height 0.5s ease, padding 0.5s ease;
+
+        &.sticky {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+        }
+
+        &:not(.sticky) {
+            transition: none;
+        }
     }
 
     nav {
@@ -57,6 +75,9 @@
         color: $neutral-white;
         box-shadow: 0 4px 2px -2px gray;
         transition: height 0.5s ease, padding 0.5s ease;
+        &:not(.sticky) {
+            transition: none;
+        }
     }
 
     .brand {
@@ -194,8 +215,8 @@
     }
 </style>
 
-<div class="navbar-container" style="--navbar-height: {navbarHeight}px">
-    <nav style="--navbar-height: {navbarHeight}px; --navbar-padding: {navbarPadding};">
+<div class="navbar-container" class:sticky={isSticky} style="--navbar-height: {navbarHeight}px">
+    <nav class:sticky={isSticky} style="--navbar-height: {navbarHeight}px; --navbar-padding: {navbarPadding};">
         <a href="/" style="text-decoration: none">
             <div class="brand">
                 <img src={logo} alt="Logo"/>
@@ -214,7 +235,7 @@
         <div class={`links ${isMenuOpen ? 'open' : ''}`}>
             <a href="/#product" on:click={() => (isMenuOpen = false)}>Produkt</a>
             <a href="/#about-us" on:click={() => (isMenuOpen = false)}>O nás</a>
-            <a href="/#footer" on:click={() => (isMenuOpen = false)}>Kontact</a>
+            <a href="/#footer" on:click={() => (isMenuOpen = false)}>Kontakt</a>
         </div>
     </nav>
 </div>
