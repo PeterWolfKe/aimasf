@@ -187,7 +187,7 @@ class PaymentController extends Controller
                     'cancel_url' => url('/payment-cancel'),
                 ]);
             } else {
-                Session::create([
+                $session = Session::create([
                     'payment_method_types' => ['card'],
                     'line_items' => $stripeLineItems,
                     'mode' => 'payment',

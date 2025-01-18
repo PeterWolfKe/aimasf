@@ -13,13 +13,14 @@
         justify-content: center;
         background-color: #f0f0f0;
         height: 800px;
+        margin-top: 50px;
     }
 
     .image {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        filter: grayscale(100%);
+        filter: grayscale(50%);
     }
 
     .overlay {
@@ -32,6 +33,7 @@
         position: absolute;
         font-size: 8rem;
         font-weight: bold;
+        font-family: holiday;
         color: $neutral-white;
         text-transform: uppercase;
         z-index: 2;
@@ -78,7 +80,7 @@
 </style>
 
 <div class="container">
-    <img src="https://testaima.my.canva.site/media/fa831f2cb3ea13950dc43ee6574f7521.jpg" alt="Background" class="image" />
+    <img src="/storage/products/00000001/1.jpg" alt="Background" class="image" />
     <div class="overlay"></div>
     <div class="heading">{heading}</div>
     <div class="subheading">{subheading}</div>

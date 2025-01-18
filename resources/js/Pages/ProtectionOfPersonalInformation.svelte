@@ -4,7 +4,13 @@ import Navbar from "../Components/Navbar.svelte";
     import Footer from "../Components/Footer.svelte";
 </script>
 
-<style>
+<style lang="scss">
+    @use '../../scss/colors.scss' as *;
+
+    :global(#app){
+        background-color: $primary-mint;
+    }
+
     .terms {
         background-color: white;
         margin: 30px auto;
@@ -64,7 +70,7 @@ import Navbar from "../Components/Navbar.svelte";
     }
 </style>
 
-<Navbar></Navbar>
+<Navbar isSticky={false}></Navbar>
 <main class="app-container">
     <div class="terms">
         <h1>Ochrana osobných údajov</h1>

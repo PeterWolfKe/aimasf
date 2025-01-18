@@ -220,12 +220,12 @@
 
     .hlavny-obrazok {
         width: 100%;
-        height: auto;
+        height: 240px;
         border-radius: 10px;
-        max-width: 320px;
+        width: 320px;
         margin: 20px;
         margin-bottom: 0;
-        object-fit: contain;
+        object-fit: cover;
         transition: transform 0.3s ease;
     }
 
@@ -288,8 +288,6 @@
         }
 
         .hlavny-obrazok {
-            max-width: 100%;
-            height: auto;
             margin: 0;
         }
 
@@ -354,7 +352,7 @@
 
 <div class="oddiel" id="product">
     <div class="hlavicka">
-        <h1>Zaujal vás náš produkt?</h1>
+        <h1>Produkt</h1>
     </div>
 
     <div class="product-card">

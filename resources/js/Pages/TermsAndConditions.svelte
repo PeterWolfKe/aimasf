@@ -3,7 +3,13 @@ import Navbar from "../Components/Navbar.svelte";
 import Footer from "../Components/Footer.svelte";
 </script>
 
-<style>
+<style lang="scss">
+    @use '../../scss/colors.scss' as *;
+
+    :global(#app) {
+        background-color: $primary-mint;
+    }
+
     .terms {
         background-color: white;
         margin: 30px auto;
@@ -57,7 +63,7 @@ import Footer from "../Components/Footer.svelte";
     }
 </style>
 
-<Navbar></Navbar>
+<Navbar isSticky={false}></Navbar>
 <main class="app-container">
     <div class="terms">
         <h1>Obchodné podmienky</h1>
@@ -143,7 +149,91 @@ import Footer from "../Components/Footer.svelte";
 
         <h2>VII. Zákon č. 18/2018 Z.Z. O ochrane osobných údajov v znení neskorších predpisov</h2>
 
-        <p>1. Osobné údaje sú spracúvané v súlade so zákonom č. 18/2018 Z. z. o ochrane osobných údajov v znení neskorších predpisov. Prevádzkovateľ neposkytuje osobné údaje kupujúceho tretej osobe, okrem zvolenej prepravnej spoločnosti, ktorá zabezpečuje doručenie tovaru alebo služieb, alebo štátnym orgánom v prípade kontroly, prípadne sprostredkovateľovi a to na základe vzájomnej zmluvy uzatvorenej podľa Zákona č. 18/2018 Z.z.. Prevádzkovateľ je povinný zabezpečiť osobné údaje pred ich sprístupnením neoprávneným osobám, prijatím vhodných technických a organizačných opatrení. Taktiež všetci zamestnanci prevádzkovateľa sú povinní dodržiavať mlčanlivosť vo vzťahu k osobným údajom. Dotknutá osoba má práva vymedzené v zmysle ust. § 19 a nasl. Zákona č. 18/2018 Z.z. o ochrane osobných údajov v znení platných noviel a to konkrétne: a) právo na informácie, ktoré je plnená týmto obsahom a obchodnými podmienkami, b) právo požadovať prístup k osobným údajom týkajúcich sa dotknutej osoby - § 21 Zákona spočíva vo Vašom práve dožadovať sa akým spôsobom a na aké účely sú Vaše údaje spracúvané, c) právo na opravu alebo vymazanie osobných údajov d) právo na obmedzenie spracovania a e) právo na prenosnosť údajov. V prípade, že máte akékoľvek ďalšie otázky alebo požiadavky týkajúce sa spracovania osobných údajov, kontaktujte nás na adrese prevádzkovateľa.</p>
+        <p>1. Osobné údaje sú spracúvané v súlade so zákonom č. 18/2018 Z. z. o ochrane
+            osobných údajov v znení neskorších predpisov. Prevádzkovateľ neposkytuje osobné
+            údaje kupujúceho tretej osobe, okrem zvolenej prepravnej spoločnosti, ktorá
+            zabezpečuje doručenie tovaru alebo služieb, alebo štátnym orgánom v prípade
+            kontroly, prípadne sprostredkovateľovi a to na základe vzájomnej zmluvy uzatvorenej
+            podľa Zákona č. 18/2018 Z.z.. Prevádzkovateľ je povinný zabezpečiť osobné údaje
+            pred ich sprístupnením neoprávneným osobám, prijatím vhodných technických a
+            organizačných opatrení. Taktiež všetci zamestnanci prevádzkovateľa sú povinní
+            dodržiavať mlčanlivosť vo vzťahu k osobným údajom. Dotknutá osoba má práva
+            vymedzené v zmysle ust. § 19 a nasl. Zákona č. 18/2018 Z.z. o ochrane osobných
+            údajov v znení platných noviel a to konkrétne: a) právo na informácie, ktoré je plnená
+            týmto obsahom a obchodnými podmienkami, b) právo požadovať prístup k osobným
+            údajom týkajúcich sa dotknutej osoby - § 21 Zákona spočíva vo Vašom práve
+            dožadovať sa akým spôsobom a na aké účely sú Vaše údaje spracúvané, pričom
+            túto požiadavku môžete adresovať na kontaktný e-mail., c) právo na opravu
+            osobných údajov - § 22 Zákona Vám umožňuje opraviť osobné údaje ak sú
+            neaktuálne, d) právo na vymazanie osobných údajov - § 23 Zákona využijete v
+            prípade ak nemáte záujem, aby prevádzkovateľ ďalej spracúval osobné údaje,  e)
+            právo na obmedzenie spracúvania osobných údajov - § 24 Zákona uplatníte v
+            prípade ak sa domnievate, že osobné údaje boli spracúvané v rozpore so zákonom,
+            f) právo namietať spracovanie osobných údajov - § 27 Zákona, g) právo na
+            prenosnosť osobných údajov,  h) právo podať podnet na dozorný orgán vo vzťahu k
+            spracúvaným osobným údajov. Prevádzkovateľ od kupujúceho získava nasledovné
+
+            osobné údaje: titul, meno, priezvisko, adresa, adresa na doručenie, fakturačná
+            adresa, telefónne číslo, e-mailová adresa, ktoré sú spracúvané za účelom
+            korektného vybavenia Vašej objednávky. Tieto osobné údaje sú uchovávané po dobu
+            10 rokov pre účely archivácie. V rámci vybavenia objednávky dochádza k
+            spracúvaniu osobných údajov za účelom vystavenia faktúr, pri riešení reklamácií,
+            vystavenia skladových (dodacích) listov, zabezpečenia dopravy ako aj účtovania v
+            účtovníctve. Svoj súhlas môže kupujúci kedykoľvek odvolať zaslaním Odvolania so
+            spracúvaním osobných údajov, pričom tieto okamžite zmažeme.
+        </p>
+
+        <p>2. V zmysle Zákona č.18/2018 Z.z. o ochrane osobných údajov a Nariadenia
+            Európskeho parlamentu a Rady (EÚ) 2016/679 z. 27.apríla 2016 o ochrane fyzických
+            osôb pri spracúvaní osobných údajov a o voľnom pohybe takýchto údajov
+            dobrovoľne súhlasím so správou, spracovaním a uchovaním mojich osobných údajov
+            prevádzkovateľom Aima š.f. uvedeným v internetovej objednávke, ktoré som
+            poskytol/-la vyššie uvedenému prevádzkovateľovi prostredníctvom internetovej
+            stránky www.aimasf.sk. Pri spracúvaní osobných údajov v žiadnom prípade nebude
+            dochádzať k cezhraničnému prenosu do tretích krajín. Osobné údaje nebudú
+            zverejnené. Osobné údaje budú poskytnuté tretím stranám ako sú kuriérske
+            spoločnosti na účely doručenia a tretím stranám na základe osobitných predpisov
+            ako je napr. Slovenská obchodná inšpekcia, Daňový úrad a podobne. Súhlas je
+            možné kedykoľvek odvolať, inak súhlas zanikne po uplynutí 10 rokov odo dňa jeho
+            udelenia a údaje budú anonymizované. Dotknutá osoba má právo na opravu
+            nesprávnych, neúplných alebo neaktuálnych osobných údajov, likvidáciu alebo
+            blokovanie osobných údajov
+        </p>
+
+        <p>3. Zásady spracovania osobných údajov</p>
+
+        <h2>VIII. Záverečné a prechodné ustanovenia</h2>
+
+        <p>1. Tieto Všeobecné obchodné podmienky a ceny platia v znení uvedenom na
+            internetovej stránke prevádzkovateľa v momente odoslania elektronickej objednávky
+            s výnimkou ak je medzi oboma stranami dohodnuté inak.
+        </p>
+
+        <p>2. Odoslaním elektronickej objednávky kupujúci bez výhrad akceptuje všetky
+            ustanovenia Všeobecných obchodných podmienok v znení platnom v momente
+            odoslania elektronickej objednávky. Kópiu obchodných podmienok dostane kupujúci
+            s potvrdenkou o zrealizovaní objednávky.
+        </p>
+
+        <p>3. Vzťahy medzi oboma stranami, ktoré nie sú upravené týmito Všeobecnými
+            obchodnými podmienkami sa riadia príslušnými ustanoveniami Obchodného
+            zákonníka a inými súvisiacimi právnymi predpismi.
+        </p>
+
+        <p>4. Prípadné spory medzi stranami, ktoré nebudú riešiteľné vzájomnou dohodou
+            oboch strán, rozhodne príslušný súd.
+        </p>
+
+        <p>5. Kupujúci sú oprávnení použiť platformu riešenia sporov online (ďalej len ako
+            „RSO“) na riešenie svojich sporov, v jazyku, ktorý si zvolia. Kupujúci môže na
+            alternatívne riešenie svojho sporu využiť platformu RSO, ktorá je dostupná na
+            webovej adrese http://ec.europa.eu/consumers/odr/ . Kupujúci pri predkladaní
+            podania platforme RSO vyplní elektronický formulár sťažnosti. Informácie, ktoré
+            predloží, musia byť dostatočné na určenie príslušného subjektu alternatívneho
+            riešenia sporov online. Kupujúci môže priložiť dokumenty na podporu svojej
+            sťažnosti. Predávajúci odporúča Kupujúcemu najskôr využiť kontakt na www.aimasf.sk pre
+            vyriešenie vzniknutej situácie.
+        </p>
     </div>
 </main>
 <Footer></Footer>
