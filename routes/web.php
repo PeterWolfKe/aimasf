@@ -42,6 +42,7 @@ Route::get('/protection-of-personal-information', function () {
 
 Route::post('/buy', [PaymentController::class, 'store'])->name('payment.store');
 Route::post('/payment/process', [PaymentController::class, 'processPayment'])->name('payment.process');
+Route::post('/payment/apply-discount', [PaymentController::class, 'applyDiscount'])->name('payment.apply-discount');
 Route::post('/payment/webhook', [PaymentController::class, 'handleWebhook'])->name('payment.success');
 
 Route::get('/payment-success', [PaymentController::class, 'paymentSuccess'])

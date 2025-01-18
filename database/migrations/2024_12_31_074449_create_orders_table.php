@@ -29,6 +29,7 @@ class CreateOrdersTable extends Migration
             $table->boolean('paid')->default(false);
             $table->boolean('mail_sended')->default(false);
             $table->boolean('sended')->default(false);
+            $table->string('discount_code')->nullable();
             $table->timestamps();
         });
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\OrderSuccessMail;
+use App\Models\DiscountCode;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\ShippingOptions;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
+use Stripe\Coupon;
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
 use Stripe\Webhook;
@@ -98,6 +100,7 @@ class PaymentController extends Controller
 
     public function processPayment(Request $request)
     {
+        // Existing validation
         $validator = Validator::make($request->all(), [
             'amount' => 'required|integer|min:1',
             'userDetails' => 'required|array',
@@ -123,24 +126,17 @@ class PaymentController extends Controller
 
         try {
             $shippingOption = ShippingOptions::where('id', $request->input('userDetails.deliveryMethod'))->first();
-
-            $data = $request->input('userDetails');
             $products = session('products', []);
-
 
             $uniqueOrderId = collect(str_split(Str::random(16, '1234567890'), 4))->join('-');
 
-            $transformedProducts = array_map(function ($product) {
-                return [
-                    'id' => $product['id'],
-                    'quantity' => $product['quantity'],
-                ];
-            }, $products);
-
             $stripeLineItems = [];
-            foreach ($products as $index => $product) {
+            $totalPrice = 0;
+
+            foreach ($products as $product) {
                 $dbProduct = Product::where('id', $product['id'])->first();
                 if ($dbProduct) {
+                    $lineItemPrice = $dbProduct->price * $product['quantity'];
                     $stripeLineItems[] = [
                         'price_data' => [
                             'currency' => 'eur',
@@ -151,45 +147,77 @@ class PaymentController extends Controller
                         ],
                         'quantity' => $product['quantity'],
                     ];
-                } else {
-                    Log::warning('Product not found in database for ID:', ['id' => $product['id']]);
+                    $totalPrice += $lineItemPrice;
                 }
             }
+
+            // Add shipping
+            $totalPrice += $shippingOption->price;
             $stripeLineItems[] = [
                 'price_data' => [
                     'currency' => 'eur',
                     'product_data' => [
-                        'name' => 'Doprava: ' . $shippingOption->title,
+                        'name' => 'Shipping: ' . $shippingOption->title,
                     ],
                     'unit_amount' => $shippingOption->price * 100,
                 ],
                 'quantity' => 1,
             ];
 
-            $session = Session::create([
-                'payment_method_types' => ['card'],
-                'line_items' => $stripeLineItems,
-                'mode' => 'payment',
-                'metadata' => [
-                    'unique_order_id' => $uniqueOrderId,
-                ],
-                'success_url' => url('/payment-success?session_id={CHECKOUT_SESSION_ID}'),
-                'cancel_url' => url('/payment-cancel'),
-            ]);
+            // Apply discount if available
+            $discount_code = session('discount', null);
+            $discount = DiscountCode::where('code', $discount_code)->first();
+
+            if ($discount && $discount->active && (!$discount->valid_until || $discount->valid_until >= now())) {
+                $stripeCouponId = $discount->stripe_coupon_id;
+
+                $session = Session::create([
+                    'payment_method_types' => ['card'],
+                    'line_items' => $stripeLineItems,
+                    'mode' => 'payment',
+                    'metadata' => [
+                        'unique_order_id' => $uniqueOrderId,
+                    ],
+                    'discounts' => [
+                        [
+                            'coupon' => $stripeCouponId,
+                        ],
+                    ],
+                    'success_url' => url('/payment-success?session_id={CHECKOUT_SESSION_ID}'),
+                    'cancel_url' => url('/payment-cancel'),
+                ]);
+            } else {
+                Session::create([
+                    'payment_method_types' => ['card'],
+                    'line_items' => $stripeLineItems,
+                    'mode' => 'payment',
+                    'metadata' => [
+                        'unique_order_id' => $uniqueOrderId,
+                    ],
+                    'success_url' => url('/payment-success?session_id={CHECKOUT_SESSION_ID}'),
+                    'cancel_url' => url('/payment-cancel'),
+                ]);
+            }
 
             Order::create([
                 'unique_order_id' => $uniqueOrderId,
-                'email' => $data['email'],
-                'first_name' => $data['firstName'],
-                'last_name' => $data['lastName'],
-                'address' => $data['address'],
-                'apartment_suite' => $data['apartment'],
-                'postal_code' => $data['postalCode'],
-                'city' => $data['city'],
-                'phone' => $data['phone'],
-                'delivery_method' => $data['deliveryMethod'],
-                'products' => json_encode($transformedProducts),
+                'email' => $request->input('userDetails.email'),
+                'first_name' => $request->input('userDetails.firstName'),
+                'last_name' => $request->input('userDetails.lastName'),
+                'address' => $request->input('userDetails.address'),
+                'apartment_suite' => $request->input('userDetails.apartment'),
+                'postal_code' => $request->input('userDetails.postalCode'),
+                'city' => $request->input('userDetails.city'),
+                'phone' => $request->input('userDetails.phone'),
+                'delivery_method' => $request->input('userDetails.deliveryMethod'),
+                'products' => json_encode(array_map(function ($product) {
+                    return [
+                        'id' => $product['id'],
+                        'quantity' => $product['quantity'],
+                    ];
+                }, $products)),
                 'paid' => false,
+                'discount_code' => $discount ? $discount['code'] : null,
             ]);
 
             return response()->json([
@@ -254,5 +282,72 @@ class PaymentController extends Controller
             'order' => $order,
             'amount' => $amount
         ]);
+    }
+
+    public function applyDiscount(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'code' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'error' => $validator->errors()->toArray(),
+            ], 422);
+        }
+
+        $discountCode = $request->input('code');
+        $discount = DiscountCode::where('code', $discountCode)
+            ->where('active', true)
+            ->where(function ($query) {
+                $query->whereNull('valid_until')->orWhere('valid_until', '>=', now());
+            })
+            ->first();
+
+        if (!$discount) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid or expired discount code.',
+            ], 404);
+        }
+
+        session(['discount' => [
+            'code' => $discount->code,
+            'percentage' => $discount->discount_percentage,
+        ]]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Discount code applied successfully.',
+            'discount' => [
+                'code' => $discount->code,
+                'percentage' => $discount->discount_percentage,
+            ],
+        ]);
+    }
+    public function createDiscountCode($code, $discount_percentage)
+    {
+        Stripe::setApiKey(config('stripe.secret_key'));
+
+        try {
+            $coupon = Coupon::create([
+                'percent_off' => $discount_percentage,
+                'duration' => 'once',
+            ]);
+
+            $discountCode = DiscountCode::create([
+                'code' => $code,
+                'discount_percentage' => $discount_percentage,
+                'valid_until' => null,
+                'active' => true,
+            ]);
+
+            $discountCode->update(['stripe_coupon_id' => $coupon->id]);
+
+            return $discountCode;
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()]);
+        }
     }
 }

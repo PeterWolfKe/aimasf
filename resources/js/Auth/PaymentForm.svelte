@@ -16,19 +16,23 @@
     let stripe: any;
     let cardError: string = '';
     let isProcessing: boolean = false;
+    let baseTotalPrice: number = 0;
     let totalPrice: number = 0;
-    let shippingPrice: string;
-    let shippingPriceDisplay: string;
-    let summaryContainer: HTMLElement;
-    let scrollPosition: number = 0;
+    let shippingPrice: string = '0';
+    let shippingPriceDisplay: string = 'ZADARMO';
+    let appliedDiscount: number = 0;
 
-    interface ShippingOption {
-        id: string;
-        title: string;
-        price: string;
-        address: string;
-    }
-    export let shippingOptions: ShippingOption[];
+    let discountCode = '';
+    let discountMessage = '';
+    let discountError = false;
+
+    export let shippingOptions: {
+        id: string,
+        title: string,
+        price: string,
+        address: string,
+    }[] = [];
+
     interface UserDetails {
         [key: string]: string | undefined;
         email: string;
@@ -53,6 +57,7 @@
         phone: '',
         deliveryMethod: ''
     };
+
     const errorMessages: { [key: string]: string } = {
         'email': 'Prosím, zadajte svoj e-mail.',
         'firstName': 'Prosím, zadajte svoje meno.',
@@ -69,25 +74,65 @@
         });
     });
 
-    $: {
+    const applyDiscount = async () => {
+        discountMessage = '';
+        discountError = false;
+
+        if (!discountCode.trim()) {
+            discountMessage = 'Prosím, zadajte zľavový kód.';
+            discountError = true;
+            return;
+        }
+
+        try {
+            const csrfToken = (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement).content;
+
+            const response = await fetch('/payment/apply-discount', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify({ code: discountCode }),
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                console.log(data);
+                appliedDiscount = data.discount.percentage;
+                discountMessage = `Zľava ${appliedDiscount}% bola úspešne uplatnená.`;
+                recalculateTotal();
+            } else {
+                discountMessage = data.message || 'Neplatný zľavový kód.';
+                discountError = true;
+            }
+        } catch (error) {
+            discountMessage = 'Nastala chyba pri uplatňovaní kódu.';
+            discountError = true;
+        }
+    };
+    const recalculateTotal = () => {
         totalPrice = (productsData || []).reduce((total, product) => total + product.price * product.quantity, 0);
         const selectedShippingOption = shippingOptions.find(option => option.id === userDetails.deliveryMethod);
         if (selectedShippingOption && selectedShippingOption.price !== '0') {
             totalPrice += parseFloat(selectedShippingOption.price);
         }
+        console.log(totalPrice);
+        console.log(appliedDiscount);
+        if (appliedDiscount != 0){
+            totalPrice -= totalPrice*(appliedDiscount/100);
+        }
     }
-    $: {
-        shippingPrice = shippingOptions.find(option => option.id === userDetails.deliveryMethod)?.price ?? '0';
-        shippingPriceDisplay = shippingPrice === '0' ? 'ZADARMO' : `${shippingPrice}€`;
-    }
+    $: productsData, shippingOptions, userDetails.deliveryMethod, appliedDiscount, recalculateTotal();
 
     const handlePayment = async () => {
-        let missingField = Object.keys(userDetails).find(field => {
+        const missingField = Object.keys(userDetails).find(field => {
             return field !== 'apartment' && field !== 'phone' && !userDetails[field];
         });
 
         if (missingField) {
-            console.log(missingField);
             cardError = errorMessages[missingField] || 'Chyba pri vyplňovaní formulára.';
             isProcessing = false;
             return;
@@ -107,7 +152,7 @@
                     'X-CSRF-TOKEN': csrfToken,
                 },
                 body: JSON.stringify({
-                    amount: totalPrice * 100,
+                    amount: Math.round(totalPrice * 100),
                     userDetails,
                 }),
             });
@@ -407,8 +452,6 @@
         gap: 0.4rem;
         margin-top: 1rem;
         box-sizing: border-box;
-        max-height: 50vw;
-        overflow-y: auto;
     }
 
     .shipping-option {
@@ -544,7 +587,68 @@
         justify-content: center;
         align-items: center;
     }
+    .discount-code-section {
+        margin-top: 1.5rem;
+        padding: 1rem;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 6px;
 
+        label {
+            font-weight: bold;
+            font-size: 0.9rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .discount-code-input {
+            display: flex;
+            gap: 0.5rem;
+
+            input {
+                flex: 1;
+                padding: 0.5rem;
+                font-size: 1rem;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                outline: none;
+                transition: border-color 0.3s ease;
+
+                &:focus {
+                    border-color: #0077ff;
+                }
+            }
+
+            .apply-discount-button {
+                padding: 0.5rem 1rem;
+                background-color: #0077ff;
+                color: #fff;
+                border: none;
+                border-radius: 4px;
+                font-size: 1rem;
+                cursor: pointer;
+                transition: background-color 0.3s;
+
+                &:hover {
+                    background-color: #005bb5;
+                }
+            }
+        }
+
+        .discount-message {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+
+            &.success {
+                color: #2e7d32;
+            }
+
+            &.error {
+                color: #d32f2f;
+            }
+        }
+    }
     @media (max-width: 768px) {
         .container {
             flex-direction: column;
@@ -710,9 +814,26 @@
                 </label>
             {/each}
         </div>
+        <div class="discount-code-section">
+            <label for="discountCode">Zadajte zľavový kód</label>
+            <div class="discount-code-input">
+                <input
+                    type="text"
+                    id="discountCode"
+                    bind:value={discountCode}
+                    placeholder="Váš zľavový kód"
+                />
+                <button type="button" class="apply-discount-button" on:click={applyDiscount}>
+                    Uplatniť
+                </button>
+            </div>
+            {#if discountMessage}
+                <p class="discount-message {discountError ? 'error' : 'success'}">{discountMessage}</p>
+            {/if}
+        </div>
     </div>
     <div class="summary-buy">
-        <div class="summary-container" bind:this={summaryContainer}>
+        <div class="summary-container">
             <div class="payment-order">
                 <div class="order-summary">
                     <h2>Zhrnutie objednávky</h2>
