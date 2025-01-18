@@ -64,6 +64,134 @@
         scroll-margin-top: 50px;
     }
 
+    .product-card {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+        background-color: $neutral-white;
+        color: $text-color;
+        box-sizing: border-box;
+        border-radius: 32px;
+
+        .right {
+            flex: 1 1 50%;
+            display: flex;
+            flex-direction: column;
+
+            h1 {
+                font-size: 2rem;
+                color: $secondary-dark-blue;
+                margin-bottom: 1rem;
+            }
+
+            .description {
+                font-size: 1rem;
+                color: $dark-gray;
+                margin-bottom: 2rem;
+            }
+
+            .price {
+                font-size: 1.5rem;
+                font-weight: bold;
+                margin-bottom: 1rem;
+
+                small {
+                    display: block;
+                    font-size: 0.875rem;
+                    color: $dark-gray;
+                }
+            }
+
+            .options {
+                margin-bottom: 2rem;
+
+                h3 {
+                    font-size: 1.2rem;
+                    margin-bottom: 0.5rem;
+                }
+
+                .size-buttons {
+                    display: flex;
+                    gap: 1rem;
+
+                    button {
+                        background-color: $button-background;
+                        color: $neutral-white;
+                        padding: 0.5rem 1rem;
+                        font-size: 1rem;
+                        border: none;
+                        border-radius: 4px;
+                        cursor: pointer;
+
+                        &.selected {
+                            background-color: $button-hover;
+                        }
+                    }
+                }
+            }
+
+            .quantity {
+                margin-bottom: 2rem;
+
+                h3 {
+                    font-size: 1.2rem;
+                    margin-bottom: 0.5rem;
+                }
+
+                .quantity-control {
+                    display: flex;
+                    align-items: center;
+                    gap: 1rem;
+
+                    button {
+                        background-color: $primary-blue;
+                        color: $neutral-white;
+                        font-size: 1.5rem;
+                        padding: 0.5rem 1rem;
+                        border: none;
+                        height: 44px;
+                        width: 44px;
+                        border-radius: 4px;
+                        cursor: pointer;
+
+                        &:hover {
+                            background-color: $button-hover;
+                        }
+                    }
+
+                    span {
+                        font-size: 1.2rem;
+                    }
+                }
+            }
+
+            .actions {
+                display: flex;
+                gap: 1rem;
+
+                button {
+                    flex: 1;
+                    padding: 1rem;
+                    font-size: 1rem;
+                    background-color: $primary-blue;
+                    color: $neutral-white;
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    text-align: center;
+
+                    &:hover {
+                        background-color: $secondary-dark-blue;
+                    }
+                }
+            }
+        }
+    }
+
     .oddiel {
         font-family: "Montserrat", sans-serif;
         margin: 0;
@@ -83,20 +211,6 @@
         }
     }
 
-    .produkt-kontajner {
-        font-weight: 100;
-        background-color: #ffffff;
-        border-radius: 20px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        padding: 20px;
-        display: grid;
-        grid-template-columns: 1fr 2fr;
-        gap: 20px;
-        margin: 15px 100px;
-        justify-content: start;
-        color: #365a6e;
-    }
-
     .galeria-obrazkov {
         margin-top: 1cm;
         display: flex;
@@ -106,9 +220,9 @@
 
     .hlavny-obrazok {
         width: 100%;
-        max-width: 320px;
         height: auto;
         border-radius: 10px;
+        max-width: 320px;
         margin: 20px;
         margin-bottom: 0;
         object-fit: contain;
@@ -147,101 +261,17 @@
         border-radius: 5px;
     }
 
-    .detaily-produktu {
-        margin-top: 1cm;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        margin-right: 2cm;
-    }
-
-    .nazov-produktu {
-        font-size: 35px;
-        font-weight: bold;
-    }
-
-    .popis-produktu-velke {
-        font-size: 25px;
-        margin: 15px 0;
-    }
-
-    .popis-produktu {
-        font-size: 14px;
-    }
-
-    .cena-produktu {
-        display: flex;
-        align-items: center;
-        gap: 20px;
-        margin-top: 20px;
-    }
-
-    .cena {
-        background-color: #dbb4e7;
-        padding: 6px 14px;
-        font-weight: bold;
-        border-radius: 15px;
-        font-size: 30px;
-        text-align: center;
-        display: inline-block;
-    }
-
-    .vratane-dph {
-        font-size: 12px;
-    }
-
-    .vyber-mnozstva {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 25px;
-        background-color: #365a6e;
-        border-radius: 30px;
-        padding: 10px 20px;
-        color: white;
-        font-size: 20px;
-
-        .counter-button {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
-            padding: 0 10px;
-
-            &:hover {
-                color: #a9c6db;
-            }
-        }
-
-        .counter-value {
-            font-size: 18px;
-            font-weight: bold;
-        }
-    }
-
-    .tlacidlo {
-        margin: 0;
-    }
-
-    .tlacidlo button {
-        font-family: "Montserrat";
-        font-weight: bold;
-        width: 250px;
-        height: 50px;
-        margin-left: 4cm;
-        border: none;
-        cursor: pointer;
-        font-size: 25px;
-        background-color: #dbb4e7;
-        color: #365a6e;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 25px;
-    }
-
     @media (max-width: 768px) {
+        .quantity h3 {
+            margin: 0;
+        }
+
+        .product-card .right .description {
+            margin-bottom: 10px;
+        }
+        .product-card {
+            gap: 0;
+        }
         .hlavicka h1 {
             font-size: 40px;
         }
@@ -261,7 +291,6 @@
             max-width: 100%;
             height: auto;
             margin: 0;
-            max-height: 200px;
         }
 
         .galeria-nahladov {
@@ -272,11 +301,6 @@
         .nahlad {
             width: 40px;
             height: 40px;
-        }
-
-        .cena-produktu {
-            flex-direction: column;
-            gap: 10px;
         }
 
         .detaily-produktu {
@@ -298,11 +322,6 @@
             font-size: 12px;
         }
 
-        .cena {
-            font-size: 18px;
-            padding: 4px 8px;
-        }
-
         .vratane-dph {
             font-size: 10px;
         }
@@ -322,6 +341,14 @@
             width: 180px;
             margin-left: 0;
         }
+        .galeria-obrazkov {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            margin-top: 0;
+        }
     }
 </style>
 
@@ -330,7 +357,7 @@
         <h1>Zaujal vás náš produkt?</h1>
     </div>
 
-    <div class="produkt-kontajner">
+    <div class="product-card">
         <div class="galeria-obrazkov">
             <img class="hlavny-obrazok" src="/storage/products/{product.id}/{selectedImage}" alt="Hlavný obrázok produktu"/>
             <div class="galeria-nahladov">
@@ -346,26 +373,42 @@
             </div>
         </div>
 
-        <div class="detaily-produktu">
-            <span class="nazov-produktu">{product.name}</span>
-            <span class="popis-produktu-velke">{product.description}</span>
-
-            <div class="cena-produktu">
-                <div>
-                    <span class="cena">{product.price}€</span>
-                    <br />
-                    <span class="vratane-dph">Vrátane DPH</span>
+        <div class="right">
+            <h1>Rýchly a účinný odstraňovač krvi</h1>
+            <div class="description">
+                {product.description}
+            </div>
+            <div class="price">
+                {product.price}€
+                <small>Vrátane dane.</small>
+            </div>
+            <!--<div class="options">
+                <h3>Vyberte si veľkosť</h3>
+                <div class="size-buttons">
+                    <button
+                        class:selected={selectedSize === "10ml"}
+                        on:click={() => (selectedSize = "10ml")}
+                    >
+                        10ml
+                    </button>
+                    <button
+                        class:selected={selectedSize === "3ml"}
+                        on:click={() => (selectedSize = "3ml")}
+                    >
+                        3ml
+                    </button>
                 </div>
-
-                <div class="vyber-mnozstva">
-                    <button class="counter-button" on:click={decreaseQuantity}>&minus;</button>
-                    <span class="counter-value">{quantity}</span>
-                    <button class="counter-button" on:click={increaseQuantity}>&plus;</button>
+            </div>-->
+            <div class="quantity">
+                <h3>Množstvo</h3>
+                <div class="quantity-control">
+                    <button on:click={decreaseQuantity}>-</button>
+                    <span>{quantity}</span>
+                    <button on:click={increaseQuantity}>+</button>
                 </div>
-
-                <div class="tlacidlo">
-                    <button on:click={buyNow}>Kúpiť</button>
-                </div>
+            </div>
+            <div class="actions">
+                <button on:click={buyNow}>Kúpiť</button>
             </div>
         </div>
     </div>
