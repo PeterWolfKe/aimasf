@@ -106,16 +106,16 @@
 
     .hlavny-obrazok {
         width: 100%;
-        max-width: 400px;
+        max-width: 320px;
         height: auto;
         border-radius: 10px;
-        margin-top: 1cm;
+        margin: 20px;
         object-fit: contain;
         transition: transform 0.3s ease;
     }
 
     .hlavny-obrazok:hover {
-        transform: scale(1.1);
+        transform: scale(1.05);
     }
 
     .galeria-nahladov {
@@ -236,21 +236,81 @@
     }
 
     @media (max-width: 768px) {
+        .oddiel {
+            padding: 10px;
+        }
+
         .produkt-kontajner {
             grid-template-columns: 1fr;
+            margin: 0;
+            padding: 10px;
+            gap: 0;
         }
 
         .hlavny-obrazok {
             max-width: 100%;
+            height: auto;
+            margin: 0;
+            max-height: 200px;
         }
 
         .galeria-nahladov {
             gap: 5px;
+            margin-top: 5px;
         }
 
         .nahlad {
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
+        }
+
+        .cena-produktu {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .detaily-produktu {
+            margin-top: 10px;
+            margin-right: 0;
+            padding: 5px;
+        }
+
+        .nazov-produktu {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .popis-produktu-velke {
+            font-size: 14px; /* Smaller description */
+        }
+
+        .popis-produktu {
+            font-size: 12px; /* Adjust description text */
+        }
+
+        .cena {
+            font-size: 18px;
+            padding: 4px 8px;
+        }
+
+        .vratane-dph {
+            font-size: 10px;
+        }
+
+        .vyber-mnozstva button {
+            padding: 4px 8px;
+            font-size: 14px;
+        }
+
+        .vyber-mnozstva input {
+            font-size: 14px;
+            width: 40px;
+        }
+
+        .tlacidlo button {
+            font-size: 16px;
+            width: 180px;
+            margin-left: 0;
         }
     }
 </style>

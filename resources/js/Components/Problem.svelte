@@ -8,7 +8,6 @@
         background-color: $neutral-white;
         color: $text-color;
         padding: 6rem 2rem;
-        border-radius: 0.5rem;
         width: 100%;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         box-sizing: border-box;
