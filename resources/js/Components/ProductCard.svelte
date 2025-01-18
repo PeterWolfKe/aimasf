@@ -78,7 +78,7 @@
         h1 {
             font-weight: bold;
             color: white;
-            font-size: 50px;
+            font-size: 70px;
             margin: 0;
         }
     }
@@ -92,7 +92,7 @@
         display: grid;
         grid-template-columns: 1fr 2fr;
         gap: 20px;
-        margin: 15px 1cm;
+        margin: 15px 100px;
         justify-content: start;
         color: #365a6e;
     }
@@ -110,6 +110,7 @@
         height: auto;
         border-radius: 10px;
         margin: 20px;
+        margin-bottom: 0;
         object-fit: contain;
         transition: transform 0.3s ease;
     }
@@ -142,7 +143,7 @@
     .nahlad img {
         width: 100%;
         height: 100%;
-        object-fit: cover; /* Crop image to fit */
+        object-fit: cover;
         border-radius: 5px;
     }
 
@@ -192,26 +193,31 @@
     .vyber-mnozstva {
         display: flex;
         align-items: center;
-        gap: 5px;
-    }
-
-    .vyber-mnozstva button {
-        padding: 5px 10px;
-        border: none;
-        border-radius: 5px;
-        background-color: #85b2d2;
+        justify-content: center;
+        gap: 25px;
+        background-color: #365a6e;
+        border-radius: 30px;
+        padding: 10px 20px;
         color: white;
-        cursor: pointer;
-        font-size: 16px;
-    }
+        font-size: 20px;
 
-    .vyber-mnozstva input {
-        width: 50px;
-        text-align: center;
-        font-size: 16px;
-        padding: 5px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
+        .counter-button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0 10px;
+
+            &:hover {
+                color: #a9c6db;
+            }
+        }
+
+        .counter-value {
+            font-size: 18px;
+            font-weight: bold;
+        }
     }
 
     .tlacidlo {
@@ -236,6 +242,10 @@
     }
 
     @media (max-width: 768px) {
+        .hlavicka h1 {
+            font-size: 40px;
+        }
+
         .oddiel {
             padding: 10px;
         }
@@ -281,11 +291,11 @@
         }
 
         .popis-produktu-velke {
-            font-size: 14px; /* Smaller description */
+            font-size: 14px;
         }
 
         .popis-produktu {
-            font-size: 12px; /* Adjust description text */
+            font-size: 12px;
         }
 
         .cena {
@@ -348,9 +358,9 @@
                 </div>
 
                 <div class="vyber-mnozstva">
-                    <button on:click={decreaseQuantity}>&minus;</button>
-                    <input type="number" value={quantity} min="1" max="10" />
-                    <button on:click={increaseQuantity}>+</button>
+                    <button class="counter-button" on:click={decreaseQuantity}>&minus;</button>
+                    <span class="counter-value">{quantity}</span>
+                    <button class="counter-button" on:click={increaseQuantity}>&plus;</button>
                 </div>
 
                 <div class="tlacidlo">
