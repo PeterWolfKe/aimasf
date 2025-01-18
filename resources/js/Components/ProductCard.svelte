@@ -309,7 +309,7 @@
             momente.
         </div>
         <div class="price">
-            Cena Od 3,50€
+            Cena Od 6.49
             <small>Vrátane dane.</small>
         </div>
         <!--<div class="options">

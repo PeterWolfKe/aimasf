@@ -14,6 +14,10 @@ import Navbar from "../Components/Navbar.svelte";
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
+    h1 {
+        text-align: center;
+    }
+
     h2, h3 {
         color: #34495e;
         font-size: 1.5rem;
@@ -63,7 +67,7 @@ import Navbar from "../Components/Navbar.svelte";
 <Navbar></Navbar>
 <main class="app-container">
     <div class="terms">
-        <h2>Ochrana osobných údajov</h2>
+        <h1>Ochrana osobných údajov</h1>
 
         <h3>I. Základné ustanovenia</h3>
         <p>1. Správcom osobných údajov podľa čl. 4 bod 7 nariadenia Európskeho parlamentu a Rady (EÚ) 2016/679 o ochrane fyzických osôb pri spracovaní osobných údajov a o voľnom pohybe týchto údajov (ďalej len: "GDPR") je Aima, š.f. ,so sídlom Poštová 9, Košice, 04252, Slovenská Republika. (ďalej len: "správca").</p>

@@ -1,4 +1,8 @@
 <script lang="ts">
+    import Navbar from "../Components/Navbar.svelte";
+    import Footer from "../Components/Footer.svelte";
+    import logo from '/resources/assets/logo.png';
+
     export let order: { unique_order_id: string, amount: number };
     export let amount: number;
 </script>
@@ -6,95 +10,102 @@
 <style lang="scss">
     @use '../../scss/colors.scss' as *;
 
-    /* Apply border-box box-sizing for all elements */
     * {
         box-sizing: border-box;
     }
 
-    /* Full screen container */
-    .success-container {
-        background-color: $background-color;
-        color: $text-color;
-        padding: 2rem;
-        text-align: center;
-        border-radius: 10px;
-        width: 100%;
-        height: 100vh; /* Full height */
+    .app-container {
         display: flex;
         flex-direction: column;
-        justify-content: center;
         align-items: center;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        justify-content: center;
+        text-align: center;
+        padding: 6rem 0;
+        font-family: Arial, sans-serif;
+        background-color: $neutral-white;
     }
 
-    h1 {
-        font-size: 2.5rem;
-        margin-bottom: 1rem;
-        color: $primary-blue;
-    }
-
-    p {
-        font-size: 1.2rem;
+    .logo {
         margin-bottom: 1.5rem;
-        color: $dark-gray;
     }
 
-    .order-info {
+    .success-message {
+        font-size: 3.5rem;
+        font-weight: bold;
+        color: $primary-blue;
+        margin-bottom: 1rem;
+    }
+
+    .sub-message {
         font-size: 1rem;
-        margin-top: 1rem;
-        padding: 1rem;
-        background-color: $secondary-purple;
-        border-radius: 5px;
-        color: $secondary-dark-blue;
+        color: $primary-blue;
+        margin-bottom: 2rem;
     }
 
-    .back-button {
-        background-color: $button-background;
-        color: $neutral-white;
-        padding: 0.8rem 1.5rem;
+    .details {
+        display: flex;
+        gap: 20px;
+        font-size: 1rem;
+        color: $primary-blue;
+        margin-bottom: 2rem;
+    }
+
+    .details span {
+        font-weight: bold;
+    }
+
+    .button {
+        background-color: $primary-blue;
+        color: white;
+        font-size: 1rem;
+        font-weight: bold;
+        padding: 0.75rem 1.5rem;
         border: none;
-        border-radius: 5px;
+        border-radius: 1.5rem;
         cursor: pointer;
-        transition: background-color 0.3s;
-        font-size: 1rem;
         text-decoration: none;
-        display: inline-block;
-        margin-top: 2rem;
+        transition: background-color 0.5s ease, transform 0.5s ease;
     }
 
-    .back-button:hover {
-        background-color: $button-hover;
+    .button:hover {
+        transform: scale(1.05);
+        background-color: darken($primary-blue, 10%);
     }
 
-    /* Mobile responsiveness */
-    @media (max-width: 600px) {
-        h1 {
-            font-size: 2rem; /* Adjust font size for smaller screens */
+    @media (max-width: 768px) {
+        .success-message {
+            font-size: 2.5rem;
         }
 
-        p {
-            font-size: 1rem; /* Adjust paragraph text for mobile */
+        .sub-message {
+            font-size: 0.9rem;
         }
 
-        .order-info {
-            font-size: 0.9rem; /* Reduce font size for smaller screens */
+        .details div {
+            font-size: 0.9rem;
+            text-align: center;
         }
 
-        .back-button {
-            padding: 0.6rem 1.2rem; /* Smaller padding on mobile */
-            font-size: 0.9rem; /* Adjust font size for mobile */
+        .button {
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
         }
     }
 </style>
 
-<div class="success-container">
-    <h1>Platba bola úspešná!</h1>
-    <p>Ďakujeme za vašu platbu. Vaša transakcia bola úspešne dokončená.</p>
+<Navbar></Navbar>
 
-    <div class="order-info">
-        <p><strong>ID objednávky:</strong> {order.unique_order_id}</p>
-        <p><strong>Suma zaplatená:</strong> {amount} EUR</p>
+<main class="app-container" id="main-container">
+    <div class="logo">
+        <img src={logo} alt="Logo" width="128" height="128" />
     </div>
+    <div class="success-message">Vaša platba bola úspešná!</div>
+    <div class="sub-message">Ďakujeme za vašu platbu. Vaša transakcia bola úspešne dokončená</div>
+    <div class="details">
+        <div>ID objednávky: <span>{order.unique_order_id}</span></div>
+        <div>Suma: <span>{amount.toFixed(2)} €</span></div>
+    </div>
+    <a class="button" href="/">Návrat na domovskú obrazovku</a>
+</main>
 
-    <a href="/" class="back-button">Návrat na domovskú stránku</a>
-</div>
+<Footer></Footer>

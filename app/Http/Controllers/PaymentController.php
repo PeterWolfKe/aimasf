@@ -124,7 +124,7 @@ class PaymentController extends Controller
             $products = session('products', []);
 
 
-            $uniqueOrderId = Str::uuid()->toString();
+            $uniqueOrderId = Str::random(16);
 
             $transformedProducts = array_map(function ($product) {
                 return [
