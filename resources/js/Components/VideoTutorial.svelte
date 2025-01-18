@@ -16,7 +16,6 @@
         background-color: $secondary-purple;
         color: $text-color;
         padding: 2rem;
-        border-radius: 8px;
         display: flex;
         flex-direction: column;
         align-items: center;

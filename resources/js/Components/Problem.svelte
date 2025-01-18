@@ -14,17 +14,17 @@
         box-sizing: border-box;
         text-align: center;
         display: flex;
-        justify-content: space-between; /* Align the items horizontally */
-        align-items: flex-start; /* Align items at the top */
-        gap: 2rem; /* Adds space between the columns */
-        flex-wrap: wrap; /* Allows items to wrap on smaller screens */
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 2rem;
+        flex-wrap: wrap;
     }
 
     .problem .section {
         display: flex;
         flex-direction: column;
         align-items: center;
-        max-width: 45%; /* Adjust to control the width of each section */
+        max-width: 45%;
     }
 
     h2 {
@@ -48,7 +48,7 @@
     @media (max-width: 768px) {
         .problem {
             padding: 2rem 1rem;
-            flex-direction: column; /* Stack the sections vertically on small screens */
+            flex-direction: column;
             align-items: center;
         }
 

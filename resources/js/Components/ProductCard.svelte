@@ -60,6 +60,10 @@
 <style lang="scss">
     @use '../../scss/colors.scss' as *;
 
+    #product {
+        scroll-margin-top: 50px;
+    }
+
     .oddiel {
         font-family: "Montserrat", sans-serif;
         margin: 0;
@@ -102,16 +106,16 @@
 
     .hlavny-obrazok {
         width: 100%;
-        max-width: 400px; /* Adjusted max width */
+        max-width: 400px;
         height: auto;
         border-radius: 10px;
         margin-top: 1cm;
-        object-fit: contain; /* Maintain aspect ratio */
-        transition: transform 0.3s ease; /* Smooth zoom effect */
+        object-fit: contain;
+        transition: transform 0.3s ease;
     }
 
     .hlavny-obrazok:hover {
-        transform: scale(1.1); /* Slight zoom effect */
+        transform: scale(1.1);
     }
 
     .galeria-nahladov {
@@ -119,7 +123,7 @@
         justify-content: center;
         gap: 10px;
         margin-top: 10px;
-        flex-wrap: wrap; /* Allow wrapping for smaller screens */
+        flex-wrap: wrap;
     }
 
     .nahlad {
@@ -251,7 +255,7 @@
     }
 </style>
 
-<div class="oddiel">
+<div class="oddiel" id="product">
     <div class="hlavicka">
         <h1>Zaujal vás náš produkt?</h1>
     </div>
