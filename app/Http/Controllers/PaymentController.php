@@ -176,6 +176,7 @@ class PaymentController extends Controller
             // Apply discount if available
             $discount_code = session('discount', null);
             $discount = DiscountCode::where('code', $discount_code)->first();
+            $discountCodeValue = $discount ? $discount_code['code'] : null;
 
             if ($discount && $discount->active && (!$discount->valid_until || $discount->valid_until >= now())) {
                 $stripeCouponId = $discount->stripe_coupon_id;
@@ -208,6 +209,13 @@ class PaymentController extends Controller
                 ]);
             }
 
+            $orderProducts = array_map(function ($product) {
+                return [
+                    'id' => $product['id'],
+                    'quantity' => $product['quantity'],
+                ];
+            }, $products);
+
             Order::create([
                 'unique_order_id' => $uniqueOrderId,
                 'email' => $request->input('userDetails.email'),
@@ -219,14 +227,9 @@ class PaymentController extends Controller
                 'city' => $request->input('userDetails.city'),
                 'phone' => $request->input('userDetails.phone'),
                 'delivery_method' => $request->input('userDetails.deliveryMethod'),
-                'products' => json_encode(array_map(function ($product) {
-                    return [
-                        'id' => $product['id'],
-                        'quantity' => $product['quantity'],
-                    ];
-                }, $products)),
+                'products' => json_encode($orderProducts),
                 'paid' => false,
-                'discount_code' => $discount ? $discount['code'] : null,
+                'discount_code' => $discountCodeValue,
             ]);
 
             return response()->json([
@@ -269,9 +272,7 @@ class PaymentController extends Controller
                     ];
                 }, json_decode($order->products, true));
 
-                $totalPrice = array_reduce($products, function ($carry, $product) {
-                    return $carry + ($product['price'] * $product['quantity']);
-                }, 0);
+                $totalPrice = $order->getFullPrice();
 
                 $details = [
                     'first_name' => $order->first_name,

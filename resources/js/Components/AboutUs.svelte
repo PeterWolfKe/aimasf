@@ -1,4 +1,5 @@
 <script>
+    import aima_team from '/resources/assets/aima_team.jpg';
 </script>
 
 <style lang="scss">
@@ -17,11 +18,11 @@
         flex-direction: row;
         align-items: center;
         justify-content: center;
-        text-align: left;
+        text-align: justify;
     }
 
     .text-content {
-        margin-right: 20px;
+        margin-right: 80px;
         max-width: 600px;
     }
 
@@ -42,7 +43,7 @@
     }
 
     .about-image {
-        width: 100%;
+        width: 500px;
         height: auto;
         border-radius: 30px;
     }
@@ -66,9 +67,10 @@
         p {
             font-size: 18px;
         }
-
-        .image-container {
-            max-width: 100%;
+        .about-image {
+            width: 80%;
+            max-width: 400px;
+            margin: 0 auto;
         }
     }
 </style>
@@ -85,7 +87,7 @@
             </p>
         </div>
         <div class="image-container">
-            <img src="https://testaima.my.canva.site/media/4f2e18099688604bd85b812a0c2435aa.jpg" alt="About Us" class="about-image" />
+            <img src={aima_team} alt="About Us" class="about-image" />
         </div>
     </div>
 </section>

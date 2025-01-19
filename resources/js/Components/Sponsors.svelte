@@ -7,6 +7,8 @@
 </script>
 
 <style lang="scss">
+    @use '../../scss/colors.scss' as *;
+
     #sponsors {
         padding-bottom: 40px;
         background-color: white;
@@ -34,7 +36,7 @@
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
-        background-color: #007bff;
+        background-color: $primary-blue;
         color: white;
         border: none;
         padding: 12px 20px;

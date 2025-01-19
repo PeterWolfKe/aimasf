@@ -4,48 +4,33 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\Product;
+use Illuminate\Support\Facades\App;
 use Carbon\Carbon;
-use ConsoleTVs\Invoices\Classes\Invoice;
+use LaravelDaily\Invoices\Invoice;
+use LaravelDaily\Invoices\Classes\Buyer;
+use LaravelDaily\Invoices\Classes\Party;
+use LaravelDaily\Invoices\Classes\InvoiceItem;
 
 class InvoiceController extends Controller
 {
     public function generateInvoice($orderId)
     {
+
+        App::setLocale('sk');
         $order = Order::where('unique_order_id', $orderId)->firstOrFail();
 
-        $productDetails = json_decode($order->products, true);
-
-        $invoice = Invoice::make()
-            ->number($order->unique_order_id)
-            ->due_date(Carbon::parse($order->created_at)->addDays(30))
-            ->customer([
-                'name'      => 'Èrik Campobadal Forés',
-                'id'        => '12345678A',
-                'phone'     => '+34 123 456 789',
-                'location'  => 'C / Unknown Street 1st',
-                'zip'       => '08241',
-                'city'      => 'Manresa',
-                'country'   => 'Spain',
-            ])
-            ->notes('Thank you for your purchase!');
-
-        foreach ($productDetails as $productDetail) {
-            $product = Product::find($productDetail['id']);
-
-            if ($product) {
-                $productImages = json_decode($product->product_images, true);
-                $image = $productImages[0] ?? null;
-
-                $invoice->addItem(
-                    $product->name,
-                    $product->price,
-                    $productDetail['quantity'],
-                    $productDetail['quantity'] * $product->price,
-                );
-            }
-        }
-        $invoice->business([
-            'name' => 'Aimasf',
+        $buyer = new Buyer([
+            'name' => $order->first_name . ' ' . $order->last_name,
+            'custom_fields' => [
+                'Email' => $order->email,
+                'Telefónne číslo' => $order->phone,
+                'Adresa' => $order->address . ($order->apartment_suite ? ', ' . $order->apartment_suite : ''),
+                'Mesto' => $order->city,
+                'PSČ' => $order->postal_code,
+            ],
+        ]);
+        $seller = new Party([
+            'name' => 'Amazon',
             'address' => 'Poštová 9',
             'city' => 'Košice',
             'postal_code' => '042 42',
@@ -53,6 +38,31 @@ class InvoiceController extends Controller
             'email' => 'aima@aimasf.sk',
             'website' => 'https://www.aimasf.sk',
         ]);
+
+        $productDetails = json_decode($order->products, true);
+        $items = [];
+
+        foreach ($productDetails as $productDetail) {
+            $product = Product::find($productDetail['id']);
+            if ($product) {
+                $items[] = (new InvoiceItem())
+                    ->title($product->name)
+                    ->pricePerUnit($product->price)
+                    ->quantity($productDetail['quantity']);
+            }
+        }
+
+        $invoice = Invoice::make()
+            ->seller($seller)
+            ->buyer($buyer)
+            ->date($order->created_at)
+            ->dateFormat('d-m-Y')
+            ->currencySymbol('€')
+            ->currencyCode('EUR')
+            ->notes('Ďakujeme za Váš nákup!')
+            ->addItems($items);
+
+        dd($order->getFullPrice());
 
         return $invoice->download('invoice_' . $order->unique_order_id . '.pdf');
     }
