@@ -150,7 +150,7 @@ class PaymentController extends Controller
                         'price_data' => [
                             'currency' => 'eur',
                             'product_data' => [
-                                'name' => $dbProduct->name . ' (' . $product['selected_size'] . ')',
+                                'name' => $dbProduct->name,
                             ],
                             'unit_amount' => $dbProduct->price * 100,
                         ],

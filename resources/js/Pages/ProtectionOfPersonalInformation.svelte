@@ -22,6 +22,9 @@ import Navbar from "../Components/Navbar.svelte";
 
     h1 {
         text-align: center;
+        color: #2c3e50;
+        font-size: 2rem;
+        margin-bottom: 20px;
     }
 
     h2, h3 {
@@ -80,7 +83,7 @@ import Navbar from "../Components/Navbar.svelte";
         <p>2. Kontaktné údaje správcu sú:</p>
         <ul>
             <li>adresa: Poštová 9 Košice, 04252</li>
-            <li>email: <a href="mailto:aima@aimasf.sk">aima@aimasf.sk</a></li>
+            <li>email: aima@aimasf.sk</li>
         </ul>
         <p>3. Osobnými údajmi sú všetky informácie o identifikovanej alebo identifikovateľnej fyzickej osobe; identifikovateľnou fyzickou osobou je fyzická osoba, ktorú možno priamo alebo nepriamo identifikovať, najmä odkazom na určitý identifikátor, napríklad meno, identifikačné číslo, lokačné údaje, sieťový identifikátor alebo pomocou jedného alebo viacerých špecifických faktorov, fyziologických, genetických, mentálnych, ekonomických, kultúrnych alebo spoločenských.</p>
         <p>4. Správca nemenoval poverenca pre ochranu osobných údajov.</p>

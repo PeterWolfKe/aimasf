@@ -121,7 +121,9 @@ import Footer from "../Components/Footer.svelte";
 
         <p>1. Všetky ceny uvedené na www.aimasf.sk sú vrátane DPH a sú platné pre moment v čase odoslania objednávky.</p>
 
-        <p>2. Prevádzkovateľ si vyhradzuje právo požadovať od kupujúceho platbu vopred bez udania dôvodu, obvykle v prípadoch kedy náklady na doručenie prevyšujú sumu objednaných položiek.</p>
+        <p>2. Kúpna cena je splatná najneskôr pri prevzatí tovaru (na dobierku) prípadne v termíne uvedenom na faktúre (pri platbe vopred), pokiaľ sa obe strany nedohodli inak.</p>
+
+        <p>3. Prevádzkovateľ si vyhradzuje právo požadovať od kupujúceho platbu vopred bez udania dôvodu, obvykle v prípadoch kedy náklady na doručenie prevyšujú sumu objednaných položiek.</p>
 
         <p>4. V prípade odmietnutia zaplatiť objednávku vopred, prevádzkovateľ považuje objednávku za neplatnú.</p>
 
@@ -147,7 +149,7 @@ import Footer from "../Components/Footer.svelte";
 
         <p>1. Prevádzkovateľ si vyhradzuje právo zmeniť formu prepravy pri objednávke tovaru, ktorý aj napriek svojej hmotnosti nespĺňa podmienky zvolenej formy prepravy, alebo váhovo po zabalení spadá do vyššej cenovej kategórie prepravcu.</p>
 
-        <p>2. Poštovné sa riadi zmluvnými cenami Slovenskej pošty a zmluvnými cenami spoločnosti Slovak Parcel Service.</p>
+        <p>2. Poštovné sa riadi zmluvnými cenami Slovenskej pošty a zmluvnými cenami spoločnosti Slovak Parcel Service s.r.o.</p>
 
         <p>3. Cena za poštovné a balné bude zobrazená v košíku pri objednávaní kupujúcim na základe hmotnosti realizovanej objednávky.</p>
 

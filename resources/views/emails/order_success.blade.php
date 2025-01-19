@@ -84,7 +84,7 @@
         <h3>Zakúpené produkty</h3>
         <ul>
             @foreach ($details['products'] as $product)
-                <li>{{ $product['name'] }} {{ $product['size'] }} – {{ $product['quantity'] }} ks</li>
+                <li>{{ $product['name'] }} – {{ $product['quantity'] }} ks</li>
             @endforeach
         </ul>
 

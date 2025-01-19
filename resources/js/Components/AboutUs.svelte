@@ -6,6 +6,7 @@
     @use '../../scss/colors.scss' as *;
 
     #about-us {
+        scroll-margin-top: 70px;
         display: flex;
         justify-content: center;
         align-items: center;
