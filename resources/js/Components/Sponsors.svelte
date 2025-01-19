@@ -1,9 +1,9 @@
 <script>
-    import datacomp from '/resources/assets/datacomp.png';
-    import kvety_interesante from '/resources/assets/kvety-interesante.png';
-    import repro_centrum from '/resources/assets/repro-centrum.jpg';
-    import rezke from '/resources/assets/rezke.webp';
-    import vlny_sk from '/resources/assets/vlny-sk.png';
+    let datacomp = '/storage/images/datacomp.png';
+    let kvety_interesante = '/storage/images/kvety-interesante.png';
+    let repro_centrum = '/storage/images/repro-centrum.jpg';
+    let rezke = '/storage/images/rezke.webp';
+    let vlny_sk = '/storage/images/vlny-sk.png';
 </script>
 
 <style lang="scss">
@@ -12,6 +12,7 @@
     #sponsors {
         padding-bottom: 40px;
         background-color: white;
+        border-top: white solid;
     }
 
     .container {

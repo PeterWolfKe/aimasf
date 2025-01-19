@@ -1,5 +1,5 @@
 <script>
-    import aima_team from '/resources/assets/aima_team.jpg';
+    let aima_team = '/storage/images/aima_team.jpg';
 </script>
 
 <style lang="scss">
@@ -9,7 +9,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 20px;
+        padding: 70px 20px 20px;
         background-color: $neutral-white;
     }
 
@@ -49,6 +49,9 @@
     }
 
     @media (max-width: 768px) {
+        #about-us {
+            padding: 20px 20px;
+        }
         .content {
             flex-direction: column;
             text-align: center;

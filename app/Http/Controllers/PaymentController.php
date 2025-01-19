@@ -173,7 +173,6 @@ class PaymentController extends Controller
                 'quantity' => 1,
             ];
 
-            // Apply discount if available
             $discount_code = session('discount', null);
             $discount = DiscountCode::where('code', $discount_code)->first();
             $discountCodeValue = $discount ? $discount_code['code'] : null;
@@ -205,7 +204,7 @@ class PaymentController extends Controller
                         'unique_order_id' => $uniqueOrderId,
                     ],
                     'success_url' => url('/payment-success?session_id={CHECKOUT_SESSION_ID}'),
-                    'cancel_url' => url('/payment-cancel'),
+                    'cancel_url' => url('/payment'),
                 ]);
             }
 
@@ -259,9 +258,6 @@ class PaymentController extends Controller
         if ($order) {
             $order->update(['paid' => true]);
             if (!$order->mail_sended) {
-                $order->mail_sended = true;
-                $order->save();
-
                 $products = array_map(function ($item) {
                     $product = Product::find($item['id']);
                     return [
@@ -283,7 +279,12 @@ class PaymentController extends Controller
                     'total_price' => $totalPrice,
                 ];
 
-                Mail::to($order->email)->send(new OrderSuccessMail($details));
+                $invoiceController = new InvoiceController();
+                $invoicePdf = $invoiceController->generateInvoice($uniqueOrderId);
+
+                Mail::to($order->email)->send(new OrderSuccessMail($details, $invoicePdf));
+                $order->mail_sended = true;
+                $order->save();
             }
         }
 

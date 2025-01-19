@@ -62,8 +62,8 @@ class InvoiceController extends Controller
             ->notes('Ďakujeme za Váš nákup!')
             ->addItems($items);
 
-        dd($order->getFullPrice());
+        $pdfRendered = $invoice->render()->output;
 
-        return $invoice->download('invoice_' . $order->unique_order_id . '.pdf');
+        return $pdfRendered;
     }
 }

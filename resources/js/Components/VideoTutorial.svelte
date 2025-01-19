@@ -2,7 +2,7 @@
     import start_button from '/resources/assets/start_button.png';
 
     let isVideoPlaying = false;
-    const videoUrl = 'https://videos.pexels.com/video-files/6548176/6548176-hd_1920_1080_24fps.mp4';
+    const videoUrl = '/storage/videos/aima_tutorial.mp4';
 
     const playVideo = () => {
         isVideoPlaying = true;
