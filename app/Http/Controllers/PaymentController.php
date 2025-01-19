@@ -132,7 +132,12 @@ class PaymentController extends Controller
             $shippingOption = ShippingOptions::where('id', $request->input('userDetails.deliveryMethod'))->first();
             $products = session('products', []);
 
-            $uniqueOrderId = collect(str_split(Str::random(16, '1234567890'), 4))->join('-');
+            $uniqueOrderId = implode('-', [
+                mt_rand(1000, 9999),
+                mt_rand(1000, 9999),
+                mt_rand(1000, 9999),
+                mt_rand(1000, 9999)
+            ]);
 
             $stripeLineItems = [];
             $totalPrice = 0;

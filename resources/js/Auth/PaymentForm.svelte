@@ -19,7 +19,7 @@
     let baseTotalPrice: number = 0;
     let totalPrice: number = 0;
     let shippingPrice: string = '0';
-    let shippingPriceDisplay: string = 'ZADARMO';
+    let shippingPriceDisplay: string;
     export let appliedDiscount: number = 0;
 
     let discountCode = '';
@@ -119,9 +119,12 @@
         if (selectedShippingOption && selectedShippingOption.price !== '0') {
             shippingPriceDisplay = selectedShippingOption.price + " €";
             totalPrice += parseFloat(selectedShippingOption.price);
-        }else{
+        }else if(selectedShippingOption && selectedShippingOption.price == '0'){
             shippingPriceDisplay = "ZADARMO";
+        }else {
+            shippingPriceDisplay = "";
         }
+        console.log(shippingPriceDisplay);
         if (appliedDiscount != 0){
             totalPrice -= totalPrice*(appliedDiscount/100);
         }
@@ -861,10 +864,12 @@
                         {/each}
                     <div class="summary-product">
                         <div class="details">
-                            <span>
-                                Cena dopravy:
-                                <span>{shippingPriceDisplay}</span>
-                            </span>
+                            {#if shippingPriceDisplay}
+                                <span>
+                                    Cena dopravy:
+                                    <span>{shippingPriceDisplay}</span>
+                                </span>
+                            {/if}
                             {#if appliedDiscount}
                                 <span>
                                 Zľava: {appliedDiscount}%

@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Inertia\Inertia;
+use function Termwind\render;
 
 class EmailSubscriptionController extends Controller
 {
@@ -39,6 +41,6 @@ class EmailSubscriptionController extends Controller
         $subscription->is_confirmed = true;
         $subscription->save();
 
-        return response()->json(['message' => 'Váš e-mail bol úspešne potvrdený']);
+        return Inertia::render('EmailVerified');
     }
 }

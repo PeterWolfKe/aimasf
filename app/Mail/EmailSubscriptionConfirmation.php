@@ -21,6 +21,6 @@ class EmailSubscriptionConfirmation extends Mailable
     {
         return $this->view('emails.email_subscription_confirmation')
             ->with(['token' => $this->token])
-            ->subject('Please Confirm Your Email Subscription');
+            ->subject('Potvrdenie odberu noviniek');
     }
 }

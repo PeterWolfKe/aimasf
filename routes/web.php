@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmailSubscriptionController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\InvoiceController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -60,3 +61,6 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
 });
+
+//TESTING
+Route::get('/generate-invoice/{orderId}', [InvoiceController::class, 'generateInvoice']);
