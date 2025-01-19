@@ -13,7 +13,7 @@
         justify-content: center;
         background-color: #f0f0f0;
         height: 800px;
-        margin-top: 50px;
+        margin-top: 70px;
     }
 
     .image {

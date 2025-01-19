@@ -73,7 +73,6 @@
         box-sizing: border-box;
         background-color: $primary-blue;
         color: $neutral-white;
-        box-shadow: 0 4px 2px -2px gray;
         transition: height 0.5s ease, padding 0.5s ease;
         &:not(.sticky) {
             transition: none;

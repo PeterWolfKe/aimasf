@@ -7,6 +7,7 @@
     export let stripePublicKey;
     export let productsData;
     export let shippingOptions;
+    export let discount;
     let isSticky = false;
 </script>
 
@@ -62,6 +63,6 @@
 
 <Navbar isSticky={false}></Navbar>
 <main class="app-container class:sticky={isSticky}">
-    <PaymentForm stripePublicKey={stripePublicKey} productsData={productsData} shippingOptions={shippingOptions}/>
+    <PaymentForm stripePublicKey={stripePublicKey} productsData={productsData} shippingOptions={shippingOptions} appliedDiscount={discount}/>
 </main>
 <Footer></Footer>

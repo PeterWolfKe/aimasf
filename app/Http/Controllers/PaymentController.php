@@ -47,10 +47,14 @@ class PaymentController extends Controller
         }, $sessionProducts);
         $productsWithDetails = array_filter($productsWithDetails);
 
+        $discount = session('discount', null);
+        $discount_percentage = $discount ? $discount['percentage'] : 0;
+
         return Inertia::render('Payment', [
             'stripePublicKey' => config('stripe.public_key'),
             'productsData' => $productsWithDetails,
             'shippingOptions' => $shippingOptions,
+            'discount' => $discount_percentage,
         ])
         ->toResponse($request)
         ->withHeaders([
@@ -184,7 +188,7 @@ class PaymentController extends Controller
                         ],
                     ],
                     'success_url' => url('/payment-success?session_id={CHECKOUT_SESSION_ID}'),
-                    'cancel_url' => url('/payment-cancel'),
+                    'cancel_url' => url('/payment'),
                 ]);
             } else {
                 $session = Session::create([
@@ -278,6 +282,7 @@ class PaymentController extends Controller
         }
 
         session()->forget('products');
+        session()->forget('discount');
         return Inertia::render('PaymentSuccess', [
             'order' => $order,
             'amount' => $amount

@@ -202,6 +202,7 @@
     .hlavicka {
         text-align: center;
         padding: 10px 0;
+        margin-bottom: 10px;
 
         h1 {
             font-weight: bold;

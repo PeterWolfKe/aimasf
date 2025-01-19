@@ -109,7 +109,7 @@
         font-size: 1rem;
         padding: 0.5rem;
         border-radius: 5px;
-        max-width: 90%;
+        max-width: 70%;
     }
 
     .message.success {

@@ -20,7 +20,7 @@
     let totalPrice: number = 0;
     let shippingPrice: string = '0';
     let shippingPriceDisplay: string = 'ZADARMO';
-    let appliedDiscount: number = 0;
+    export let appliedDiscount: number = 0;
 
     let discountCode = '';
     let discountMessage = '';
@@ -117,10 +117,11 @@
         totalPrice = (productsData || []).reduce((total, product) => total + product.price * product.quantity, 0);
         const selectedShippingOption = shippingOptions.find(option => option.id === userDetails.deliveryMethod);
         if (selectedShippingOption && selectedShippingOption.price !== '0') {
+            shippingPriceDisplay = selectedShippingOption.price + " €";
             totalPrice += parseFloat(selectedShippingOption.price);
+        }else{
+            shippingPriceDisplay = "ZADARMO";
         }
-        console.log(totalPrice);
-        console.log(appliedDiscount);
         if (appliedDiscount != 0){
             totalPrice -= totalPrice*(appliedDiscount/100);
         }
@@ -264,6 +265,10 @@
         display: block;
         font-size: 0.9rem;
         margin-bottom: 0.5rem;
+    }
+    .form-container .star {
+        font-size: 0.9rem;
+        color:red;
     }
 
     .form-container input {
@@ -613,6 +618,7 @@
                 border: 1px solid #ddd;
                 border-radius: 4px;
                 outline: none;
+                margin: 0;
                 transition: border-color 0.3s ease;
 
                 &:focus {
@@ -637,7 +643,8 @@
         }
 
         .discount-message {
-            margin-top: 0.5rem;
+            margin: 0;
+            margin-top: 8px;
             font-size: 0.9rem;
 
             &.success {
@@ -703,7 +710,7 @@
 <div class="container">
     <div class="form-container">
         <h2>Kontakt</h2>
-        <label for="email">E-mail</label>
+        <label for="email"><span class="star">*</span>E-mail</label>
         <input
             type="email"
             id="email"
@@ -713,7 +720,7 @@
         />
         <div style="display: flex; gap: 1rem;">
             <div class="form-contact-wrapper" style="flex: 1;">
-                <label for="firstName">Meno</label>
+                <label for="firstName"><span class="star">*</span>Meno</label>
                 <input
                     type="text"
                     id="firstName"
@@ -723,7 +730,7 @@
                 />
             </div>
             <div class="form-contact-wrapper" style="flex: 1;">
-                <label for="lastName">Priezvisko</label>
+                <label for="lastName"><span class="star">*</span>Priezvisko</label>
                 <input
                     type="text"
                     id="lastName"
@@ -735,7 +742,7 @@
         </div>
         <div style="display: flex; gap: 1rem;">
             <div class="form-contact-wrapper" style="flex: 1;">
-                <label for="address">Adresa</label>
+                <label for="address"><span class="star">*</span>Adresa</label>
                 <input
                     type="text"
                     id="address"
@@ -756,7 +763,7 @@
         </div>
         <div style="display: flex; gap: 1rem;">
             <div class="form-contact-wrapper" style="flex: 1;">
-                <label for="postalCode">PSČ</label>
+                <label for="postalCode"><span class="star">*</span>PSČ</label>
                 <input
                     type="text"
                     id="postalCode"
@@ -766,7 +773,7 @@
                 />
             </div>
             <div class="form-contact-wrapper" style="flex: 1;">
-                <label for="city">Mesto</label>
+                <label for="city"><span class="star">*</span>Mesto</label>
                 <input
                     type="text"
                     id="city"
@@ -848,16 +855,21 @@
                                 </div>
                                 <div class="details">
                                     <span class="title">{product.name || 'Nemenovaný produkt'} <span>{product.size}</span></span>
-                                    <span>€{(Number(product.price) || 0).toFixed(2)}</span>
+                                    <span>{(Number(product.price) || 0).toFixed(2)} €</span>
                                 </div>
                             </div>
                         {/each}
                     <div class="summary-product">
                         <div class="details">
-                        <span>
-                            Cena dopravy:
-                            <span>{shippingPriceDisplay}</span>
-                        </span>
+                            <span>
+                                Cena dopravy:
+                                <span>{shippingPriceDisplay}</span>
+                            </span>
+                            {#if appliedDiscount}
+                                <span>
+                                Zľava: {appliedDiscount}%
+                                </span>
+                            {/if}
                         </div>
                     </div>
                     <div class="summary-price">
