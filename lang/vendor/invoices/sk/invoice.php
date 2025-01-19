@@ -9,7 +9,7 @@ return [
 
     'invoice'                => 'Faktúra',
     'serial'                 => 'Faktúra č.',
-    'date'                   => 'Dátum',
+    'date'                   => 'Dátum vyhotovenia',
     'seller'                 => 'Predávajúci',
     'buyer'                  => 'Kupujúci',
     'address'                => 'Adresa',

@@ -27,7 +27,7 @@ class Order extends Model
     {
         return $this->belongsTo(ShippingOptions::class, 'delivery_method', 'id');
     }
-    public function getFullPrice()
+    public function getFullPrice(): float
     {
         $products = json_decode($this->products, true);
 

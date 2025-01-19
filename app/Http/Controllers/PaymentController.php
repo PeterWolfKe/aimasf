@@ -166,7 +166,7 @@ class PaymentController extends Controller
                 'price_data' => [
                     'currency' => 'eur',
                     'product_data' => [
-                        'name' => 'Shipping: ' . $shippingOption->title,
+                        'name' => 'Spôsob dopravy: ' . $shippingOption->title,
                     ],
                     'unit_amount' => $shippingOption->price * 100,
                 ],
@@ -252,11 +252,10 @@ class PaymentController extends Controller
 
         $uniqueOrderId = $session->metadata->unique_order_id;
 
-        $amount = $session->amount_total / 100;
-
         $order = Order::where('unique_order_id', $uniqueOrderId)->first();
         if ($order) {
             $order->update(['paid' => true]);
+            $amount = $order->getFullPrice();
             if (!$order->mail_sended) {
                 $products = array_map(function ($item) {
                     $product = Product::find($item['id']);
