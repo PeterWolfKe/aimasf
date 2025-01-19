@@ -12,6 +12,7 @@
 
     import { onMount } from 'svelte';
     import ProductCard from "../Components/ProductCard.svelte";
+    import Sponsors from "../Components/Sponsors.svelte";
 
     export let product;
     export let productImages: string[] = [];
@@ -108,5 +109,6 @@
     <ProductCard product={product} productImages={productImages}></ProductCard>
     <VideoTutorial></VideoTutorial>
     <AboutUs></AboutUs>
+    <Sponsors></Sponsors>
 </main>
 <Footer></Footer>
