@@ -3,9 +3,9 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmailSubscriptionController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Middleware\HomeController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 

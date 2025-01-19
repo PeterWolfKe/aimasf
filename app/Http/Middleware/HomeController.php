@@ -1,11 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Middleware;
 
-use App\Models\EmailSubscription;
+use App\Http\Controllers\Controller;
 use App\Models\Product;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 
 class HomeController extends Controller
@@ -13,6 +11,7 @@ class HomeController extends Controller
     public function index()
     {
         session()->forget('products'); //Temporary
+        session()->forget('discount');
         $id = "00000001";
 
         $product = Product::findOrFail($id);
