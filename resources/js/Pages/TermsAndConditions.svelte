@@ -6,7 +6,7 @@ import Footer from "../Components/Footer.svelte";
 <style lang="scss">
     @use '../../scss/colors.scss' as *;
 
-    :global(#app) {
+    .app-container {
         background-color: $primary-mint;
     }
 
