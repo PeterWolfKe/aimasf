@@ -13,9 +13,9 @@
         box-sizing: border-box;
         text-align: center;
         display: flex;
-        justify-content: space-between;
         align-items: flex-start;
-        gap: 2rem;
+        justify-content: center;
+        gap: 15rem;
         flex-wrap: wrap;
     }
 
@@ -23,7 +23,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        max-width: 45%;
+        max-width: 30%;
     }
 
     h2 {
@@ -47,6 +47,7 @@
     @media (max-width: 768px) {
         .problem {
             padding: 2rem 1rem;
+            gap: 2rem;
             flex-direction: column;
             align-items: center;
         }
@@ -67,7 +68,7 @@
 
 <div class="problem">
     <div class="section">
-        <h2>Problém:</h2>
+        <h2>Problém</h2>
         <p>
             <strong>Krvavé škvrny</strong>
             predstavujú pre ženy častý a nepríjemný problém, ktorý sa môže objaviť v tých najnevhodnejších momentoch. Nezáleží na tom, či ide o hektický pracovný deň,
@@ -75,7 +76,7 @@
         </p>
     </div>
     <div class="section">
-        <h2>Naše riešenie:</h2>
+        <h2>Naše riešenie</h2>
         <p>
             Aima prináša okamžitý odstraňovač krvi, ktorý je
             navrhnutý tak, aby sa pohodlne zmestil do tašky aj kabelky. Tento praktický produkt

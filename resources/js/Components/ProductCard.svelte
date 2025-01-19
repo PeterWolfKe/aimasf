@@ -353,7 +353,7 @@
 
 <div class="oddiel" id="product">
     <div class="hlavicka">
-        <h1>Produkt</h1>
+        <h1>Zaujal vás náš produkt?</h1>
     </div>
 
     <div class="product-card">
@@ -373,13 +373,13 @@
         </div>
 
         <div class="right">
-            <h1>Rýchly a účinný odstraňovač krvi</h1>
+            <h1>{product.name}</h1>
             <div class="description">
                 {product.description}
             </div>
             <div class="price">
-                {product.price}€
-                <small>Vrátane dane.</small>
+                {product.price} €
+                <small>vrátane dane</small>
             </div>
             <!--<div class="options">
                 <h3>Vyberte si veľkosť</h3>

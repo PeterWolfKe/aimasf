@@ -13,6 +13,7 @@
     import { onMount } from 'svelte';
     import ProductCard from "../Components/ProductCard.svelte";
     import Sponsors from "../Components/Sponsors.svelte";
+    import BeforeAfter from "../Components/BeforeAfter.svelte";
 
     export let product;
     export let productImages: string[] = [];

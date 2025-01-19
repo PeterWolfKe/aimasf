@@ -3,6 +3,7 @@
 
     let isVideoPlaying = false;
     const videoUrl = '/storage/videos/aima_tutorial.mp4';
+    const videoThumbnail = '/storage/images/tutorial_thumbnail.jpg'
 
     const playVideo = () => {
         isVideoPlaying = true;
@@ -104,7 +105,7 @@
     <h2 class="title">Videotutoriál</h2>
     <div class="image-container">
         {#if !isVideoPlaying}
-            <img class="image" src="https://testaima.my.canva.site/media/a1536b55f6bfa3582cd44bd9e41fe4c2.jpg" alt="">
+            <img class="image" src={videoThumbnail} alt="">
             <button class="button" on:click={playVideo}>
                 <img src={start_button} alt="Start Button">
             </button>

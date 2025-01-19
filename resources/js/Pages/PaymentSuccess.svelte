@@ -100,7 +100,7 @@
         <img src={logo} alt="Logo" width="128" height="128" />
     </div>
     <div class="success-message">Vaša platba bola úspešná!</div>
-    <div class="sub-message">Ďakujeme za vašu platbu. Vaša transakcia bola úspešne dokončená</div>
+    <div class="sub-message">Ďakujeme za vašu platbu. Vaša transakcia bola úspešne dokončená.</div>
     <div class="details">
         <div>ID objednávky: <span>{order.unique_order_id}</span></div>
         <div>Suma: <span>{amount.toFixed(2)} €</span></div>
