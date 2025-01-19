@@ -113,6 +113,10 @@ import Footer from "../Components/Footer.svelte";
 
         <p>6. Predajca si vyhradzuje právo zmeny spôsobu doručenia zásielky, ak povaha objednaných produktov nezodpovedá požiadavkám prepravcu.</p>
 
+        <p>7. Zásielky zasielané službou Slovak Parcel Service</p>
+
+        <p>8. Zásielky zasielané Slovenskou poštou – bez obmedzenia</p>
+
         <h2>IV. Kúpna cena a možnosti platby</h2>
 
         <p>1. Všetky ceny uvedené na www.aimasf.sk sú vrátane DPH a sú platné pre moment v čase odoslania objednávky.</p>
