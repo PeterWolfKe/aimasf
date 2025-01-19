@@ -171,6 +171,10 @@
                 box-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
                 caret-color: $neutral-white;
             }
+            @media (max-width: 768px) {
+                width: 250px;
+            }
+
         }
 
         button {
