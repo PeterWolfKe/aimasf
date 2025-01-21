@@ -39,60 +39,72 @@
     }
 
     .login-form-container {
-        max-width: 900px;
-        width: 400px;
-        margin: 3rem auto;
-        padding: 2.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .form-card {
         background-color: $neutral-white;
-        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-        border-radius: 10px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        border-radius: 12px;
+        padding: 2rem 2.5rem;
+        width: 100%;
+        max-width: 450px;
+        transition: transform 0.3s ease;
+    }
+
+    .form-card:hover {
+        transform: translateY(-5px);
     }
 
     h2 {
         text-align: center;
-        margin-bottom: 2rem;
-        font-size: 1.75rem;
-        color: $text-color;
+        margin-bottom: 1.5rem;
+        font-size: 2rem;
+        color: $primary-blue;
     }
 
     .form-group {
-        margin-bottom: 1.75rem;
+        margin-bottom: 1.5rem;
     }
 
     label {
         display: block;
-        margin-bottom: 0.75rem;
+        margin-bottom: 0.5rem;
         font-weight: bold;
         font-size: 1rem;
+        color: $text-color;
     }
 
     input[type="email"],
     input[type="password"] {
         width: 100%;
-        padding: 1rem;
+        padding: 1.1rem;
         border: 1px solid $gray-white;
-        border-radius: 6px;
+        border-radius: 8px;
         background-color: $neutral-white;
         color: $text-color;
         font-size: 1rem;
         box-sizing: border-box;
+        transition: border 0.3s ease, box-shadow 0.3s ease;
     }
 
     input[type="email"]:focus,
     input[type="password"]:focus {
-        outline: none;
         border-color: $primary-blue;
         box-shadow: 0 0 8px $primary-blue;
     }
 
     .submit-button {
         width: 100%;
-        padding: 1rem;
-        background-color: $button-background;
+        padding: 1.2rem;
+        background-color: $primary-blue;
         border: none;
-        border-radius: 6px;
+        border-radius: 8px;
         color: $neutral-white;
-        font-size: 1.25rem;
+        font-size: 1.1rem;
         font-weight: bold;
         cursor: pointer;
         transition: background-color 0.3s ease;
@@ -105,37 +117,52 @@
     .error-message {
         color: $dark-red;
         font-size: 1rem;
-        margin-top: 1rem;
+        margin-top: 1.2rem;
         text-align: center;
+    }
+
+    .forgot-password {
+        text-align: center;
+        margin-top: 1rem;
+        font-size: 1rem;
+        color: $primary-blue;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    .forgot-password:hover {
+        color: $primary-blue;
     }
 </style>
 
 <div class="login-form-container">
-    <h2>Login</h2>
-    <form on:submit|preventDefault={handleSubmit}>
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input
-                type="email"
-                id="email"
-                bind:value={email}
-                placeholder="Enter your email"
-                required
-            />
-        </div>
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input
-                type="password"
-                id="password"
-                bind:value={password}
-                placeholder="Enter your password"
-                required
-            />
-        </div>
-        <button type="submit" class="submit-button">Login</button>
-    </form>
-    {#if error}
-        <p class="error-message">{error}</p>
-    {/if}
+    <div class="form-card">
+        <h2>Login</h2>
+        <form on:submit|preventDefault={handleSubmit}>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input
+                    type="email"
+                    id="email"
+                    bind:value={email}
+                    placeholder="Enter your email"
+                    required
+                />
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    bind:value={password}
+                    placeholder="Enter your password"
+                    required
+                />
+            </div>
+            <button type="submit" class="submit-button">Login</button>
+        </form>
+        {#if error}
+            <p class="error-message">{error}</p>
+        {/if}
+    </div>
 </div>

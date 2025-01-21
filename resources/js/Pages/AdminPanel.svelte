@@ -56,18 +56,36 @@
         background-color: #f9f9f9;
         padding: 20px;
         font-family: Arial, sans-serif;
+
+        @media (max-width: 768px) {
+            padding: 10px;
+        }
+    }
+
+    .table-container {
+        overflow-x: auto;
     }
 
     table {
         width: 100%;
         border-collapse: collapse;
         margin: 20px 0;
+        background-color: white;
+        white-space: nowrap;
+
+        @media (max-width: 768px) {
+            font-size: 14px;
+        }
     }
 
     th, td {
         border: 1px solid #ddd;
         padding: 8px;
         text-align: left;
+
+        @media (max-width: 768px) {
+            padding: 5px;
+        }
     }
 
     th {
@@ -91,17 +109,47 @@
         border: none;
         cursor: pointer;
         border-radius: 4px;
-    }
+        font-size: 16px;
 
-    button:disabled {
-        background-color: #cccccc;
-        cursor: not-allowed;
+        &:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 768px) {
+            font-size: 14px;
+            padding: 8px 12px;
+        }
     }
 
     .pagination {
         display: flex;
         justify-content: space-between;
         margin-top: 20px;
+
+        @media (max-width: 768px) {
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+    }
+
+    .card {
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 10px;
+        margin-bottom: 10px;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+
+        p {
+            margin: 5px 0;
+            color: #333;
+        }
+
+        strong {
+            color: #4CAF50;
+        }
     }
 </style>
 
@@ -110,62 +158,74 @@
     <button on:click={logout}>Logout</button>
 
     {#if orders.length > 0}
-        <table>
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Email</th>
-                <th>Krstné meno</th>
-                <th>Priezvisko</th>
-                <th>Adresa</th>
-                <th>PSČ</th>
-                <th>Mesto</th>
-                <th>Telefónne číslo</th>
-                <th>Metóda doručenia</th>
-                <th>ID produktu</th>
-                <th>Meno produktu</th>
-                <th>Veľkosť produktu</th>
-                <th>Počet produktov</th>
-                <th>Celková suma</th>
-                <th>Zaplatené</th>
-                <th>Objednávka vytvorená</th>
-            </tr>
-            </thead>
-            <tbody>
-            {#each orders as order}
-                {#each order.products as product, index (index === 0 ? true : null)}
+        {#if window.innerWidth > 768}
+            <div class="table-container">
+                <table>
+                    <thead>
                     <tr>
-                        {#if index === 0}
-                            <td rowspan={order.products.length}>{order.id}</td>
-                            <td rowspan={order.products.length}>{order.email}</td>
-                            <td rowspan={order.products.length}>{order.first_name}</td>
-                            <td rowspan={order.products.length}>{order.last_name}</td>
-                            <td rowspan={order.products.length}>{order.address}</td>
-                            <td rowspan={order.products.length}>{order.postal_code}</td>
-                            <td rowspan={order.products.length}>{order.city}</td>
-                            <td rowspan={order.products.length}>{order.phone}</td>
-                            <td rowspan={order.products.length}>{order.delivery_method}</td>
-                        {/if}
-                        <td>{product.product_id}</td>
-                        <td>{product.name}</td>
-                        <td>{product.size}</td>
-                        <td>{product.quantity}</td>
-                        {#if index === 0}
-                            <td rowspan={order.products.length}>
-                                {calculateTotalPrice(order.products).toFixed(2)}€
-                            </td>
-                            <td rowspan={order.products.length}>
-                                {order.paid ? "Áno" : "Nie"}
-                            </td>
-                            <td rowspan={order.products.length}>
-                                {new Date(order.created_at).toLocaleDateString()}
-                            </td>
-                        {/if}
+                        <th>ID</th>
+                        <th>Email</th>
+                        <th>Krstné meno</th>
+                        <th>Priezvisko</th>
+                        <th>Adresa</th>
+                        <th>PSČ</th>
+                        <th>Mesto</th>
+                        <th>Telefónne číslo</th>
+                        <th>Metóda doručenia</th>
+                        <th>ID produktu</th>
+                        <th>Meno produktu</th>
+                        <th>Veľkosť produktu</th>
+                        <th>Počet produktov</th>
+                        <th>Celková suma</th>
+                        <th>Zaplatené</th>
+                        <th>Objednávka vytvorená</th>
                     </tr>
-                {/each}
+                    </thead>
+                    <tbody>
+                    {#each orders as order}
+                        {#each order.products as product, index (index === 0 ? true : null)}
+                            <tr on:click={() => window.location.href = `/admin/order/${order.id}`} style="cursor: pointer;">
+                                {#if index === 0}
+                                    <td rowspan={order.products.length}>{order.id}</td>
+                                    <td rowspan={order.products.length}>{order.email}</td>
+                                    <td rowspan={order.products.length}>{order.first_name}</td>
+                                    <td rowspan={order.products.length}>{order.last_name}</td>
+                                    <td rowspan={order.products.length}>{order.address}</td>
+                                    <td rowspan={order.products.length}>{order.postal_code}</td>
+                                    <td rowspan={order.products.length}>{order.city}</td>
+                                    <td rowspan={order.products.length}>{order.phone}</td>
+                                    <td rowspan={order.products.length}>{order.delivery_method}</td>
+                                {/if}
+                                <td>{product.product_id}</td>
+                                <td>{product.name}</td>
+                                <td>{product.size}</td>
+                                <td>{product.quantity}</td>
+                                {#if index === 0}
+                                    <td rowspan={order.products.length}>
+                                        {calculateTotalPrice(order.products).toFixed(2)}€
+                                    </td>
+                                    <td rowspan={order.products.length}>
+                                        {order.paid ? "Áno" : "Nie"}
+                                    </td>
+                                    <td rowspan={order.products.length}>
+                                        {new Date(order.created_at).toLocaleDateString()}
+                                    </td>
+                                {/if}
+                            </tr>
+                        {/each}
+                    {/each}
+                    </tbody>
+                </table>
+            </div>
+        {:else}
+            {#each orders as order}
+                <div class="card">
+                    <p><strong>ID:</strong> {order.id}</p>
+                    <p><strong>Email:</strong> {order.email}</p>
+                    <p><strong>Total:</strong> {calculateTotalPrice(order.products).toFixed(2)}€</p>
+                </div>
             {/each}
-            </tbody>
-        </table>
+        {/if}
 
         <div class="pagination">
             <button on:click={prevPage} disabled={page === 0}>Previous</button>

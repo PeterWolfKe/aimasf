@@ -18,7 +18,7 @@ class EmailSubscriptionController extends Controller
         $request->validate([
             'email' => 'required|email|unique:email_subscriptions,email',
         ], [
-            'email.unique' => 'Vaša e-mailová adresa je už zaregistrovaná.',
+            'email.unique' => 'Váš e-mail je už zaregistrovaný.',
         ]);
 
 

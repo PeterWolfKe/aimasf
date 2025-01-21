@@ -347,6 +347,7 @@
             justify-content: center;
             width: 100%;
             margin-top: 0;
+            gap: 10px;
         }
     }
 </style>

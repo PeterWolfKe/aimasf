@@ -659,6 +659,12 @@
             }
         }
     }
+    .data-processing-note {
+        font-size: 0.76rem;
+        color: #555;
+        margin-top: 1rem;
+        text-align: left
+    }
     @media (max-width: 768px) {
         .container {
             flex-direction: column;
@@ -893,6 +899,9 @@
             <button class="submit-button" on:click={handlePayment} disabled={isProcessing || productsData.length === 0}>
                 {isProcessing ? 'Spracuváva sa objednávka' : 'Zaplatiť'}
             </button>
+            <p class="data-processing-note">
+                *Kliknutím na tlačidlo „Zaplatiť“ súhlasíte so spracovaním vašich osobných údajov za účelom vybavenia objednávky v súlade s našimi zásadami ochrany osobných údajov.
+            </p>
         </div>
     </div>
 </div>

@@ -18,28 +18,49 @@ class AdminController extends Controller
         $orders = Order::skip($offset)->take($perPage)->get();
 
         $orders = $orders->map(function ($order) {
-            $orderProducts = json_decode($order->products, true);
-
-            $productsWithDetails = collect($orderProducts)->map(function ($item) {
-                $product = Product::find($item['id']);
-                return [
-                    'product_id' => $item['id'],
-                    'quantity' => $item['quantity'],
-                    'name' => $product->name ?? 'Unknown Product',
-                    'size' => $product->size ?? null,
-                    'price' => $product->price ?? null,
-                ];
-            });
-
-            $order->products = $productsWithDetails;
+            $this->get_products($order);
 
             return $order;
         });
 
-        return inertia('AdminPanel', [
+        return Inertia::render('AdminPanel', [
             'orders' => $orders,
             'page' => $page,
             'per_page' => $perPage,
         ]);
+    }
+    public function order($id){
+        $order = Order::find($id);
+
+        if (!$order) {
+            return response()->json(['message' => 'Order not found'], 404);
+        }
+
+        $this->get_products($order);
+
+        return Inertia::render('OrderPage', [
+            'order' => $order
+        ]);
+    }
+
+    /**
+     * @param $order
+     * @return void
+     */
+    protected function get_products($order): void
+    {
+        $orderProducts = json_decode($order->products, true);
+        $productsWithDetails = collect($orderProducts)->map(function ($item) {
+            $product = Product::find($item['id']);
+            return [
+                'product_id' => $item['id'],
+                'quantity' => $item['quantity'],
+                'name' => $product->name ?? 'Unknown Product',
+                'size' => $product->size ?? null,
+                'price' => $product->price ?? null,
+            ];
+        });
+
+        $order->products = $productsWithDetails;
     }
 }

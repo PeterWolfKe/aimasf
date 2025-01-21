@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -20,7 +21,7 @@ class OrderFactory extends Factory
             'phone' => $this->faker->optional()->phoneNumber(),
             'delivery_method' => $this->faker->randomElement(['standard', 'express']),
             'products' => json_encode([
-                ['product_id' => "00000001", 'quantity' => $this->faker->numberBetween(1, 5)],
+                ['id' => Product::inRandomOrder()->first()->id, 'quantity' => $this->faker->numberBetween(1, 5)],
             ]),
             'unique_order_id' => Str::uuid(),
             'paid' => $this->faker->boolean(),
