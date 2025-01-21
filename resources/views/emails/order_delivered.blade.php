@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Platba úspešná</title>
+    <title>Objednávka doručená na odberné miesto</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -57,11 +57,12 @@
 <body>
 <div class="email-container">
     <div class="email-header">
-        <h1>Vaša platba bola úspešná</h1>
+        <h1>Vaša objednávka je pripravená na vyzdvihnutie!</h1>
     </div>
     <div class="email-body">
         <p>Vážený/á {{ $details['first_name'] }} {{ $details['last_name'] }},</p>
-        <p>Ďakujeme za váš nákup! Vaša platba bola úspešne spracovaná.</p>
+        <p>Vaša objednávka je pripravená na vyzdvihnutie na odbernom mieste.</p>
+        <p>Objednávku si môžete vyzdvihnúť kedykoľvek počas otváracích hodín. Pri vyzdvihmutí objednávky budete potrebovať ID objednávky.</p>
 
         <h3>Prehľad objednávky</h3>
         <div class="order-details">
@@ -71,12 +72,8 @@
                     <td>{{ $details['unique_order_id'] }}</td>
                 </tr>
                 <tr>
-                    <th>Spôsob doručenia:</th>
-                    <td>{{ ucfirst($details['shipping_option_id']) }}</td>
-                </tr>
-                <tr>
-                    <th>Celková cena:</th>
-                    <td>{{ number_format($details['total_price'], 2) }} EUR</td>
+                    <th>Odberné miesto:</th>
+                    <td>{{ $details['delivery_method'] }}</td>
                 </tr>
             </table>
         </div>
@@ -88,9 +85,8 @@
             @endforeach
         </ul>
 
-        <p>Bližšie informácie o dodaní objednávky na odberné miesto Vám zašleme emailom v priebehu nasledujúcich dní.</p>
-        <p>Ak máte akékoľvek otázky týkajúce sa vašej objednávky, kontaktujte nás na support@aimasf.sk.</p>
-        <p>Ďakujeme, že ste si vybrali naše služby!</p>
+        <p>Ak by ste mali akékoľvek otázky, neváhajte nás kontaktovať na support@aimasf.sk.</p>
+        <p>Tešíme sa, že ste u nás nakúpili!</p>
     </div>
     <div class="email-footer">
         <p>&copy; {{ date('Y') }} Vaša spoločnosť aimasf. Všetky práva vyhradené.</p>
