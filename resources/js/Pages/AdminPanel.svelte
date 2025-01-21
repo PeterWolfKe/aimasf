@@ -219,7 +219,13 @@
             </div>
         {:else}
             {#each orders as order}
-                <div class="card">
+                <div
+                    class="card"
+                    role="button"
+                    tabindex="0"
+                    on:click={() => window.location.href = `/admin/order/${order.id}`}
+                    on:keydown={(e) => (e.key === 'Enter' || e.key === ' ') && (window.location.href = `/admin/order/${order.id}`)}
+                >
                     <p><strong>ID:</strong> {order.id}</p>
                     <p><strong>Email:</strong> {order.email}</p>
                     <p><strong>Total:</strong> {calculateTotalPrice(order.products).toFixed(2)}€</p>

@@ -77,11 +77,7 @@
         background-color: $button-hover;
     }
 
-    @media (max-width: 600px) {
-        main {
-            padding: 15px;
-        }
-
+    @media (max-width: 784px) {
         h1, h2 {
             font-size: 18px;
         }
@@ -94,6 +90,9 @@
         button {
             font-size: 14px;
             padding: 8px 12px;
+        }
+        .products > thead, .products > tbody {
+            display:inline-block;
         }
     }
 </style>
@@ -125,30 +124,61 @@
 
     <div class="section">
         <h2>Produkty</h2>
-        <table class="products">
-            <thead>
-            <tr>
-                <th>ID produktu</th>
-                <th>Názov</th>
-                <th>Veľkosť</th>
-                <th>Množstvo</th>
-                <th>Cena (€)</th>
-                <th>Spolu (€)</th>
-            </tr>
-            </thead>
-            <tbody>
-            {#each order.products as product}
+        {#if window.innerWidth > 768}
+            <table class="products horizontal-table">
+                <thead>
                 <tr>
-                    <td>{product.product_id}</td>
-                    <td>{product.name}</td>
-                    <td>{product.size}</td>
-                    <td>{product.quantity}</td>
-                    <td>{product.price}</td>
-                    <td>{(product.price * product.quantity).toFixed(2)}</td>
+                    <th>ID produktu</th>
+                    <th>Názov</th>
+                    <th>Veľkosť</th>
+                    <th>Množstvo</th>
+                    <th>Cena (€)</th>
+                    <th>Spolu (€)</th>
                 </tr>
+                </thead>
+                <tbody>
+                {#each order.products as product}
+                    <tr>
+                        <td>{product.product_id}</td>
+                        <td>{product.name}</td>
+                        <td>{product.size}</td>
+                        <td>{product.quantity}</td>
+                        <td>{product.price}</td>
+                        <td>{(product.price * product.quantity).toFixed(2)}</td>
+                    </tr>
+                {/each}
+                </tbody>
+            </table>
+        {:else}
+            {#each order.products as product}
+                <table class="products vertical-table">
+                    <tr>
+                        <th>ID produktu:</th>
+                        <td>{product.product_id}</td>
+                    </tr>
+                    <tr>
+                        <th>Názov:</th>
+                        <td>{product.name}</td>
+                    </tr>
+                    <tr>
+                        <th>Veľkosť:</th>
+                        <td>{product.size}</td>
+                    </tr>
+                    <tr>
+                        <th>Množstvo:</th>
+                        <td>{product.quantity}</td>
+                    </tr>
+                    <tr>
+                        <th>Cena (€):</th>
+                        <td>{product.price}</td>
+                    </tr>
+                    <tr>
+                        <th>Spolu (€):</th>
+                        <td>{(product.price * product.quantity).toFixed(2)}</td>
+                    </tr>
+                </table>
             {/each}
-            </tbody>
-        </table>
+        {/if}
         <p><strong>Celková suma:</strong> {calculateTotalPrice(order.products).toFixed(2)}€</p>
     </div>
 
