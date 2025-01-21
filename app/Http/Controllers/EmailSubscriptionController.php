@@ -17,7 +17,10 @@ class EmailSubscriptionController extends Controller
     {
         $request->validate([
             'email' => 'required|email|unique:email_subscriptions,email',
+        ], [
+            'email.unique' => 'Vaša e-mailová adresa je už zaregistrovaná.',
         ]);
+
 
         $token = Str::random(126);
 
