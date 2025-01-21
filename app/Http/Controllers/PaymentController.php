@@ -6,7 +6,7 @@ use App\Mail\OrderSuccessMail;
 use App\Models\DiscountCode;
 use App\Models\Order;
 use App\Models\Product;
-use App\Models\ShippingOptions;
+use App\Models\ShippingOption;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -22,7 +22,7 @@ class PaymentController extends Controller
 {
     public function index(Request $request)
     {
-        $shippingOptions = ShippingOptions::all();
+        $shippingOptions = ShippingOption::all();
         $sessionProducts = session('products', []);
 
         $productsWithDetails = array_map(function ($sessionProduct) {
@@ -129,7 +129,7 @@ class PaymentController extends Controller
         Stripe::setApiKey(config('stripe.secret_key'));
 
         try {
-            $shippingOption = ShippingOptions::where('id', $request->input('userDetails.deliveryMethod'))->first();
+            $shippingOption = ShippingOption::where('id', $request->input('userDetails.deliveryMethod'))->first();
             $products = session('products', []);
 
             $uniqueOrderId = implode('-', [
@@ -225,7 +225,7 @@ class PaymentController extends Controller
                 'postal_code' => $request->input('userDetails.postalCode'),
                 'city' => $request->input('userDetails.city'),
                 'phone' => $request->input('userDetails.phone'),
-                'delivery_method' => $request->input('userDetails.deliveryMethod'),
+                'shipping_option_id' => $request->input('userDetails.deliveryMethod'),
                 'products' => json_encode($orderProducts),
                 'paid' => false,
                 'discount_code' => $discountCodeValue,
@@ -272,7 +272,7 @@ class PaymentController extends Controller
                 $details = [
                     'first_name' => $order->first_name,
                     'last_name' => $order->last_name,
-                    'delivery_method' => $order->shippingOption->title,
+                    'shipping_option_id' => $order->shippingOption->title,
                     'unique_order_id' => $order->unique_order_id,
                     'products' => $products,
                     'total_price' => $totalPrice,

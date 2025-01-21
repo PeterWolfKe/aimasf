@@ -62,5 +62,6 @@ class AdminController extends Controller
         });
 
         $order->products = $productsWithDetails;
+        $order->shipping_option_id = $order->shippingOption->title ?? 'Unknown Delivery Method';
     }
 }

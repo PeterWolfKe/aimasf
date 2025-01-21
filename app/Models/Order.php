@@ -17,15 +17,16 @@ class Order extends Model
         'postal_code',
         'city',
         'phone',
-        'delivery_method',
+        'shipping_option_id',
         'products',
         'unique_order_id',
         'paid',
         'discount_code'
     ];
+
     public function shippingOption(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(ShippingOptions::class, 'delivery_method', 'id');
+        return $this->belongsTo(ShippingOption::class, 'shipping_option_id', 'id');
     }
     public function getFullPrice(): float
     {

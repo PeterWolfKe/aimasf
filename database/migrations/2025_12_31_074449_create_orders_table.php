@@ -23,7 +23,7 @@ class CreateOrdersTable extends Migration
             $table->string('postal_code');
             $table->string('city');
             $table->string('phone')->nullable();
-            $table->string('delivery_method');
+            $table->string('shipping_option_id');
             $table->json('products')->nullable();
             $table->string('unique_order_id')->unique();
             $table->boolean('paid')->default(false);

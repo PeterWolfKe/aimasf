@@ -194,7 +194,7 @@
                                     <td rowspan={order.products.length}>{order.postal_code}</td>
                                     <td rowspan={order.products.length}>{order.city}</td>
                                     <td rowspan={order.products.length}>{order.phone}</td>
-                                    <td rowspan={order.products.length}>{order.delivery_method}</td>
+                                    <td rowspan={order.products.length}>{order.shipping_option_id}</td>
                                 {/if}
                                 <td>{product.product_id}</td>
                                 <td>{product.name}</td>

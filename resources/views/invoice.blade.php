@@ -126,7 +126,7 @@
         <p>{{ $customer_postal_code }} {{ $customer_city }}</p>
         <p>Telefón: {{ $customer_phone }}</p>
         <h3 class="font-semibold">DODACÍ SPÔSOB:</h3>
-        <p>{{ $delivery_method }}</p>
+        <p>{{ $shipping_option_id }}</p>
     </section>
 
     <!-- Products Table -->

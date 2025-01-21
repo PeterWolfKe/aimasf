@@ -72,7 +72,7 @@
                 </tr>
                 <tr>
                     <th>Spôsob doručenia:</th>
-                    <td>{{ ucfirst($details['delivery_method']) }}</td>
+                    <td>{{ ucfirst($details['shipping_option_id']) }}</td>
                 </tr>
                 <tr>
                     <th>Celková cena:</th>

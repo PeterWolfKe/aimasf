@@ -6,7 +6,7 @@ use App\Models\DiscountCode;
 use App\Models\InvoiceCounter;
 use App\Models\Order;
 use App\Models\Product;
-use App\Models\ShippingOptions;
+use App\Models\ShippingOption;
 use Illuminate\Support\Facades\App;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
@@ -60,7 +60,7 @@ class InvoiceController extends Controller
             }
         }
 
-        $shippingOption = ShippingOptions::find($order->delivery_method);
+        $shippingOption = ShippingOption::find($order->shipping_option_id);
         $shippingPrice = $shippingOption ? $shippingOption->price : 0;
         $totalAmount += $shippingPrice;
 

@@ -116,7 +116,7 @@
         <h2>Detaily objednávky</h2>
         <p><strong>ID objednávky:</strong> {order.id}</p>
         <p><strong>Unikátne ID:</strong> {order.unique_order_id}</p>
-        <p><strong>Spôsob doručenia:</strong> {order.delivery_method}</p>
+        <p><strong>Spôsob doručenia:</strong> {order.shipping_option_id}</p>
         <p><strong>Zaplatené:</strong> {order.paid ? 'Áno' : 'Nie'}</p>
         <p><strong>Zľavový kód:</strong> {order.discount_code || 'N/A'}</p>
         <p><strong>Vytvorené:</strong> {formatDate(order.created_at)}</p>

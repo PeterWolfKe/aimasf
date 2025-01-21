@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Product;
+use App\Models\ShippingOption;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -19,7 +20,7 @@ class OrderFactory extends Factory
             'postal_code' => $this->faker->postcode(),
             'city' => $this->faker->city(),
             'phone' => $this->faker->optional()->phoneNumber(),
-            'delivery_method' => $this->faker->randomElement(['standard', 'express']),
+            'shipping_option_id' => ShippingOption::inRandomOrder()->first()->id,
             'products' => json_encode([
                 ['id' => Product::inRandomOrder()->first()->id, 'quantity' => $this->faker->numberBetween(1, 5)],
             ]),
