@@ -227,7 +227,7 @@ class PaymentController extends Controller
                 'phone' => $request->input('userDetails.phone'),
                 'shipping_option_id' => $request->input('userDetails.deliveryMethod'),
                 'products' => json_encode($orderProducts),
-                'paid' => false,
+                'status' => '0',
                 'discount_code' => $discountCodeValue,
             ]);
 
@@ -253,9 +253,9 @@ class PaymentController extends Controller
         $uniqueOrderId = $session->metadata->unique_order_id;
 
         $order = Order::where('unique_order_id', $uniqueOrderId)->first();
+        $totalPrice = $order->getFullPrice();
         if ($order) {
-            $order->update(['paid' => true]);
-            $amount = $order->getFullPrice();
+            $order->update(['status' => '1']);
             if (!$order->mail_sended) {
                 $products = array_map(function ($item) {
                     $product = Product::find($item['id']);
@@ -266,8 +266,6 @@ class PaymentController extends Controller
                         'price' => $product->price
                     ];
                 }, json_decode($order->products, true));
-
-                $totalPrice = $order->getFullPrice();
 
                 $details = [
                     'first_name' => $order->first_name,
@@ -291,7 +289,7 @@ class PaymentController extends Controller
         session()->forget('discount');
         return Inertia::render('PaymentSuccess', [
             'order' => $order,
-            'amount' => $amount
+            'amount' => $totalPrice
         ]);
     }
 

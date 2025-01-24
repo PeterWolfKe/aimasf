@@ -20,7 +20,7 @@ class Order extends Model
         'shipping_option_id',
         'products',
         'unique_order_id',
-        'paid',
+        'status',
         'discount_code'
     ];
 
@@ -33,7 +33,6 @@ class Order extends Model
         $products = json_decode($this->products, true);
 
         $totalPrice = 0;
-
         $productsWithDetails = array_map(function ($sessionProduct) use (&$totalPrice) {
             $product = Product::find($sessionProduct['id']);
 

@@ -25,7 +25,7 @@ class OrderFactory extends Factory
                 ['id' => Product::inRandomOrder()->first()->id, 'quantity' => $this->faker->numberBetween(1, 5)],
             ]),
             'unique_order_id' => Str::uuid(),
-            'paid' => $this->faker->boolean(),
+            'status' => $this->faker->numberBetween(0, 3),
         ];
     }
 }

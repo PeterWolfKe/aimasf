@@ -26,7 +26,7 @@ class CreateOrdersTable extends Migration
             $table->string('shipping_option_id');
             $table->json('products')->nullable();
             $table->string('unique_order_id')->unique();
-            $table->boolean('paid')->default(false);
+            $table->integer('status')->default('0');
             $table->boolean('mail_sended')->default(false);
             $table->boolean('sended')->default(false);
             $table->string('discount_code')->nullable();

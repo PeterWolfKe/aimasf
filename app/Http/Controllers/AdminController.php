@@ -19,6 +19,7 @@ class AdminController extends Controller
 
         $orders = $orders->map(function ($order) {
             $this->get_products($order);
+            $order->totalPrice = $order->getFullPrice();
 
             return $order;
         });
@@ -37,6 +38,7 @@ class AdminController extends Controller
         }
 
         $this->get_products($order);
+        $order->totalPrice = $order->getFullPrice();
 
         return Inertia::render('OrderPage', [
             'order' => $order
@@ -53,7 +55,7 @@ class AdminController extends Controller
         $productsWithDetails = collect($orderProducts)->map(function ($item) {
             $product = Product::find($item['id']);
             return [
-                'product_id' => $item['id'],
+                'id' => $item['id'],
                 'quantity' => $item['quantity'],
                 'name' => $product->name ?? 'Unknown Product',
                 'size' => $product->size ?? null,

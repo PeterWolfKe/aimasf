@@ -1,15 +1,32 @@
 <script lang="ts">
     export let order: any;
 
-    // Format the date to a readable format
     const formatDate = (date: string): string => {
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        const options: Intl.DateTimeFormatOptions = {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+        };
         return new Date(date).toLocaleDateString('sk-SK', options);
     };
 
-    // Calculate total price of the order
     const calculateTotalPrice = (products: Array<any>): number => {
         return products.reduce((sum, product) => sum + (product.price * product.quantity), 0);
+    };
+
+    const getStatusName = (status: number): string => {
+        switch (status) {
+            case 0:
+                return 'Nezaplatené';
+            case 1:
+                return 'Zaplatené';
+            case 2:
+                return 'Doručené';
+            case 3:
+                return 'Prevzaté';
+            default:
+                return String(status);
+        }
     };
 </script>
 
@@ -77,6 +94,8 @@
         background-color: $button-hover;
     }
 
+
+
     @media (max-width: 784px) {
         h1, h2 {
             font-size: 18px;
@@ -116,7 +135,12 @@
         <p><strong>ID objednávky:</strong> {order.id}</p>
         <p><strong>Unikátne ID:</strong> {order.unique_order_id}</p>
         <p><strong>Spôsob doručenia:</strong> {order.shipping_option_id}</p>
-        <p><strong>Zaplatené:</strong> {order.paid ? 'Áno' : 'Nie'}</p>
+        <p>
+            <strong>Status:</strong>
+            <span class="status">
+                {getStatusName(order.status)}
+            </span>
+        </p>
         <p><strong>Zľavový kód:</strong> {order.discount_code || 'N/A'}</p>
         <p><strong>Vytvorené:</strong> {formatDate(order.created_at)}</p>
         <p><strong>Aktualizované:</strong> {formatDate(order.updated_at)}</p>
@@ -139,12 +163,12 @@
                 <tbody>
                 {#each order.products as product}
                     <tr>
-                        <td>{product.product_id}</td>
+                        <td>{product.id}</td>
                         <td>{product.name}</td>
                         <td>{product.size}</td>
                         <td>{product.quantity}</td>
                         <td>{product.price}</td>
-                        <td>{(product.price * product.quantity).toFixed(2)}</td>
+                        <td>{product.totalPrice.toFixed(2)}</td>
                     </tr>
                 {/each}
                 </tbody>
@@ -154,7 +178,7 @@
                 <table class="products vertical-table">
                     <tr>
                         <th>ID produktu:</th>
-                        <td>{product.product_id}</td>
+                        <td>{product.id}</td>
                     </tr>
                     <tr>
                         <th>Názov:</th>

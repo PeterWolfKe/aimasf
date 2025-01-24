@@ -2,15 +2,13 @@
     export let orders: Array<any> = [];
     console.log(orders);
 
-    let page: number = 0; // Default page
-    let perPage: number = 25; // Default items per page
+    let page: number = 0;
+    let perPage: number = 25;
 
-    // Read URL parameters
     const urlParams = new URLSearchParams(window.location.search);
     page = parseInt(urlParams.get('page') || '0');
     perPage = parseInt(urlParams.get('per_page') || String(perPage));
 
-    // Functions for handling pagination
     const nextPage = () => {
         window.location.search = `?page=${page + 1}&per_page=${perPage}`;
     };
@@ -43,12 +41,42 @@
         }
     };
 
-    // Calculate total price for an order
     const calculateTotalPrice = (products: Array<any>): number => {
         return products.reduce((sum, product) => {
             return sum + (product.price * product.quantity);
         }, 0);
     };
+
+    const getStatusName = (status: number): string => {
+        switch (status) {
+            case 0:
+                return 'Nezaplatené';
+            case 1:
+                return 'Zaplatené';
+            case 2:
+                return 'Doručené';
+            case 3:
+                return 'Prevzaté';
+            default:
+                return 'unknown';
+        }
+    };
+
+    const getStatusClass = (status: number): string => {
+        switch (status) {
+            case 0:
+                return 'pending';
+            case 1:
+                return 'success';
+            case 2:
+                return 'delivered';
+            case 3:
+                return 'completed';
+            default:
+                return String(status);
+        }
+    };
+
 </script>
 
 <style lang="scss">
@@ -140,7 +168,7 @@
         border-radius: 4px;
         padding: 10px;
         margin-bottom: 10px;
-        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 
         p {
             margin: 5px 0;
@@ -150,6 +178,55 @@
         strong {
             color: #4CAF50;
         }
+    }
+
+    .status {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: capitalize;
+
+        &.pending {
+            color: #f59e0b;
+            background: #fef3c7;
+        }
+
+        &.success {
+            color: #10b981;
+            background: #d1fae5;
+        }
+
+        &.delivered {
+            color: #3b82f6;
+            background: #dbeafe;
+        }
+
+        &.completed {
+            color: #9333ea;
+            background: #ede9fe;
+        }
+
+        &.unknown {
+            color: #6b7280;
+            background: #f3f4f6;
+        }
+    }
+
+    .action-btn {
+        padding: 6px 12px;
+        background-color: #4f46e5;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 12px;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .action-btn:hover {
+        background-color: #4338ca;
     }
 </style>
 
@@ -163,56 +240,36 @@
                 <table>
                     <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Email</th>
-                        <th>Krstné meno</th>
-                        <th>Priezvisko</th>
-                        <th>Adresa</th>
-                        <th>PSČ</th>
-                        <th>Mesto</th>
-                        <th>Telefónne číslo</th>
-                        <th>Metóda doručenia</th>
-                        <th>ID produktu</th>
-                        <th>Meno produktu</th>
-                        <th>Veľkosť produktu</th>
-                        <th>Počet produktov</th>
-                        <th>Celková suma</th>
-                        <th>Zaplatené</th>
-                        <th>Objednávka vytvorená</th>
+                        <th>Order</th>
+                        <th>Date</th>
+                        <th>Customer</th>
+                        <th>Status</th>
+                        <th>Total</th>
+                        <th>Delivery</th>
+                        <th>Items</th>
+                        <th>Action</th>
                     </tr>
                     </thead>
                     <tbody>
                     {#each orders as order}
-                        {#each order.products as product, index (index === 0 ? true : null)}
-                            <tr on:click={() => window.location.href = `/admin/order/${order.id}`} style="cursor: pointer;">
-                                {#if index === 0}
-                                    <td rowspan={order.products.length}>{order.id}</td>
-                                    <td rowspan={order.products.length}>{order.email}</td>
-                                    <td rowspan={order.products.length}>{order.first_name}</td>
-                                    <td rowspan={order.products.length}>{order.last_name}</td>
-                                    <td rowspan={order.products.length}>{order.address}</td>
-                                    <td rowspan={order.products.length}>{order.postal_code}</td>
-                                    <td rowspan={order.products.length}>{order.city}</td>
-                                    <td rowspan={order.products.length}>{order.phone}</td>
-                                    <td rowspan={order.products.length}>{order.shipping_option_id}</td>
-                                {/if}
-                                <td>{product.product_id}</td>
-                                <td>{product.name}</td>
-                                <td>{product.size}</td>
-                                <td>{product.quantity}</td>
-                                {#if index === 0}
-                                    <td rowspan={order.products.length}>
-                                        {calculateTotalPrice(order.products).toFixed(2)}€
-                                    </td>
-                                    <td rowspan={order.products.length}>
-                                        {order.paid ? "Áno" : "Nie"}
-                                    </td>
-                                    <td rowspan={order.products.length}>
-                                        {new Date(order.created_at).toLocaleDateString()}
-                                    </td>
-                                {/if}
-                            </tr>
-                        {/each}
+                        <tr>
+                            <td>#{order.id}</td>
+                            <td>{new Date(order.created_at).toLocaleDateString()}</td>
+                            <td>{order.first_name} {order.last_name}</td>
+                            <td>
+                                <span class="status {getStatusClass(order.status)}">
+                                    {getStatusName(order.status)}
+                                </span>
+                            </td>
+                            <td>{order.totalPrice.toFixed(2)}€</td>
+                            <td>{order.shipping_option_id || 'N/A'}</td>
+                            <td>{order.products.length} items</td>
+                            <td>
+                                <button class="action-btn" on:click={() => window.location.href = `/admin/order/${order.id}`}>
+                                    Details
+                                </button>
+                            </td>
+                        </tr>
                     {/each}
                     </tbody>
                 </table>
@@ -228,7 +285,12 @@
                 >
                     <p><strong>ID:</strong> {order.id}</p>
                     <p><strong>Email:</strong> {order.email}</p>
-                    <p><strong>Total:</strong> {calculateTotalPrice(order.products).toFixed(2)}€</p>
+                    <p><strong>Total:</strong> {order.totalPrice.toFixed(2)}€</p>
+                    <p><strong>Status:</strong>
+                        <span class="status {getStatusClass(order.status)}">
+                            {getStatusName(order.status)}
+                        </span>
+                    </p>
                 </div>
             {/each}
         {/if}

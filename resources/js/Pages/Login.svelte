@@ -146,6 +146,7 @@
                     id="email"
                     bind:value={email}
                     placeholder="Enter your email"
+                    autocomplete="email"
                     required
                 />
             </div>
@@ -156,6 +157,7 @@
                     id="password"
                     bind:value={password}
                     placeholder="Enter your password"
+                    autocomplete="current-password"
                     required
                 />
             </div>
