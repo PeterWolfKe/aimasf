@@ -168,7 +168,7 @@
                         <td>{product.size}</td>
                         <td>{product.quantity}</td>
                         <td>{product.price}</td>
-                        <td>{product.totalPrice.toFixed(2)}</td>
+                        <td>{(product.price * product.quantity).toFixed(2)}</td>
                     </tr>
                 {/each}
                 </tbody>
@@ -203,7 +203,7 @@
                 </table>
             {/each}
         {/if}
-        <p><strong>Celková suma:</strong> {calculateTotalPrice(order.products).toFixed(2)}€</p>
+        <p><strong>Celková suma:</strong> {order.totalPrice.toFixed(2)}€</p>
     </div>
 
     <button on:click={() => window.history.back()}>Späť</button>
