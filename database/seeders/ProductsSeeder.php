@@ -24,21 +24,24 @@ class ProductsSeeder extends Seeder
             $productImages = $productData['images'] ? explode(',', $productData['images']) : [];
 
             try {
-                DB::table('products')->insert([
-                    'id' => $productData['id'],
-                    'name' => $productData['name'],
-                    'description' => $productData['description'],
-                    'price' => $productData['price'],
-                    'size' => $productData['size'],
-                    'product_images' => json_encode($productImages),
-                    'created_at' => $productData['created_at'] ?? now(),
-                    'updated_at' => $productData['updated_at'] ?? now(),
-                ]);
+                DB::table('products')->updateOrInsert(
+                    ['id' => $productData['id']],
+                    [
+                        'name' => $productData['name'],
+                        'description' => $productData['description'],
+                        'price' => $productData['price'],
+                        'size' => $productData['size'],
+                        'product_images' => json_encode($productImages),
+                        'created_at' => $productData['created_at'] ?? now(),
+                        'updated_at' => now(),
+                    ]
+                );
             } catch (\Throwable $e) {
-                echo "Error inserting product: " . $e->getMessage();
+                echo "Error inserting or updating product: " . $e->getMessage();
                 dd($row);
             }
         }
+
         fclose($fileHandle);
     }
 }
