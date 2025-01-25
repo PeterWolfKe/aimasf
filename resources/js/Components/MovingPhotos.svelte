@@ -120,7 +120,7 @@
 <section id="MovingPhotos">
     <div class="container">
         <div class="image-container">
-            <img src="https://testaima.my.canva.site/media/70231485861fc1121af1433da880708d.jpg" alt="Product Image" />
+            <img src="https://testaima.my.canva.site/media/70231485861fc1121af1433da880708d.webp" alt="Product Image" />
         </div>
         <div class="text-container">
             <h2>Čím sa zaoberáme?</h2>

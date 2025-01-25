@@ -80,7 +80,7 @@
 </style>
 
 <div class="container">
-    <img src="/storage/products/00000001/1.jpg" alt="Background" class="image" />
+    <img src="/storage/products/00000001/1.webp" alt="Background" class="image" />
     <div class="overlay"></div>
     <div class="heading">{heading}</div>
     <div class="subheading">{subheading}</div>

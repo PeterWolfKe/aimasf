@@ -1,6 +1,6 @@
 <script>
-    let aimaBefore = '/storage/images/aima_before.jpg'
-    let aimaAfter = '/storage/images/aima_after.jpg'
+    let aimaBefore = '/storage/images/aima_before.webp'
+    let aimaAfter = '/storage/images/aima_after.webp'
 </script>
 
 <style>

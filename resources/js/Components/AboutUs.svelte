@@ -1,5 +1,5 @@
 <script>
-    let aima_team = '/storage/images/aima_team.jpg';
+    let aima_team = '/storage/images/aima_team.webp';
 </script>
 
 <style lang="scss">

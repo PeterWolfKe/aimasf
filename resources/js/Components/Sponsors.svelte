@@ -1,7 +1,7 @@
 <script>
     let datacomp = '/storage/images/datacomp.png';
     let kvety_interesante = '/storage/images/kvety-interesante.png';
-    let repro_centrum = '/storage/images/repro-centrum.jpg';
+    let repro_centrum = '/storage/images/repro-centrum.webp';
     let rezke = '/storage/images/rezke.webp';
     let vlny_sk = '/storage/images/vlny-sk.png';
 </script>

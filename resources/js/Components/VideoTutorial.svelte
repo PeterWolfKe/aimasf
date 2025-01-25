@@ -3,7 +3,7 @@
 
     let isVideoPlaying = false;
     const videoUrl = '/storage/videos/aima_tutorial.mp4';
-    const videoThumbnail = '/storage/images/tutorial_thumbnail.jpg'
+    const videoThumbnail = '/storage/images/tutorial_thumbnail.webp'
 
     const playVideo = () => {
         isVideoPlaying = true;
