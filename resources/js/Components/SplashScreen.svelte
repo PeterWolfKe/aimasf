@@ -1,7 +1,7 @@
 <script>
     import { onMount } from 'svelte';
     import { fade } from 'svelte/transition';
-    import logo from '/resources/assets/logo.png';
+    import logo from '/resources/assets/logo.webp';
 
     let showSplash = true;
 

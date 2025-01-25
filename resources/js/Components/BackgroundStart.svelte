@@ -1,6 +1,7 @@
 <script lang="ts">
     let heading = "AIMA";
     let subheading = "rýchly a účinný odstraňovač krvi";  // Smaller text
+    let imageSrc = "/storage/products/00000001/1.webp";
 </script>
 
 <style lang="scss">
@@ -79,8 +80,12 @@
     }
 </style>
 
+<head>
+    <link rel="preload" href={imageSrc} as="image" type="image/webp" />
+</head>
+
 <div class="container">
-    <img src="/storage/products/00000001/1.webp" alt="Background" class="image" />
+    <img src={imageSrc} alt="Background" class="image" />
     <div class="overlay"></div>
     <div class="heading">{heading}</div>
     <div class="subheading">{subheading}</div>

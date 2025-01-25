@@ -1,5 +1,5 @@
 <script lang="ts">
-    import start_button from '/resources/assets/start_button.png';
+    import start_button from '/resources/assets/start_button.webp';
 
     let isVideoPlaying = false;
     const videoUrl = '/storage/videos/aima_tutorial.mp4';

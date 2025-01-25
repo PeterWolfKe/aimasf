@@ -1,5 +1,5 @@
 <script>
-    import logo from '/resources/assets/logo.png';
+    import logo from '/resources/assets/logo.webp';
 
     let isMenuOpen = false;
     export let isSticky = true;

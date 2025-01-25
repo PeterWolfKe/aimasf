@@ -1,7 +1,7 @@
 <script lang="ts">
     import Navbar from "../Components/Navbar.svelte";
     import Footer from "../Components/Footer.svelte";
-    import logo from '/resources/assets/logo.png';
+    import logo from '/resources/assets/logo.webp';
 </script>
 
 <style lang="scss">
