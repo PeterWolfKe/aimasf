@@ -75,6 +75,10 @@
                     <th>Odberné miesto:</th>
                     <td>{{ $details['delivery_method'] }}</td>
                 </tr>
+                <tr>
+                    <th>Adresa odberného miesta:</th>
+                    <td>{{ $details['delivery_address'] }}</td>
+                </tr>
             </table>
         </div>
 

@@ -21,10 +21,11 @@ class AdminController extends Controller
 
         $orders = $orders->map(function ($order) {
             $this->get_products($order);
+            $order->set_delivery_data();
+
             $order->totalPrice = $order->getFullPrice();
             return $order;
         });
-
         return Inertia::render('AdminPanel', [
             'orders' => $orders,
             'page' => $page,
@@ -39,6 +40,8 @@ class AdminController extends Controller
         }
 
         $this->get_products($order);
+        $order->set_delivery_data();
+
         $order->totalPrice = $order->getFullPrice();
 
         return Inertia::render('OrderPage', [
@@ -65,7 +68,6 @@ class AdminController extends Controller
         });
 
         $order->products = $productsWithDetails;
-        $order->shipping_option_id = $order->shippingOption->title ?? 'Unknown Delivery Method';
     }
 
     /**
@@ -80,6 +82,15 @@ class AdminController extends Controller
 
         if (!$order) {
             return response()->json(['error' => 'Order not found'], 404);
+        }
+        $shippingOption = $order->shippingOption;
+
+        if ($order->status != 1) {
+            return response()->json(['error' => 'Order not eligible for delivery'], 400);
+        }
+        $order->update(['status' => 2]);
+        if ($shippingOption->type != 1){
+            return response()->json(['message' => 'Status aktualizovaný'], 200);
         }
 
         $products = array_map(function ($item) {
@@ -96,15 +107,13 @@ class AdminController extends Controller
             'first_name' => $order->first_name,
             'last_name' => $order->last_name,
             'delivery_method' => $order->shippingOption->title,
+            'delivery_address' => $order->shippingOption->address,
             'unique_order_id' => $order->unique_order_id,
             'products' => $products,
         ];
 
         try {
             Mail::to($order->email)->send(new OrderDelivered($details));
-
-            $order->update(['status' => 2]);
-
             return response()->json(['message' => 'Email sent successfully'], 200);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to send email', 'details' => $e->getMessage()], 500);

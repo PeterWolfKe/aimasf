@@ -103,4 +103,9 @@ class Order extends Model
             'total_price' => $totalPrice,
         ];
     }
+    public function set_delivery_data(): void
+    {
+        $this->shipping_option_id = $this->shippingOption->title ?? 'Unknown Delivery Method';
+        $this->shipping_option_type = $this->shippingOption->type;
+    }
 }

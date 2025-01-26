@@ -1,5 +1,6 @@
 <script lang="ts">
     export let order: any;
+    console.log(order);
 
     const formatDate = (date: string): string => {
         const options: Intl.DateTimeFormatOptions = {
@@ -8,10 +9,6 @@
             day: 'numeric',
         };
         return new Date(date).toLocaleDateString('sk-SK', options);
-    };
-
-    const calculateTotalPrice = (products: Array<any>): number => {
-        return products.reduce((sum, product) => sum + (product.price * product.quantity), 0);
     };
 
     const getStatusName = (status: number): string => {
@@ -26,6 +23,36 @@
                 return 'Prevzaté';
             default:
                 return String(status);
+        }
+    };
+
+    const sendOrderDelivered = async (orderId: number): Promise<void> => {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+        if (!csrfToken) {
+            console.error('CSRF token not found');
+            return;
+        }
+
+        try {
+            const response = await fetch(`/admin/order-delivered/${orderId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+            });
+
+            if (response.ok) {
+                alert(`Email sent successfully for order ID: ${orderId}`);
+                location.reload();
+            } else {
+                const errorData = await response.json();
+                console.error('Error sending email:', errorData);
+                alert(`Failed to send email for order ID: ${orderId}`);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An unexpected error occurred.');
         }
     };
 </script>
@@ -94,7 +121,24 @@
         background-color: $button-hover;
     }
 
+    .action-btn {
+        background-color: #4f46e5;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 12px;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
 
+    .action-btn:hover {
+        background-color: #4338ca;
+    }
+
+    .action-btn:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
+    }
 
     @media (max-width: 784px) {
         h1, h2 {
@@ -152,14 +196,14 @@
         {#if window.innerWidth > 768}
             <table class="products horizontal-table">
                 <thead>
-                <tr>
-                    <th>ID produktu</th>
-                    <th>Názov</th>
-                    <th>Veľkosť</th>
-                    <th>Množstvo</th>
-                    <th>Cena (€)</th>
-                    <th>Spolu (€)</th>
-                </tr>
+                    <tr>
+                        <th>ID produktu</th>
+                        <th>Názov</th>
+                        <th>Veľkosť</th>
+                        <th>Množstvo</th>
+                        <th>Cena (€)</th>
+                        <th>Spolu (€)</th>
+                    </tr>
                 </thead>
                 <tbody>
                 {#each order.products as product}
@@ -205,6 +249,13 @@
             {/each}
         {/if}
         <p><strong>Celková suma:</strong> {order.totalPrice.toFixed(2)}€</p>
+    </div>
+
+    <div class="section">
+        <h2>Akcie</h2>
+        <button class="action-btn" on:click={() => sendOrderDelivered(order.id)} disabled={order.status !== 1}>
+            Doručené
+        </button>
     </div>
 
     <button on:click={() => window.history.back()}>Späť</button>

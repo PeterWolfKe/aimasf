@@ -58,6 +58,7 @@
 
             if (response.ok) {
                 alert(`Email sent successfully for order ID: ${orderId}`);
+                location.reload();
             } else {
                 const errorData = await response.json();
                 console.error('Error sending email:', errorData);
@@ -289,7 +290,7 @@
                                 <button class="action-btn" on:click={() => window.location.href = `/admin/order/${order.id}`}>
                                     Detaily
                                 </button>
-                                <button class="action-btn" on:click={() => sendOrderDelivered(order.id)}>
+                                <button class="action-btn" on:click={() => sendOrderDelivered(order.id)} disabled={order.status !== 1}>
                                     Doručené
                                 </button>
                             </td>
