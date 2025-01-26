@@ -128,6 +128,7 @@
         <p><strong>Byt/Suite:</strong> {order.apartment_suite || 'N/A'}</p>
         <p><strong>Mesto:</strong> {order.city}</p>
         <p><strong>PSČ:</strong> {order.postal_code}</p>
+        <p><strong>Ip adresa:</strong> {order.ip_address}</p>
     </div>
 
     <div class="section">

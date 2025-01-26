@@ -228,6 +228,7 @@ class PaymentController extends Controller
                 'shipping_option_id' => $request->input('userDetails.deliveryMethod'),
                 'products' => json_encode($orderProducts),
                 'status' => '0',
+                'ip_address' => $request->ip(),
                 'discount_code' => $discountCodeValue,
             ]);
 

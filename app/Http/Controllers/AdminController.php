@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Mail\OrderDelivered;
+use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 
 class AdminController extends Controller
@@ -20,7 +22,6 @@ class AdminController extends Controller
         $orders = $orders->map(function ($order) {
             $this->get_products($order);
             $order->totalPrice = $order->getFullPrice();
-
             return $order;
         });
 
@@ -65,5 +66,48 @@ class AdminController extends Controller
 
         $order->products = $productsWithDetails;
         $order->shipping_option_id = $order->shippingOption->title ?? 'Unknown Delivery Method';
+    }
+
+    /**
+     * Handles sending the order delivered email.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function order_delivered($id)
+    {
+        $order = Order::find($id);
+
+        if (!$order) {
+            return response()->json(['error' => 'Order not found'], 404);
+        }
+
+        $products = array_map(function ($item) {
+            $product = Product::find($item['id']);
+            return [
+                'name' => $product->name,
+                'quantity' => $item['quantity'],
+                'size' => $product->size,
+                'price' => $product->price
+            ];
+        }, json_decode($order->products, true));
+
+        $details = [
+            'first_name' => $order->first_name,
+            'last_name' => $order->last_name,
+            'delivery_method' => $order->shippingOption->title,
+            'unique_order_id' => $order->unique_order_id,
+            'products' => $products,
+        ];
+
+        try {
+            Mail::to($order->email)->send(new OrderDelivered($details));
+
+            $order->update(['status' => 2]);
+
+            return response()->json(['message' => 'Email sent successfully'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to send email', 'details' => $e->getMessage()], 500);
+        }
     }
 }

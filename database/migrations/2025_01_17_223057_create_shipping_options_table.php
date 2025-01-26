@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('shipping_options', function (Blueprint $table) {
             $table->string('id')->unique()->primary();
+            $table->string('type'); // 0 for unique, 1 for odberne miesto (group them)
             $table->string('title');
             $table->string('price');
             $table->string('address');

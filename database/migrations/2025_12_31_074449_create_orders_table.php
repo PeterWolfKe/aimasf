@@ -28,7 +28,7 @@ class CreateOrdersTable extends Migration
             $table->string('unique_order_id')->unique();
             $table->integer('status')->default('0');
             $table->boolean('mail_sended')->default(false);
-            $table->boolean('sended')->default(false);
+            $table->string('ip_address');
             $table->string('discount_code')->nullable();
             $table->timestamps();
         });

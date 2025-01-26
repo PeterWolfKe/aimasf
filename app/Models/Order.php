@@ -21,7 +21,8 @@ class Order extends Model
         'products',
         'unique_order_id',
         'status',
-        'discount_code'
+        'discount_code',
+        'ip_address'
     ];
 
     public function shippingOption(): \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -70,5 +71,36 @@ class Order extends Model
         }
 
         return round($totalPrice, 2);
+    }
+    public function getOrderDetails($orderId)
+    {
+        $order = Order::find($orderId);
+
+        if (!$order) {
+            return ['error' => 'Order not found'];
+        }
+
+        $products = array_map(function ($item) {
+            $product = Product::find($item['id']);
+            return [
+                'name' => $product->name,
+                'quantity' => $item['quantity'],
+                'size' => $product->size,
+                'price' => $product->price,
+            ];
+        }, json_decode($order->products, true));
+
+        $totalPrice = array_reduce($products, function ($sum, $product) {
+            return $sum + ($product['price'] * $product['quantity']);
+        }, 0);
+
+        return [
+            'first_name' => $order->first_name,
+            'last_name' => $order->last_name,
+            'delivery_method' => $order->shippingOption->title,
+            'unique_order_id' => $order->unique_order_id,
+            'products' => $products,
+            'total_price' => $totalPrice,
+        ];
     }
 }

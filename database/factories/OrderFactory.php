@@ -26,6 +26,7 @@ class OrderFactory extends Factory
             ]),
             'unique_order_id' => Str::uuid(),
             'status' => $this->faker->numberBetween(0, 3),
+            'ip_address' => $this->faker->ipv4(),
         ];
     }
 }

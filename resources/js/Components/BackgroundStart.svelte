@@ -1,5 +1,5 @@
 <script lang="ts">
-    let heading = "AIMA";
+    let heading = "Aima";
     let subheading = "rýchly a účinný odstraňovač krvi";  // Smaller text
     let imageSrc = "/storage/products/00000001/1.webp";
 </script>
@@ -21,22 +21,20 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-        filter: grayscale(50%);
     }
 
     .overlay {
         position: absolute;
         inset: 0;
-        background: rgba(0, 0, 0, 0.5);
+        background: rgba(0, 0, 0, 0.4);
     }
 
     .heading {
         position: absolute;
         font-size: 8rem;
         font-weight: bold;
-        font-family: holiday;
+        font-family: 'Roboto', sans-serif;
         color: $neutral-white;
-        text-transform: uppercase;
         z-index: 2;
         text-align: center;
     }

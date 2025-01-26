@@ -62,7 +62,7 @@
     <div class="email-body">
         <p>Vážený/á {{ $details['first_name'] }} {{ $details['last_name'] }},</p>
         <p>Vaša objednávka je pripravená na vyzdvihnutie na odbernom mieste.</p>
-        <p>Objednávku si môžete vyzdvihnúť kedykoľvek počas otváracích hodín. Pri vyzdvihmutí objednávky budete potrebovať ID objednávky.</p>
+        <p>Objednávku si môžete vyzdvihnúť kedykoľvek počas otváracích hodín do 2 týždňov. Pri vyzdvihnutí objednávky budete potrebovať ID objednávky.</p>
 
         <h3>Prehľad objednávky</h3>
         <div class="order-details">

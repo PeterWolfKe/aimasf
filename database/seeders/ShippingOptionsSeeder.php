@@ -24,9 +24,10 @@ class ShippingOptionsSeeder extends Seeder
             try {
                 DB::table('shipping_options')->insert([
                     'id' => $row[0],
-                    'title' => $row[1],
-                    'price' => $row[2],
-                    'address' => $row[3],
+                    'type' => $row[1],
+                    'title' => $row[2],
+                    'price' => $row[3],
+                    'address' => $row[4],
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);

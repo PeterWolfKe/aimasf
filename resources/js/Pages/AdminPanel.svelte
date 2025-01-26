@@ -40,11 +40,33 @@
             console.error('Logout failed', response);
         }
     };
+    const sendOrderDelivered = async (orderId: number): Promise<void> => {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+        if (!csrfToken) {
+            console.error('CSRF token not found');
+            return;
+        }
 
-    const calculateTotalPrice = (products: Array<any>): number => {
-        return products.reduce((sum, product) => {
-            return sum + (product.price * product.quantity);
-        }, 0);
+        try {
+            const response = await fetch(`/admin/order-delivered/${orderId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+            });
+
+            if (response.ok) {
+                alert(`Email sent successfully for order ID: ${orderId}`);
+            } else {
+                const errorData = await response.json();
+                console.error('Error sending email:', errorData);
+                alert(`Failed to send email for order ID: ${orderId}`);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An unexpected error occurred.');
+        }
     };
 
     const getStatusName = (status: number): string => {
@@ -156,7 +178,6 @@
         margin-top: 20px;
 
         @media (max-width: 768px) {
-            flex-direction: column;
             align-items: center;
             gap: 10px;
         }
@@ -266,7 +287,10 @@
                             <td>{order.products.length} items</td>
                             <td>
                                 <button class="action-btn" on:click={() => window.location.href = `/admin/order/${order.id}`}>
-                                    Details
+                                    Detaily
+                                </button>
+                                <button class="action-btn" on:click={() => sendOrderDelivered(order.id)}>
+                                    Doručené
                                 </button>
                             </td>
                         </tr>
@@ -294,12 +318,11 @@
                 </div>
             {/each}
         {/if}
-
-        <div class="pagination">
-            <button on:click={prevPage} disabled={page === 0}>Previous</button>
-            <button on:click={nextPage}>Next</button>
-        </div>
     {:else}
         <p>No orders found.</p>
     {/if}
+    <div class="pagination">
+        <button on:click={prevPage} disabled={page === 0}>Previous</button>
+        <button on:click={nextPage} disabled={orders.length === 0}>Next</button>
+    </div>
 </main>

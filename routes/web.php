@@ -60,7 +60,8 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
-    Route::get('admin/order/{id}', [AdminController::class, 'order'])->name('admin.order');
+    Route::get('/admin/order/{id}', [AdminController::class, 'order'])->name('admin.order');
+    Route::post('/admin/order-delivered/{id}', [AdminController::class, 'order_delivered']);
 });
 
 //TESTING
