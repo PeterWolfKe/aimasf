@@ -65,7 +65,7 @@ class Order extends Model
         if ($this->discount_code) {
             $discount = DiscountCode::where('code', $this->discount_code)->first();
 
-            if ($discount && $discount->active) {
+            if ($discount) {
                 $totalPrice -= ($totalPrice * ($discount->discount_percentage / 100));
             }
         }
