@@ -98,7 +98,7 @@ class DiscountCodeManager extends Command
         $discountCode = DiscountCode::where('code', $code)->first();
 
         if ($discountCode) {
-            $discountCode->delete();
+            $discountCode->update(['active' => false]);
             $this->info("Discount code '{$code}' has been deleted successfully.");
         } else {
             $this->error("Discount code '{$code}' not found.");
