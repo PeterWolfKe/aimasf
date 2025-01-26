@@ -80,9 +80,9 @@
     }
 </style>
 
-<head>
+<svelte:head>
     <link rel="preload" href={imageSrc} as="image" type="image/webp" />
-</head>
+</svelte:head>
 
 <div class="container">
     <img src={imageSrc} alt="Background" class="image" />
