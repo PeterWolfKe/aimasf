@@ -718,7 +718,7 @@
 
 <div class="container">
     <div class="form-container">
-        <h2>Kontakt</h2>
+        <h2>Fakturačné údaje</h2>
         <label for="email"><span class="star">*</span>E-mail</label>
         <input
             type="email"
