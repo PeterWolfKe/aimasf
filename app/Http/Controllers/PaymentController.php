@@ -372,6 +372,6 @@ class PaymentController extends Controller
             'quantity' => '1',
         ];
         session(['products' => $products]);
-        return $this->index($request);
+        return redirect()->route('payment.index');
     }
 }

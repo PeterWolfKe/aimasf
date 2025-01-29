@@ -30,7 +30,7 @@ Route::get('/subscribe/confirm/{token}', [EmailSubscriptionController::class, 'c
 
 Route::middleware(['no-cache'])->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
-    Route::get('/payment', [PaymentController::class, 'index']);
+    Route::get('/payment', [PaymentController::class, 'index'])->name('payment.index');
 });
 
 
