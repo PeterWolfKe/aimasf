@@ -64,7 +64,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/admin/order-delivered/{id}', [AdminController::class, 'order_delivered']);
 });
 
-Route::get('/qr-code/ValentineSpecialDiscount', [PaymentController::class, 'discountLink']);
+Route::get('/qr-code/Special10Code', [PaymentController::class, 'discountLink']);
 
 //TESTING
 Route::get('/generate-invoice/{orderId}', [InvoiceController::class, 'generateInvoice']);

@@ -363,12 +363,12 @@ class PaymentController extends Controller
     public function discountLink(Request $request)
     {
         session(['discount' => [
-            'code' => 'Some code',
-            'percentage' => '10%',
+            'code' => 'ZlavaLetacikDOD',
+            'percentage' => '10',
         ]]);
         $products[] = [
-            'id' => 'Some id',
-            'selected_size' => 'Some size',
+            'id' => '00000001',
+            'selected_size' => '10ml',
             'quantity' => '1',
         ];
         session(['products' => $products]);
