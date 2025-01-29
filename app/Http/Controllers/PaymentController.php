@@ -360,4 +360,18 @@ class PaymentController extends Controller
             return response()->json(['error' => $e->getMessage()]);
         }
     }
+    public function discountLink(Request $request)
+    {
+        session(['discount' => [
+            'code' => 'Some code',
+            'percentage' => '10%',
+        ]]);
+        $products[] = [
+            'id' => 'Some id',
+            'selected_size' => 'Some size',
+            'quantity' => '1',
+        ];
+        session(['products' => $products]);
+        return $this->index($request);
+    }
 }
