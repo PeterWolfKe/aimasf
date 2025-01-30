@@ -3,9 +3,10 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmailSubscriptionController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\EmailController;
 use App\Http\Controllers\PaymentController;
-use App\Http\Middleware\HomeController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -58,13 +59,24 @@ Route::get('/login', function () {
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+<<<<<<< HEAD
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('/admin/order/{id}', [AdminController::class, 'order'])->name('admin.order');
     Route::post('/admin/order-delivered/{id}', [AdminController::class, 'order_delivered']);
+=======
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+    Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('/order/{id}', [AdminController::class, 'order'])->name('admin.order');
+
+    Route::get('/email', [EmailController::class, 'index'])->name('admin.newsletter.form');
+    Route::post('/email/add', [EmailController::class, 'addEmail'])->name('admin.newsletter.add');
+    Route::post('/email/send', [EmailController::class, 'sendEmails'])->name('admin.newsletter.send');
+>>>>>>> cf108f6 (Started working on automatic email sending for newsletters)
 });
 
 Route::get('/qr-code/Special10Code', [PaymentController::class, 'discountLink']);
 
 //TESTING
 Route::get('/generate-invoice/{orderId}', [InvoiceController::class, 'generateInvoice']);
+Route::get('/test', [EmailController::class, 'index']);
