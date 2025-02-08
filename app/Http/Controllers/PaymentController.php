@@ -280,7 +280,10 @@ class PaymentController extends Controller
                 $invoiceController = new InvoiceController();
                 $invoicePdf = $invoiceController->generateInvoice($uniqueOrderId);
 
-                Mail::to($order->email)->send(new OrderSuccessMail($details, $invoicePdf));
+                Mail::to($order->email)
+                    ->bcc('uctovnictvo@aimasf.sk')
+                    ->send(new OrderSuccessMail($details, $invoicePdf));
+
                 $order->mail_sended = true;
                 $order->save();
             }

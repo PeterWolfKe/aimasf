@@ -25,7 +25,6 @@ class GenerateInvoices extends Command
     {
         App::setLocale('sk');
 
-        // Reset the invoice counter for the current year
         $currentYear = Carbon::now()->year;
         $invoiceCounter = InvoiceCounter::updateOrCreate(
             ['year' => $currentYear],
