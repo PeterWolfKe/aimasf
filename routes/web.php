@@ -59,12 +59,6 @@ Route::get('/login', function () {
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-<<<<<<< HEAD
-Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
-    Route::get('/admin/order/{id}', [AdminController::class, 'order'])->name('admin.order');
-    Route::post('/admin/order-delivered/{id}', [AdminController::class, 'order_delivered']);
-=======
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('/order/{id}', [AdminController::class, 'order'])->name('admin.order');
@@ -72,7 +66,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/email', [EmailController::class, 'index'])->name('admin.newsletter.form');
     Route::post('/email/add', [EmailController::class, 'addEmail'])->name('admin.newsletter.add');
     Route::post('/email/send', [EmailController::class, 'sendEmails'])->name('admin.newsletter.send');
->>>>>>> cf108f6 (Started working on automatic email sending for newsletters)
 });
 
 Route::get('/qr-code/Special10Code', [PaymentController::class, 'discountLink']);

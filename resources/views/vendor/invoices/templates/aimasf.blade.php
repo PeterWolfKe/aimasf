@@ -149,7 +149,7 @@
                 </h4>
             @endif
             <p>{{ __('invoices::invoice.serial') }} <strong>{{ $invoice->getSerialNumber() }}</strong></p>
-            <p>{{ __('invoices::invoice.date') }}: <strong>{{ $invoice->getDate() }}</strong></p>
+            <p>{{ __('invoices::invoice.date') }}: <strong>{{ $invoice->order_created_at ?? $invoice->getDate() }}</strong></p>
         </td>
     </tr>
     </tbody>
@@ -365,7 +365,7 @@
 @endif
 
 <p>
-    {{ __('invoices::invoice.pay_until') }}: {{ $invoice->getDate() }}
+    {{ __('invoices::invoice.pay_until') }}: {{ $invoice->order_created_at ?? $invoice->getDate() }}
 </p>
 
 <script type="text/php">

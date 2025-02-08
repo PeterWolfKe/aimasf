@@ -274,7 +274,6 @@
                     </thead>
                     <tbody>
                     {#each orders as order}
-<<<<<<< HEAD
                         <tr>
                             <td>#{order.id}</td>
                             <td>{new Date(order.created_at).toLocaleDateString()}</td>
@@ -296,51 +295,6 @@
                                 </button>
                             </td>
                         </tr>
-=======
-                        {#each order.products as product, index (index === 0 ? true : null)}
-                            <tr on:click={() => window.location.href = `/admin/order/${order.id}`} style="cursor: pointer;">
-                                {#if index === 0}
-                                    <td
-                                        rowspan={order.products.length}
-                                        style="
-                                        background-color:
-                                            ${order.sended
-                                                ? 'orange'
-                                                : order.paid
-                                                    ? 'green'
-                                                    : 'red'};
-                                        font-weight: bold;
-    "
-                                    >
-                                        {order.id}
-                                    </td>
-                                    <td rowspan={order.products.length}>{order.email}</td>
-                                    <td rowspan={order.products.length}>{order.first_name}</td>
-                                    <td rowspan={order.products.length}>{order.last_name}</td>
-                                    <td rowspan={order.products.length}>{order.address}</td>
-                                    <td rowspan={order.products.length}>{order.postal_code}</td>
-                                    <td rowspan={order.products.length}>{order.city}</td>
-                                    <td rowspan={order.products.length}>{order.phone}</td>
-                                    <td rowspan={order.products.length}>{order.shipping_option_id}</td>
-                                {/if}
-                                <td>{product.product_id}</td>
-                                <td>{product.name}</td>
-                                <td>{product.size}</td>
-                                <td>{product.quantity}</td>
-                                {#if index === 0}
-                                    <td rowspan={order.products.length}>
-                                        {calculateTotalPrice(order.products).toFixed(2)}€
-                                    </td>
-                                    <td rowspan={order.products.length}>
-                                        {order.paid ? "Áno" : "Nie"}
-                                    </td>
-                                    <td rowspan={order.products.length}>
-                                        {new Date(order.created_at).toLocaleDateString()}
-                                    </td>
-                                {/if}
-                            </tr>
-                        {/each}
->>>>>>> cf108f6 (Started working on automatic email sending for newsletters)
                     {/each}
                     </tbody>
                 </table>
