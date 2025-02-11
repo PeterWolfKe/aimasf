@@ -109,8 +109,8 @@
     <BackgroundStart></BackgroundStart>
     <ValentineCounter></ValentineCounter>
     <ProductCardValentine product={productValentine} productImages={productImagesValentine}></ProductCardValentine>
-    <Problem></Problem>
     <ProductCard product={product} productImages={productImages}></ProductCard>
+    <Problem></Problem>
     <VideoTutorial></VideoTutorial>
     <AboutUs></AboutUs>
     <Sponsors></Sponsors>
