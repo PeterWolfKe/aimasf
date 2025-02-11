@@ -312,11 +312,11 @@
     }
 
     .quantity-control button:hover {
-        background-color: #ec1f45;
+        background-color: #b53631;
     }
 
     .actions button {
-        background-color: #ec1f45;
+        background-color: #b53631;
         color: white;
         padding: 1rem 2rem;
         border: none;
@@ -327,7 +327,7 @@
     }
 
     .actions button:hover {
-        background-color: #d72638;
+        background-color: #b53631;
         transform: scale(1.05);
     }
     .nahlad:hover {
