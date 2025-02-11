@@ -44,6 +44,6 @@
 </style>
 
 <div class="countdown">
-    <h1>Odpočet do Valentína 💖</h1>
+    <h1>Počet dní do Valentína 💖</h1>
     <p>{countdown}</p>
 </div>

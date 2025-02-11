@@ -258,18 +258,6 @@
         50% { transform: scale(1.05); }
     }
 
-    .product-card {
-        background-color: white;
-        padding: 2rem;
-        border-radius: 12px;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        display: flex;
-        flex-wrap: wrap;
-        gap: 2rem;
-        justify-content: center;
-        animation: fadeIn 1.2s ease-in-out;
-    }
-
     .hlavny-obrazok {
         width: 320px;
         height: 240px;
@@ -300,11 +288,6 @@
         transform: scale(1.1);
     }
 
-    .right {
-        text-align: left;
-        max-width: 500px;
-    }
-
     .price {
         font-size: 1.8rem;
         font-weight: bold;
@@ -329,11 +312,11 @@
     }
 
     .quantity-control button:hover {
-        background-color: #ff4d6d;
+        background-color: #ec1f45;
     }
 
     .actions button {
-        background-color: #ff4d6d;
+        background-color: #ec1f45;
         color: white;
         padding: 1rem 2rem;
         border: none;
@@ -447,10 +430,6 @@
         }
     }
 
-    #product {
-        scroll-margin-top: 50px;
-    }
-
     @keyframes fadeIn {
         from { opacity: 0; transform: translateY(-10px); }
         to { opacity: 1; transform: translateY(0); }
@@ -470,63 +449,14 @@
         50% { transform: scale(1.05); }
     }
 
-    .product-card {
-        background-color: white;
-        padding: 2rem;
-        border-radius: 12px;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        display: flex;
-        flex-wrap: wrap;
-        gap: 2rem;
-        justify-content: center;
-        animation: fadeIn 1.2s ease-in-out;
-    }
-
-    .hlavny-obrazok {
-        width: 320px;
-        height: 240px;
-        border-radius: 10px;
-        object-fit: cover;
-        transition: transform 0.3s ease;
-    }
-
-    .hlavny-obrazok:hover {
-        transform: scale(1.1);
-    }
-
-    .galeria-nahladov {
-        display: flex;
-        gap: 10px;
-        justify-content: center;
-    }
-
-    .nahlad {
-        width: 60px;
-        height: 60px;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: transform 0.3s ease;
-    }
-
     .nahlad:hover {
         transform: scale(1.1);
-    }
-
-    .right {
-        text-align: left;
-        max-width: 500px;
     }
 
     .price {
         font-size: 1.8rem;
         font-weight: bold;
         color: #d72638;
-    }
-
-    .quantity-control {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
     }
 
     .quantity-control button {

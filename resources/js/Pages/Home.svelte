@@ -110,7 +110,7 @@
     <ValentineCounter></ValentineCounter>
     <ProductCardValentine product={productValentine} productImages={productImagesValentine}></ProductCardValentine>
     <Problem></Problem>
-    <!-- <ProductCard product={product} productImages={productImages}></ProductCard> -->
+    <ProductCard product={product} productImages={productImages}></ProductCard>
     <VideoTutorial></VideoTutorial>
     <AboutUs></AboutUs>
     <Sponsors></Sponsors>

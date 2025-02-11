@@ -83,7 +83,6 @@
         padding: 0;
         display: flex;
         flex-direction: column;
-        height: 100%;
         background-color: $background-color;
         font-family: Arial, sans-serif;
     }
