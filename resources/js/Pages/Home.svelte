@@ -1,22 +1,23 @@
 <script lang="ts">
     import Navbar from '../Components/Navbar.svelte';
     import Footer from "../Components/Footer.svelte";
-    import ColoringText from "../Components/ColoringText.svelte";
     import SplashScreen from "../Components/SplashScreen.svelte";
-    import MovingPhotos from "../Components/MovingPhotos.svelte";
     import Problem from "../Components/Problem.svelte";
     import AboutUs from "../Components/AboutUs.svelte";
-    import WomanCounter from "../Components/WomanCounter.svelte";
     import VideoTutorial from "../Components/VideoTutorial.svelte";
     import BackgroundStart from "../Components/BackgroundStart.svelte";
 
     import { onMount } from 'svelte';
     import ProductCard from "../Components/ProductCard.svelte";
     import Sponsors from "../Components/Sponsors.svelte";
-    import BeforeAfter from "../Components/BeforeAfter.svelte";
+    import ProductCardValentine from "../Components/ProductCardValentine.svelte";
+    import ValentineCounter from "../Components/ValentineCounter.svelte";
 
     export let product;
     export let productImages: string[] = [];
+
+    export let productValentine;
+    export let productImagesValentine: string[] = [];
 
     onMount(() => {
         const observerBigAnimate = new IntersectionObserver(entries => {
@@ -106,8 +107,10 @@
 <Navbar></Navbar>
 <main class="app-container">
     <BackgroundStart></BackgroundStart>
+    <ValentineCounter></ValentineCounter>
+    <ProductCardValentine product={productValentine} productImages={productImagesValentine}></ProductCardValentine>
     <Problem></Problem>
-    <ProductCard product={product} productImages={productImages}></ProductCard>
+    <!-- <ProductCard product={product} productImages={productImages}></ProductCard> -->
     <VideoTutorial></VideoTutorial>
     <AboutUs></AboutUs>
     <Sponsors></Sponsors>
