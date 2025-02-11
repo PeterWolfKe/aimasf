@@ -471,11 +471,11 @@
     }
 
     .quantity-control button:hover {
-        background-color: #ff4d6d;
+        background-color: #d72638;
     }
 
     .actions button {
-        background-color: #ff4d6d;
+        background-color: #d72638;
         color: white;
         padding: 1rem 2rem;
         border: none;
@@ -490,7 +490,7 @@
         transform: scale(1.05);
     }
     .actions button {
-        background: linear-gradient(135deg, #ff4d6d, #d72638);
+        background: linear-gradient(135deg, #d72638, #d72638);
         color: white;
         padding: 1rem 2rem;
         border: none;
@@ -509,7 +509,7 @@
     }
 
     .quantity-control button {
-        background-color: #ff4d6d;
+        background-color: #d72638;
         color: white;
         font-size: 1.5rem;
         padding: 0.5rem 1rem;
