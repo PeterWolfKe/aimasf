@@ -147,22 +147,6 @@
                     align-items: center;
                     gap: 1rem;
 
-                    button {
-                        background-color: $primary-blue;
-                        color: $neutral-white;
-                        font-size: 1.5rem;
-                        padding: 0.5rem 1rem;
-                        border: none;
-                        height: 44px;
-                        width: 44px;
-                        border-radius: 4px;
-                        cursor: pointer;
-
-                        &:hover {
-                            background-color: $button-hover;
-                        }
-                    }
-
                     span {
                         font-size: 1.2rem;
                     }
@@ -251,6 +235,118 @@
         transition: border 0.2s ease-in-out;
     }
 
+    #product {
+        scroll-margin-top: 50px;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hlavicka h1 {
+        font-weight: bold;
+        color: white;
+        font-size: 50px;
+        margin: 0;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+    }
+
+    .product-card {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+        justify-content: center;
+        animation: fadeIn 1.2s ease-in-out;
+    }
+
+    .hlavny-obrazok {
+        width: 320px;
+        height: 240px;
+        border-radius: 10px;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .hlavny-obrazok:hover {
+        transform: scale(1.1);
+    }
+
+    .galeria-nahladov {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+    }
+
+    .nahlad {
+        width: 60px;
+        height: 60px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+    }
+
+    .nahlad:hover {
+        transform: scale(1.1);
+    }
+
+    .right {
+        text-align: left;
+        max-width: 500px;
+    }
+
+    .price {
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: #d72638;
+    }
+
+    .quantity-control {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .quantity-control button {
+        background-color: #d72638;
+        color: white;
+        font-size: 1.5rem;
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .quantity-control button:hover {
+        background-color: #ff4d6d;
+    }
+
+    .actions button {
+        background-color: #ff4d6d;
+        color: white;
+        padding: 1rem 2rem;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 1.2rem;
+        transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .actions button:hover {
+        background-color: #d72638;
+        transform: scale(1.05);
+    }
     .nahlad:hover {
         border: 2px solid $primary-blue;
     }
@@ -348,6 +444,153 @@
             width: 100%;
             margin-top: 0;
             gap: 10px;
+        }
+    }
+
+    #product {
+        scroll-margin-top: 50px;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hlavicka h1 {
+        font-weight: bold;
+        color: white;
+        font-size: 50px;
+        margin: 0;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+    }
+
+    .product-card {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+        justify-content: center;
+        animation: fadeIn 1.2s ease-in-out;
+    }
+
+    .hlavny-obrazok {
+        width: 320px;
+        height: 240px;
+        border-radius: 10px;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .hlavny-obrazok:hover {
+        transform: scale(1.1);
+    }
+
+    .galeria-nahladov {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+    }
+
+    .nahlad {
+        width: 60px;
+        height: 60px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+    }
+
+    .nahlad:hover {
+        transform: scale(1.1);
+    }
+
+    .right {
+        text-align: left;
+        max-width: 500px;
+    }
+
+    .price {
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: #d72638;
+    }
+
+    .quantity-control {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .quantity-control button {
+        background-color: #d72638;
+        color: white;
+        font-size: 1.5rem;
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .quantity-control button:hover {
+        background-color: #ff4d6d;
+    }
+
+    .actions button {
+        background-color: #ff4d6d;
+        color: white;
+        padding: 1rem 2rem;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 1.2rem;
+        transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .actions button:hover {
+        background-color: #d72638;
+        transform: scale(1.05);
+    }
+    .actions button {
+        background: linear-gradient(135deg, #ff4d6d, #d72638);
+        color: white;
+        padding: 1rem 2rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1.2rem;
+        font-weight: bold;
+        box-shadow: 0px 4px 10px rgba(255, 77, 109, 0.3);
+        transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+
+        &:hover {
+            background: linear-gradient(135deg, #d72638, #a81d2b);
+            transform: scale(1.05);
+            box-shadow: 0px 6px 12px rgba(215, 38, 56, 0.4);
+        }
+    }
+
+    .quantity-control button {
+        background-color: #ff4d6d;
+        color: white;
+        font-size: 1.5rem;
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.3s, transform 0.2s;
+
+        &:hover {
+            background-color: #d72638;
+            transform: scale(1.1);
         }
     }
 </style>
