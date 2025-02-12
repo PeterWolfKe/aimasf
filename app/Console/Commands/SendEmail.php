@@ -37,7 +37,7 @@ class SendEmail extends Command
                 'name' => $product->name,
                 'quantity' => $item['quantity'],
                 'size' => $product->size,
-                'price' => $product->price
+                'price' => $item['price']
             ];
         }, json_decode($order['products'], true));
 
