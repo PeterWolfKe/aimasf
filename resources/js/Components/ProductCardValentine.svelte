@@ -205,7 +205,7 @@
 
     .hlavny-obrazok {
         width: 100%;
-        height: 240px;
+        height: 300px;
         border-radius: 10px;
         width: 320px;
         margin: 20px;
@@ -256,14 +256,6 @@
     @keyframes pulse {
         0%, 100% { transform: scale(1); }
         50% { transform: scale(1.05); }
-    }
-
-    .hlavny-obrazok {
-        width: 320px;
-        height: 240px;
-        border-radius: 10px;
-        object-fit: cover;
-        transition: transform 0.3s ease;
     }
 
     .hlavny-obrazok:hover {
