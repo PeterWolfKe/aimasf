@@ -142,10 +142,13 @@ class PaymentController extends Controller
             $stripeLineItems = [];
             $totalPrice = 0;
 
-            foreach ($products as $product) {
+            foreach ($products as $index => $product) {
                 $dbProduct = Product::where('id', $product['id'])->first();
                 if ($dbProduct) {
                     $lineItemPrice = $dbProduct->price * $product['quantity'];
+
+                    $products[$index]['price'] = $dbProduct->price;
+
                     $stripeLineItems[] = [
                         'price_data' => [
                             'currency' => 'eur',
@@ -207,11 +210,12 @@ class PaymentController extends Controller
                     'cancel_url' => url('/payment'),
                 ]);
             }
-
+            \Log::info("INFO: ", $products);
             $orderProducts = array_map(function ($product) {
                 return [
                     'id' => $product['id'],
                     'quantity' => $product['quantity'],
+                    'price' => $product['price']
                 ];
             }, $products);
 
@@ -264,7 +268,7 @@ class PaymentController extends Controller
                         'name' => $product->name,
                         'quantity' => $item['quantity'],
                         'size' => $product->size,
-                        'price' => $product->price
+                        'price' => $item['price']
                     ];
                 }, json_decode($order->products, true));
 

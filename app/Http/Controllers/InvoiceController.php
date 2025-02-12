@@ -54,7 +54,7 @@ class InvoiceController extends Controller
                 $itemPrice = $product->price * $productDetail['quantity'];
                 $items[] = (new InvoiceItem())
                     ->title($product->name)
-                    ->pricePerUnit($product->price)
+                    ->pricePerUnit($productDetail['price'])
                     ->quantity($productDetail['quantity']);
                 $totalAmount += $itemPrice;
             }

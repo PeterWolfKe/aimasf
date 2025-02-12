@@ -11,6 +11,7 @@ class OrderFactory extends Factory
 {
     public function definition()
     {
+        $product = Product::inRandomOrder()->first();
         return [
             'email' => $this->faker->unique()->safeEmail(),
             'first_name' => $this->faker->firstName(),
@@ -22,7 +23,7 @@ class OrderFactory extends Factory
             'phone' => $this->faker->optional()->phoneNumber(),
             'shipping_option_id' => ShippingOption::inRandomOrder()->first()->id,
             'products' => json_encode([
-                ['id' => Product::inRandomOrder()->first()->id, 'quantity' => $this->faker->numberBetween(1, 5)],
+                ['id' => $product->id, 'quantity' => $this->faker->numberBetween(1, 5), 'price' => $product->price],
             ]),
             'unique_order_id' => Str::uuid(),
             'status' => $this->faker->numberBetween(0, 3),

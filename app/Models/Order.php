@@ -41,14 +41,14 @@ class Order extends Model
                 $productImages = json_decode($product->product_images, true);
                 $image = $productImages[0] ?? null;
 
-                $totalPriceForProduct = $product->price * $sessionProduct['quantity'];
+                $totalPriceForProduct = $sessionProduct['price'] * $sessionProduct['quantity'];
                 $totalPrice += $totalPriceForProduct;
 
                 return [
                     'id' => $product->id,
                     'name' => $product->name,
                     'description' => $product->description,
-                    'price' => $product->price,
+                    'price' => $sessionProduct['price'],
                     'quantity' => $sessionProduct['quantity'],
                     'image' => $image
                 ];
@@ -86,7 +86,7 @@ class Order extends Model
                 'name' => $product->name,
                 'quantity' => $item['quantity'],
                 'size' => $product->size,
-                'price' => $product->price,
+                'price' => $item['price'],
             ];
         }, json_decode($order->products, true));
 

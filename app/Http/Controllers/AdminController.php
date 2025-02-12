@@ -63,7 +63,7 @@ class AdminController extends Controller
                 'quantity' => $item['quantity'],
                 'name' => $product->name ?? 'Unknown Product',
                 'size' => $product->size ?? null,
-                'price' => $product->price ?? null,
+                'price' => $item['price'],
             ];
         });
 
@@ -99,7 +99,7 @@ class AdminController extends Controller
                 'name' => $product->name,
                 'quantity' => $item['quantity'],
                 'size' => $product->size,
-                'price' => $product->price
+                'price' => $item['price']
             ];
         }, json_decode($order->products, true));
 
