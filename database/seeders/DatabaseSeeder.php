@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call(UserSeeder::class);
         if (config('app.debug')) {
             $this->call(OrderSeeder::class);
+            $this->call(DiscountCodeSeeder::class);
         }
     }
 }

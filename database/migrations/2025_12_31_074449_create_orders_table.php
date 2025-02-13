@@ -24,8 +24,14 @@ class CreateOrdersTable extends Migration
             $table->string('city');
             $table->string('phone')->nullable();
             $table->string('shipping_option_id');
+
             $table->json('products')->nullable();
             $table->string('unique_order_id')->unique();
+            $table->string('note', 1000)->nullable();
+
+            $table->string('ico')->nullable();
+            $table->string('dic')->nullable();
+
             $table->integer('status')->default('0');
             $table->boolean('mail_sended')->default(false);
             $table->string('ip_address');

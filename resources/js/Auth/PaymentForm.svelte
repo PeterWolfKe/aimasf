@@ -1,6 +1,9 @@
 <script lang="ts">
     import { loadStripe } from '@stripe/stripe-js';
     import { onMount } from 'svelte';
+    import ShippingOptions from './Components/ShippingOptions.svelte';
+    import UserDetailsForm from './Components/UserDetailsForm.svelte';
+    import DiscountCodeForm from "./Components/DiscountCodeForm.svelte";
 
     export let stripePublicKey: string;
     export let productsData: {
@@ -22,9 +25,6 @@
     let shippingPriceDisplay: string;
     export let appliedDiscount: number = 0;
 
-    let discountCode = '';
-    let discountMessage = '';
-    let discountError = false;
 
     export let shippingOptions: {
         id: string,
@@ -34,7 +34,7 @@
     }[] = [];
 
     interface UserDetails {
-        [key: string]: string | undefined;
+        [key: string]: string | boolean | undefined;
         email: string;
         firstName: string;
         lastName: string;
@@ -44,9 +44,13 @@
         city: string;
         phone?: string;
         deliveryMethod: string;
+        isFirm: boolean;
+        ico?: string;
+        dic?: string;
+        note?: string;
     }
 
-    const userDetails: UserDetails = {
+    let userDetails: UserDetails = {
         email: '',
         firstName: '',
         lastName: '',
@@ -55,7 +59,11 @@
         postalCode: '',
         city: '',
         phone: '',
-        deliveryMethod: ''
+        deliveryMethod: '',
+        isFirm: false,
+        ico: '',
+        dic: '',
+        note: '',
     };
 
     const errorMessages: { [key: string]: string } = {
@@ -74,45 +82,6 @@
         });
     });
 
-    const applyDiscount = async () => {
-        discountMessage = '';
-        discountError = false;
-
-        if (!discountCode.trim()) {
-            discountMessage = 'Prosím, zadajte zľavový kód.';
-            discountError = true;
-            return;
-        }
-
-        try {
-            const csrfToken = (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement).content;
-
-            const response = await fetch('/payment/apply-discount', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken,
-                },
-                body: JSON.stringify({ code: discountCode }),
-            });
-
-            const data = await response.json();
-
-            if (data.success) {
-                console.log(data);
-                appliedDiscount = data.discount.percentage;
-                discountMessage = `Zľava ${appliedDiscount}% bola úspešne uplatnená.`;
-                recalculateTotal();
-            } else {
-                discountMessage = data.message || 'Neplatný zľavový kód.';
-                discountError = true;
-            }
-        } catch (error) {
-            discountMessage = 'Nastala chyba pri uplatňovaní kódu.';
-            discountError = true;
-        }
-    };
     const recalculateTotal = () => {
         totalPrice = (productsData || []).reduce((total, product) => total + product.price * product.quantity, 0);
         const selectedShippingOption = shippingOptions.find(option => option.id === userDetails.deliveryMethod);
@@ -132,12 +101,17 @@
     $: productsData, shippingOptions, userDetails.deliveryMethod, appliedDiscount, recalculateTotal();
 
     const handlePayment = async () => {
-        const missingField = Object.keys(userDetails).find(field => {
-            return field !== 'apartment' && field !== 'phone' && !userDetails[field];
-        });
+        const excludedFields = userDetails.isFirm
+            ? ['apartment', 'phone', 'isFirm', 'note']
+            : ['apartment', 'phone', 'isFirm', 'ico', 'dic', 'note'];
+
+        const missingField = Object.keys(userDetails).find(field =>
+            !excludedFields.includes(field) && !userDetails[field]
+        );
 
         if (missingField) {
             cardError = errorMessages[missingField] || 'Chyba pri vyplňovaní formulára.';
+            console.log(missingField);
             isProcessing = false;
             return;
         }
@@ -257,52 +231,6 @@
         font-weight: bold;
         text-align: left;
         margin-top: auto;
-    }
-
-    .form-container h2, .summary-container h2 {
-        margin-bottom: 1rem;
-        color: $text-color;
-    }
-
-    .form-container label {
-        display: block;
-        font-size: 0.9rem;
-        margin-bottom: 0.5rem;
-    }
-    .form-container .star {
-        font-size: 0.9rem;
-        color:red;
-    }
-
-    .form-container input {
-        box-sizing: border-box;
-        width: 100%;
-        padding: 12px;
-        border: 1px solid $gray-white;
-        border-radius: 4px;
-        margin-bottom: 1rem;
-        background-color: $neutral-white;
-    }
-
-    .form-contact-wrapper {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-
-    .form-segment {
-        display: flex;
-        gap: 2rem;
-        width: 100%;
-        flex-direction: row-reverse;
-    }
-
-    .form-segment .form-section {
-        flex: 1;
-        width: 50%;
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
     }
 
     #card-element {
@@ -452,105 +380,6 @@
     .payment-wrapper {
         display: flex;
         flex-direction: column;
-    }
-
-    .shipping-methods {
-        display: flex;
-        flex-direction: column;
-        gap: 0.4rem;
-        margin-top: 1rem;
-        box-sizing: border-box;
-    }
-
-    .shipping-option {
-        display: flex;
-        width: 100%;
-        align-items: center;
-        padding: 0.8rem;
-        border: 1px solid #ddd;
-        border-radius: 6px;
-        background-color: #f9f9f9;
-        transition: background-color 0.3s, border-color 0.3s;
-        box-sizing: border-box;
-        font-size: 0.9rem;
-    }
-
-    .shipping-option * {
-        cursor: pointer;
-    }
-
-    .shipping-methods > label {
-        margin: 0;
-    }
-
-    .shipping-option:hover {
-        border-color: #0077ff;
-    }
-
-    .shipping-option input {
-        appearance: none;
-        width: 0.5rem;
-        height: 0.5rem;
-        transform: scale(0.8);
-        margin-right: 0.8rem;
-        border: 2px solid #777;
-        border-radius: 50%;
-        background-color: #fff;
-        position: relative;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        transition: background-color 0.3s, border-color 0.3s;
-    }
-
-    .shipping-option input:checked {
-        border-color: black;
-        background-color: black;
-    }
-
-    .shipping-option input:checked::before {
-        content: '';
-        width: 0.6rem;
-        height: 0.6rem;
-        background-color: white;
-        border-radius: 50%;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        display: block;
-    }
-
-    .shipping-option label {
-        display: flex;
-        width: 100%;
-    }
-
-    .option-details {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-    }
-
-    .option-details .title {
-        font-weight: bold;
-        color: #333;
-    }
-
-    .option-details .address {
-        color: #777;
-        font-size: 0.85rem;
-    }
-
-    .price-wrapper{
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .price {
-        font-weight: bold;
-        color: #0077ff;
-        text-align: right;
     }
 
     .error-card {
@@ -709,144 +538,69 @@
         .order-summary {
             flex-direction: column-reverse;
         }
+    }
+    .checkbox-label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+        position: relative;
+        font-size: 1rem;
+        font-weight: 500;
+        color: #333;
+    }
 
-        .shipping-methods {
-            max-height: none;
-        }
+    .checkbox-label input[type="checkbox"] {
+        display: none;
+    }
+
+    /* Custom checkbox appearance */
+    .checkbox-custom {
+        width: 1.2rem;
+        height: 1.2rem;
+        border: 2px solid #555;
+        border-radius: 4px;
+        display: inline-block;
+        position: relative;
+        transition: all 0.3s ease;
+    }
+
+    .checkbox-custom::after {
+        content: '';
+        position: absolute;
+        width: 0.6rem;
+        height: 0.6rem;
+        top: 50%;
+        left: 50%;
+        background-color: #4caf50;
+        transform: translate(-50%, -50%) scale(0);
+        border-radius: 2px;
+        transition: transform 0.2s ease;
+    }
+
+    .checkbox-label input[type="checkbox"]:checked + .checkbox-custom::after {
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    .dynamic-fields {
+        display: none;
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .dynamic-fields.visible {
+        display: block;
+        opacity: 1;
+        transform: translateY(0);
     }
 </style>
 
 <div class="container">
     <div class="form-container">
-        <h2>Fakturačné údaje</h2>
-        <label for="email"><span class="star">*</span>E-mail</label>
-        <input
-            type="email"
-            id="email"
-            bind:value={userDetails.email}
-            placeholder="Váš e-mail"
-            required
-        />
-        <div style="display: flex; gap: 1rem;">
-            <div class="form-contact-wrapper" style="flex: 1;">
-                <label for="firstName"><span class="star">*</span>Meno</label>
-                <input
-                    type="text"
-                    id="firstName"
-                    bind:value={userDetails.firstName}
-                    placeholder="Karol"
-                    required
-                />
-            </div>
-            <div class="form-contact-wrapper" style="flex: 1;">
-                <label for="lastName"><span class="star">*</span>Priezvisko</label>
-                <input
-                    type="text"
-                    id="lastName"
-                    bind:value={userDetails.lastName}
-                    placeholder="Dubovský"
-                    required
-                />
-            </div>
-        </div>
-        <div style="display: flex; gap: 1rem;">
-            <div class="form-contact-wrapper" style="flex: 1;">
-                <label for="address"><span class="star">*</span>Adresa</label>
-                <input
-                    type="text"
-                    id="address"
-                    bind:value={userDetails.address}
-                    placeholder="Karpatská 14"
-                    required
-                />
-            </div>
-            <div class="form-contact-wrapper" style="flex: 1;">
-                <label for="apartment">Byt, Apartmán, atď. (Voliteľné)</label>
-                <input
-                    type="text"
-                    id="apartment"
-                    bind:value={userDetails.apartment}
-                    placeholder="Byt alebo Apartmán"
-                />
-            </div>
-        </div>
-        <div style="display: flex; gap: 1rem;">
-            <div class="form-contact-wrapper" style="flex: 1;">
-                <label for="postalCode"><span class="star">*</span>PSČ</label>
-                <input
-                    type="text"
-                    id="postalCode"
-                    bind:value={userDetails.postalCode}
-                    placeholder="12345"
-                    required
-                />
-            </div>
-            <div class="form-contact-wrapper" style="flex: 1;">
-                <label for="city"><span class="star">*</span>Mesto</label>
-                <input
-                    type="text"
-                    id="city"
-                    bind:value={userDetails.city}
-                    placeholder="Prešov"
-                    required
-                />
-            </div>
-        </div>
-        <label for="phone">Telefón (Voliteľné)</label>
-        <input
-            type="text"
-            id="phone"
-            bind:value={userDetails.phone}
-            placeholder="Vaše telefónne číslo"
-        />
-        <h2>Doprava</h2>
-        <div class="shipping-methods">
-            {#each shippingOptions as option}
-                <label for={option.id}>
-                    <div class="shipping-option">
-                        <input
-                            type="radio"
-                            id={option.id}
-                            name="deliveryMethodID"
-                            value={option.id}
-                            bind:group={userDetails.deliveryMethod}
-                        />
-                        <label for={option.id}>
-                            <div class="option-details">
-                                <div class="price-wrapper">
-                                    <span class="title">{option.title}</span>
-                                    <span class="price">
-                                        {#if option.price === '0'}
-                                            ZADARMO
-                                        {:else}
-                                            {option.price}€
-                                        {/if}
-                                    </span>
-                                </div>
-                                <span class="address">{option.address}</span>
-                            </div>
-                        </label>
-                    </div>
-                </label>
-            {/each}
-        </div>
-        <div class="discount-code-section">
-            <label for="discountCode">Zadajte zľavový kód</label>
-            <div class="discount-code-input">
-                <input
-                    type="text"
-                    id="discountCode"
-                    bind:value={discountCode}
-                    placeholder="Váš zľavový kód"
-                />
-                <button type="button" class="apply-discount-button" on:click={applyDiscount}>
-                    Uplatniť
-                </button>
-            </div>
-            {#if discountMessage}
-                <p class="discount-message {discountError ? 'error' : 'success'}">{discountMessage}</p>
-            {/if}
-        </div>
+        <UserDetailsForm {userDetails}/>
+        <ShippingOptions {shippingOptions} bind:userDetails />
+        <DiscountCodeForm on:apply-discount={event => { appliedDiscount = event.detail; recalculateTotal(); }}/>
     </div>
     <div class="summary-buy">
         <div class="summary-container">

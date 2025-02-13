@@ -12,6 +12,9 @@ class OrderFactory extends Factory
     public function definition()
     {
         $product = Product::inRandomOrder()->first();
+
+        $withFirmDetails = $this->faker->boolean(50);
+
         return [
             'email' => $this->faker->unique()->safeEmail(),
             'first_name' => $this->faker->firstName(),
@@ -26,6 +29,9 @@ class OrderFactory extends Factory
                 ['id' => $product->id, 'quantity' => $this->faker->numberBetween(1, 5), 'price' => $product->price],
             ]),
             'unique_order_id' => Str::uuid(),
+            'ico' => $withFirmDetails ? $this->faker->numerify('########') : null,
+            'dic' => $withFirmDetails ? $this->faker->numerify('CZ########') : null,
+            'note' => !$withFirmDetails ? $this->faker->optional()->sentence(10) : null,
             'status' => $this->faker->numberBetween(0, 3),
             'ip_address' => $this->faker->ipv4(),
         ];
