@@ -14,6 +14,9 @@
     let quantity: number = 1;
     let selectedImage: string = productImages[0];
 
+    let showMore = false;
+
+    const { shortDescription, longDescription } = splitDescription(product.description);
     function increaseQuantity(): void {
         quantity++;
     }
@@ -55,6 +58,14 @@
     function selectImage(image: string): void {
         selectedImage = image;
     }
+
+    function splitDescription(description: string): { shortDescription: string; longDescription: string } {
+        const sentences = description.split('.');
+        const shortDescription = sentences[0].trim() + '.';
+        const longDescription = sentences.slice(1).join('.').trim();
+
+        return { shortDescription, longDescription };
+    }
 </script>
 
 <style lang="scss">
@@ -79,7 +90,6 @@
 
         .right {
             flex: 1 1 50%;
-            display: flex;
             flex-direction: column;
 
             h1 {
@@ -90,14 +100,14 @@
 
             .description {
                 font-size: 1rem;
-                color: $dark-gray;
-                margin-bottom: 2rem;
+                color: $secondary-dark-blue;
             }
 
             .price {
                 font-size: 1.5rem;
                 font-weight: bold;
                 margin-bottom: 1rem;
+                margin-top: 1rem;
 
                 small {
                     display: block;
@@ -262,6 +272,64 @@
         border-radius: 5px;
     }
 
+    .zlozenie {
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+    }
+
+    .zlozenie.hidden {
+        max-height: 0;
+    }
+
+    .zlozenie.visible {
+        max-height: 200px;
+    }
+
+    .zlozenie p {
+        margin: 0;
+        margin-bottom: 1rem;
+    }
+
+    .toggle-button {
+        display: inline-block;
+        border: none;
+        border-radius: 0.5rem;
+        font-size: 1rem;
+        font-weight: 500;
+        text-align: center;
+        cursor: pointer;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+        margin-bottom: 5px;
+        margin-top: 5px;
+        color: #005bb5;
+    }
+
+    .toggle-button::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        width: 0;
+        height: 2px;
+        background-color: black;
+        transform: translateX(-50%);
+        transition: width 0.3s ease;
+    }
+
+    .toggle-button:hover::after {
+        width: 100%;
+    }
+
+    .arrow {
+        font-size: 0.8rem;
+        transition: transform 0.3s ease;
+    }
+
+    .description p {
+        margin: 0;
+    }
+
     @media (max-width: 768px) {
         .quantity h3 {
             margin: 0;
@@ -376,7 +444,17 @@
         <div class="right">
             <h1>{product.name}</h1>
             <div class="description">
-                {product.description}
+                {shortDescription}
+            </div>
+            <div class="toggle-container">
+                <div class="toggle-button" on:click={() => (showMore = !showMore)}>
+                    {showMore ? 'Zobraziť menej' : 'Zobraziť viac'}
+                    <span class="arrow">{showMore ? '▲' : '▼'}</span>
+                </div>
+            </div>
+            <div class={`description zlozenie ${showMore ? 'visible' : 'hidden'}`}>
+                <p>{longDescription}</p>
+                <p style="margin-top: 2px;">Zloženie: Voda, Bieliace činidlá na báze aktívneho kyslíka, Kyselina citrónová, Kokamidopropyl betaín, Hydrogenuhličitan sodný</p>
             </div>
             <div class="price">
                 {product.price} €
