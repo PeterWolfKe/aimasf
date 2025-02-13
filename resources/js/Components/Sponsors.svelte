@@ -4,6 +4,14 @@
     let repro_centrum = '/storage/images/repro-centrum.webp';
     let rezke = '/storage/images/rezke.webp';
     let vlny_sk = '/storage/images/vlny-sk.webp';
+
+    let links = {
+        datacomp: 'https://datacomp.sk/',
+        kvety_interesante: 'http://www.interesante.sk/',
+        repro_centrum: 'https://www.reprocentrum.sk/',
+        rezke: 'https://rezke.sk/',
+        vlny_sk: 'https://www.vlny.sk/'
+    };
 </script>
 
 <style lang="scss">
@@ -59,7 +67,12 @@
         max-height: 80px;
         border-radius: 8px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease-in-out;
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+
+    .image-container img:hover {
+        transform: scale(1.03);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
 
     @media (max-width: 768px) {
@@ -97,10 +110,20 @@
         <button class="button">Naši partneri</button>
     </div>
     <div class="image-container">
-        <img src={datacomp} alt="Datacomp" />
-        <img src={kvety_interesante} alt="Kvety Interesante" />
-        <img src={repro_centrum} alt="Repro Centrum" />
-        <img src={rezke} alt="Rezke" />
-        <img src={vlny_sk} alt="Vlny SK" />
+        <a href={links.datacomp} target="_blank">
+            <img src={datacomp} alt="Datacomp" />
+        </a>
+        <a href={links.kvety_interesante} target="_blank">
+            <img src={kvety_interesante} alt="Kvety Interesante" />
+        </a>
+        <a href={links.repro_centrum} target="_blank">
+            <img src={repro_centrum} alt="Repro Centrum" />
+        </a>
+        <a href={links.rezke} target="_blank">
+            <img src={rezke} alt="Rezke" />
+        </a>
+        <a href={links.vlny_sk} target="_blank">
+            <img src={vlny_sk} alt="Vlny SK" />
+        </a>
     </div>
 </section>

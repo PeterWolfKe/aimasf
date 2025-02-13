@@ -179,6 +179,7 @@ class PaymentController extends Controller
             $discount_code = session('discount', null);
             $discount = DiscountCode::where('code', $discount_code)->first();
             $discountCodeValue = $discount ? $discount_code['code'] : null;
+            \Log::info("Zlava: ", ['discount' => $discount]);
 
             if ($discount && $discount->active && (!$discount->valid_until || $discount->valid_until >= now())) {
                 $stripeCouponId = $discount->stripe_coupon_id;
@@ -210,7 +211,6 @@ class PaymentController extends Controller
                     'cancel_url' => url('/payment'),
                 ]);
             }
-            \Log::info("INFO: ", $products);
             $orderProducts = array_map(function ($product) {
                 return [
                     'id' => $product['id'],
