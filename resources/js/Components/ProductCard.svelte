@@ -14,7 +14,8 @@
     let quantity: number = 1;
     let selectedImage: string = productImages[0];
 
-    let showMore = false;
+    let showDescription = false;
+    let showZlozenie = false;
 
     const { shortDescription, longDescription } = splitDescription(product.description);
     function increaseQuantity(): void {
@@ -302,7 +303,7 @@
         position: relative;
         margin-bottom: 5px;
         margin-top: 5px;
-        color: #005bb5;
+        color: #002b5a;
     }
 
     .toggle-button::after {
@@ -443,18 +444,23 @@
 
         <div class="right">
             <h1>{product.name}</h1>
-            <div class="description">
-                {shortDescription}
-            </div>
             <div class="toggle-container">
-                <div class="toggle-button" on:click={() => (showMore = !showMore)}>
-                    {showMore ? 'Zobraziť menej' : 'Zobraziť viac'}
-                    <span class="arrow">{showMore ? '▲' : '▼'}</span>
+                <div class="toggle-button" on:click={() => (showDescription = !showDescription)}>
+                    Popis produktu
+                    <span class="arrow">{showDescription ? '▲' : '▼'}</span>
                 </div>
             </div>
-            <div class={`description zlozenie ${showMore ? 'visible' : 'hidden'}`}>
-                <p>{longDescription}</p>
-                <p style="margin-top: 2px;">Zloženie: Voda, Bieliace činidlá na báze aktívneho kyslíka, Kyselina citrónová, Kokamidopropyl betaín, Hydrogenuhličitan sodný</p>
+            <div class={`description zlozenie ${showDescription ? 'visible' : 'hidden'}`}>
+                <p>{product.description}</p>
+            </div>
+            <div class="toggle-container">
+                <div class="toggle-button" on:click={() => (showZlozenie = !showZlozenie)}>
+                    Zloženie
+                    <span class="arrow">{showZlozenie ? '▲' : '▼'}</span>
+                </div>
+            </div>
+            <div class={`description zlozenie ${showZlozenie ? 'visible' : 'hidden'}`}>
+                <p style="margin-top: 2px;">Voda, Bieliace činidlá na báze aktívneho kyslíka, Kyselina citrónová, Kokamidopropyl betaín, Hydrogenuhličitan sodný</p>
             </div>
             <div class="price">
                 {product.price} €
