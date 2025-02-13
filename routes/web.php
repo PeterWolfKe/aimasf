@@ -62,6 +62,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('/order/{id}', [AdminController::class, 'order'])->name('admin.order');
+    Route::post('/order-delivered/{id}', [AdminController::class, 'order_delivered']);
 
     Route::get('/email', [EmailController::class, 'index'])->name('admin.newsletter.form');
     Route::post('/email/add', [EmailController::class, 'addEmail'])->name('admin.newsletter.add');
