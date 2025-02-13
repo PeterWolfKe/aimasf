@@ -18,7 +18,7 @@
         const minutes = Math.floor((diff / (1000 * 60)) % 60);
         const seconds = Math.floor((diff / 1000) % 60);
 
-        countdown = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        countdown = `00d 00h 00m 00s`;
     }
 
     onMount(() => {
