@@ -179,7 +179,6 @@ class PaymentController extends Controller
             $discount_code = session('discount', null);
             $discount = DiscountCode::where('code', $discount_code)->first();
             $discountCodeValue = $discount ? $discount_code['code'] : null;
-            \Log::info("Zlava: ", ['discount' => $discount]);
 
             if ($discount && $discount->active && (!$discount->valid_until || $discount->valid_until >= now())) {
                 $stripeCouponId = $discount->stripe_coupon_id;

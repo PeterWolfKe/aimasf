@@ -283,7 +283,7 @@
     }
 
     .zlozenie.visible {
-        max-height: 200px;
+        max-height: 500px;
     }
 
     .zlozenie p {
