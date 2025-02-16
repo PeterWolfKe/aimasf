@@ -107,7 +107,6 @@
 <Navbar></Navbar>
 <main class="app-container">
     <BackgroundStart></BackgroundStart>
-    <ValentineCounter></ValentineCounter>
     <ProductCardValentine product={productValentine} productImages={productImagesValentine}></ProductCardValentine>
     <ProductCard product={product} productImages={productImages}></ProductCard>
     <Problem></Problem>
