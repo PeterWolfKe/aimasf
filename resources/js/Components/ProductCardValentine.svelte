@@ -519,7 +519,7 @@
 
 <div class="oddiel" id="product">
     <div class="hlavicka">
-        <h1>Nevieš čo na Valentína? Kúp jej Aimu!</h1>
+        <h1>Dopredaj valentínskej edície</h1>
     </div>
 
     <div class="product-card">
