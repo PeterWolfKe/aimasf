@@ -107,9 +107,9 @@
 <Navbar></Navbar>
 <main class="app-container">
     <BackgroundStart></BackgroundStart>
-    <ProductCardValentine product={productValentine} productImages={productImagesValentine}></ProductCardValentine>
-    <ProductCard product={product} productImages={productImages}></ProductCard>
     <Problem></Problem>
+    <ProductCard product={product} productImages={productImages}></ProductCard>
+    <ProductCardValentine product={productValentine} productImages={productImagesValentine}></ProductCardValentine>
     <VideoTutorial></VideoTutorial>
     <AboutUs></AboutUs>
     <Sponsors></Sponsors>
