@@ -19,7 +19,7 @@ class SendSurveyEmail extends Command
 
     public function handle()
     {
-        $emails = Order::whereIn('status', [2, 3])
+        $emails = Order::whereIn('status', [1, 2])
             ->distinct()
             ->pluck('email');
 
