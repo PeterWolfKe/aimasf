@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\SurveyController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -70,6 +71,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 });
 
 Route::get('/qr-code/Special10Code', [PaymentController::class, 'discountLink']);
+
+//Survey
+Route::post('/survey-submit', [SurveyController::class, 'submit'])->name('survey.submit');
 
 //TESTING
 Route::get('/generate-invoice/{orderId}', [InvoiceController::class, 'generateInvoice']);
