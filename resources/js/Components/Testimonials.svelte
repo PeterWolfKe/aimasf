@@ -4,7 +4,7 @@
     const testimonials = [
         {
             id: 1,
-            name: "Teta z Optimy",
+            name: "Ivana",
             image: "/storage/images/recenzia1.webp",
             text: "Ďakujem za záchranu bielych obliečok! Včera večer sa mi toto stalo, a dnes som vás náhodou stretla v Optime. Neskutočne dobre to funguje. Fandím vám, veľmi milí mladí ľudia ktorí robia niečo užitočné🙂🙂🙂"
         },

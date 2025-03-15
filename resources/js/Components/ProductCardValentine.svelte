@@ -246,7 +246,7 @@
     .hlavicka h1 {
         font-weight: bold;
         color: white;
-        font-size: 50px;
+        font-size: 70px;
         margin: 0;
         text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
         animation: pulse 2s infinite;
@@ -327,6 +327,16 @@
         object-fit: cover;
         border-radius: 5px;
     }
+    
+    .hlavicka h1 {
+        font-weight: bold;
+        color: white;
+        font-size: 70px;
+        margin: 0;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        animation: pulse 2s infinite;
+    }
+
 
     @media (max-width: 768px) {
         .quantity h3 {
@@ -420,15 +430,6 @@
     @keyframes fadeIn {
         from { opacity: 0; transform: translateY(-10px); }
         to { opacity: 1; transform: translateY(0); }
-    }
-
-    .hlavicka h1 {
-        font-weight: bold;
-        color: white;
-        font-size: 50px;
-        margin: 0;
-        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-        animation: pulse 2s infinite;
     }
 
     @keyframes pulse {

@@ -25,9 +25,9 @@
     }
 
     .title {
-        font-size: 3.5rem;
+        font-size: 5rem;
         font-weight: bold;
-        color: $secondary-deep-blue;
+        color: $neutral-white;
         margin-bottom: 2rem;
         margin-top: 0;
     }
