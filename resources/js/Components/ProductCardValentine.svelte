@@ -13,6 +13,8 @@
 
     let quantity: number = 1;
     let selectedImage: string = productImages[0];
+    let showDescription = false;
+    let showZlozenie = false;
 
     function increaseQuantity(): void {
         quantity++;
@@ -88,10 +90,8 @@
                 margin-bottom: 1rem;
             }
 
-            .description {
-                font-size: 1rem;
-                color: $dark-gray;
-                margin-bottom: 2rem;
+            .description p {
+                margin: 0;
             }
 
             .price {
@@ -204,7 +204,6 @@
     }
 
     .hlavny-obrazok {
-        width: 100%;
         height: 300px;
         border-radius: 10px;
         width: 320px;
@@ -256,10 +255,6 @@
     @keyframes pulse {
         0%, 100% { transform: scale(1); }
         50% { transform: scale(1.05); }
-    }
-
-    .hlavny-obrazok:hover {
-        transform: scale(1.1);
     }
 
     .galeria-nahladov {
@@ -515,6 +510,60 @@
             transform: scale(1.1);
         }
     }
+
+    .toggle-button {
+        display: inline-block;
+        border: none;
+        border-radius: 0.5rem;
+        font-size: 1rem;
+        font-weight: 500;
+        text-align: center;
+        cursor: pointer;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+        margin-bottom: 5px;
+        margin-top: 5px;
+        color: #002b5a;
+    }
+
+    .toggle-button::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        width: 0;
+        height: 2px;
+        background-color: black;
+        transform: translateX(-50%);
+        transition: width 0.3s ease;
+    }
+
+    .toggle-button:hover::after {
+        width: 100%;
+    }
+
+    .arrow {
+        font-size: 0.8rem;
+        transition: transform 0.3s ease;
+    }
+
+    .zlozenie {
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+    }
+
+    .zlozenie.hidden {
+        max-height: 0;
+    }
+
+    .zlozenie.visible {
+        max-height: 500px;
+    }
+
+    .zlozenie p {
+        margin: 0;
+        margin-bottom: 1rem;
+    }
 </style>
 
 <div class="oddiel" id="product">
@@ -540,8 +589,23 @@
 
         <div class="right">
             <h1>{product.name}</h1>
-            <div class="description">
-                {product.description}
+            <div class="toggle-container">
+                <div class="toggle-button" on:click={() => (showDescription = !showDescription)}>
+                    Popis produktu
+                    <span class="arrow">{showDescription ? '▲' : '▼'}</span>
+                </div>
+            </div>
+            <div class={`description zlozenie ${showDescription ? 'visible' : 'hidden'}`}>
+                <p>{product.description}</p>
+            </div>
+            <div class="toggle-container">
+                <div class="toggle-button" on:click={() => (showZlozenie = !showZlozenie)}>
+                    Zloženie
+                    <span class="arrow">{showZlozenie ? '▲' : '▼'}</span>
+                </div>
+            </div>
+            <div class={`description zlozenie ${showZlozenie ? 'visible' : 'hidden'}`}>
+                <p style="margin-top: 2px;">Voda, Bieliace činidlá na báze aktívneho kyslíka, Kyselina citrónová, Kokamidopropyl betaín, Hydrogenuhličitan sodný</p>
             </div>
             <div class="price">
                 {product.price} €

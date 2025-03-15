@@ -11,6 +11,7 @@
     import ProductCard from "../Components/ProductCard.svelte";
     import Sponsors from "../Components/Sponsors.svelte";
     import ProductCardValentine from "../Components/ProductCardValentine.svelte";
+    import Testimonials from "../Components/Testimonials.svelte";
     import ValentineCounter from "../Components/ValentineCounter.svelte";
 
     export let product;
@@ -110,6 +111,7 @@
     <Problem></Problem>
     <ProductCard product={product} productImages={productImages}></ProductCard>
     <ProductCardValentine product={productValentine} productImages={productImagesValentine}></ProductCardValentine>
+    <Testimonials></Testimonials>
     <VideoTutorial></VideoTutorial>
     <AboutUs></AboutUs>
     <Sponsors></Sponsors>

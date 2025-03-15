@@ -168,9 +168,11 @@
                         width: 44px;
                         border-radius: 4px;
                         cursor: pointer;
+                        transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
 
                         &:hover {
-                            background-color: $button-hover;
+                            transform: scale(1.05);
+                            box-shadow: 0px 6px 12px rgba($primary-blue, 0.4);
                         }
                     }
 
@@ -194,9 +196,11 @@
                     border-radius: 4px;
                     cursor: pointer;
                     text-align: center;
+                    transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
 
                     &:hover {
-                        background-color: $secondary-dark-blue;
+                        box-shadow: 0px 6px 12px rgba($primary-blue, 0.4);
+                        transform: scale(1.05);
                     }
                 }
             }
@@ -206,7 +210,7 @@
     .oddiel {
         font-family: "Montserrat", sans-serif;
         margin: 0;
-        background-color: #a9c6db;
+        background-color: $background-color;
         padding: 50px;
     }
 

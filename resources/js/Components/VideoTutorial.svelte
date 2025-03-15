@@ -14,7 +14,7 @@
     @use '../../scss/colors.scss' as *;
 
     section {
-        background-color: $secondary-purple;
+        background-color: $background-color;
         color: $text-color;
         padding: 2rem;
         display: flex;
