@@ -293,7 +293,6 @@
         <div class="column">
             <h3>Kontakt</h3>
             <p>Zákaznícka podpora: +421 903 799 755</p>
-            <p>Technická podpora: +421 915 184 224</p>
             <p>Email: aima@aimasf.sk</p>
         </div>
     </div>
@@ -320,6 +319,6 @@
     </div>
 
     <div class="footer-bottom">
-        <p>© 2025, Aima | Pre Aimu vyrobil <span style="font-size: 15px">Julo Klein</span></p>
+        <p>&copy; 2025 Aima</p>
     </div>
 </footer>
