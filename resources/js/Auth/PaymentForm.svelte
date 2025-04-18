@@ -43,7 +43,7 @@
         apartment?: string;
         postalCode: string;
         city: string;
-        phone?: string;
+        phone: string;
         deliveryMethod: string;
         isFirm: boolean;
         ico?: string;
@@ -74,6 +74,7 @@
         'address': 'Prosím, zadajte svoju adresu.',
         'postalCode': 'Prosím, zadajte svoje PSČ.',
         'city': 'Prosím, zadajte svoje mesto.',
+        'phone': 'Prosím, zadajte svoje telefónne číslo.',
         'deliveryMethod': 'Prosím, vyberte spôsob doručenia.'
     };
 
@@ -103,8 +104,8 @@
 
     const handlePayment = async () => {
         const excludedFields = userDetails.isFirm
-            ? ['apartment', 'phone', 'isFirm', 'note']
-            : ['apartment', 'phone', 'isFirm', 'ico', 'dic', 'note'];
+            ? ['apartment', 'isFirm', 'note']
+            : ['apartment', 'isFirm', 'ico', 'dic', 'note'];
 
         const missingField = Object.keys(userDetails).find(field =>
             !excludedFields.includes(field) && !userDetails[field]

@@ -115,7 +115,7 @@ class PaymentController extends Controller
             'userDetails.apartment' => 'nullable|string',
             'userDetails.postalCode' => 'required|string',
             'userDetails.city' => 'required|string',
-            'userDetails.phone' => 'nullable|string',
+            'userDetails.phone' => 'required|string',
             'userDetails.deliveryMethod' => 'required|string|exists:shipping_options,id',
         ]);
 

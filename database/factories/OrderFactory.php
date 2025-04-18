@@ -23,7 +23,7 @@ class OrderFactory extends Factory
             'apartment_suite' => $this->faker->optional()->secondaryAddress(),
             'postal_code' => $this->faker->postcode(),
             'city' => $this->faker->city(),
-            'phone' => $this->faker->optional()->phoneNumber(),
+            'phone' => $this->faker->phoneNumber(),
             'shipping_option_id' => ShippingOption::inRandomOrder()->first()->id,
             'products' => json_encode([
                 ['id' => $product->id, 'quantity' => $this->faker->numberBetween(1, 5), 'price' => $product->price],

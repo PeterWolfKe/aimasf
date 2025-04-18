@@ -7,7 +7,7 @@
         apartment?: string;
         postalCode: string;
         city: string;
-        phone?: string;
+        phone: string;
     };
 </script>
 
@@ -136,7 +136,7 @@
             />
         </div>
     </div>
-    <label for="phone">Telefón (Voliteľné)</label>
+    <label for="phone"><span class="star">*</span>Telefón</label>
     <input
         type="text"
         id="phone"

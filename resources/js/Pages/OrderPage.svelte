@@ -167,7 +167,7 @@
         <h2>Údaje o zákazníkovi</h2>
         <p><strong>Meno:</strong> {order.first_name} {order.last_name}</p>
         <p><strong>Email:</strong> {order.email}</p>
-        <p><strong>Telefón:</strong> {order.phone || 'N/A'}</p>
+        <p><strong>Telefón:</strong> {order.phone}</p>
         <p><strong>Adresa:</strong> {order.address}</p>
         <p><strong>Byt/Suite:</strong> {order.apartment_suite || 'N/A'}</p>
         <p><strong>Mesto:</strong> {order.city}</p>

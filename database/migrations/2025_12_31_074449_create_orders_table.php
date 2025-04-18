@@ -22,7 +22,7 @@ class CreateOrdersTable extends Migration
             $table->string('apartment_suite')->nullable();
             $table->string('postal_code');
             $table->string('city');
-            $table->string('phone')->nullable();
+            $table->string('phone')->nullable(); // required since 2025-04-19
             $table->string('shipping_option_id');
 
             $table->json('products')->nullable();
