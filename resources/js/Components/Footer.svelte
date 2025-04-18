@@ -287,6 +287,8 @@
             <div class="links">
                 <a href="/terms-and-conditions">Obchodné podmienky</a>
                 <a href="/protection-of-personal-information">Ochrana osobných údajov</a>
+                <a href="/kbu.pdf" target="_blank">Karta bezpečnostných údajov [🇸🇰]</a>
+                <a href="/bl.pdf" target="_blank">Bezpečnostní list [🇨🇿]</a>
             </div>
         </div>
 
