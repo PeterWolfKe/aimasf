@@ -606,7 +606,7 @@
                 </div>
             </div>
             <div class={`description zlozenie ${showZlozenie ? 'visible' : 'hidden'}`}>
-                <p style="margin-top: 2px;">Voda, Bieliace činidlá na báze aktívneho kyslíka, Kyselina citrónová, Kokamidopropyl betaín, Hydrogenuhličitan sodný</p>
+                <p style="margin-top: 2px;">Voda, Bieliace činidlá na báze aktívneho kyslíka, Kyselina citrónová, Kokamidopropyl betaín</p>
             </div>
             <div class="price">
                 {product.price} €
