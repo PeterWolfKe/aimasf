@@ -22,7 +22,7 @@ class PaymentController extends Controller
 {
     public function index(Request $request)
     {
-        $shippingOptions = ShippingOption::all();
+        $shippingOptions = ShippingOption::where('valid', true)->get();
         $sessionProducts = session('products', []);
 
         $productsWithDetails = array_map(function ($sessionProduct) {
